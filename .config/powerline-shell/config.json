@@ -1,0 +1,17 @@
+{
+  "segments": [
+    "exit_code",
+    "newline",
+    "virtual_env",
+    "ssh",
+    "git",
+    "cwd",
+    "git_stash",
+    "jobs",
+    "newline"
+  ],
+  "cwd": {
+    "mode": "plain"
+  },
+  "theme": "~/.powerline-styles/default-mod.py"
+}

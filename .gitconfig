@@ -1,0 +1,33 @@
+[user]
+  email = pixelsallover@gmail.com
+  name = Anup Bishnoi
+
+[alias]
+  cl = clone
+  a = add
+  ap = add -p
+  s = status
+  sh = show
+  co = checkout
+  cob = checkout -b
+  d = diff
+  dc = diff --cached
+  st = stash
+  pl = pull
+  c = commit
+  cc = commit --amend
+  ca = commit -a
+  cm = commit -m
+  cam = commit -a -m
+  b = branch
+  bd = branch --delete
+  bD = branch -D
+  l = log --pretty=format:\"%Cgreen%ad %Creset%s%Cgreen%d %Cblue- %an %Cgreen%h\" --graph --date=short
+  r = reset
+  rp = reset -p
+  rev = rev-parse
+  type = cat-file -t
+  dump = cat-file -p
+
+[core]
+  excludesfile = ~/.gitignore
