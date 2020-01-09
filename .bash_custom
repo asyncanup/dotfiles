@@ -140,6 +140,7 @@ alias gbd='git branch --delete'
 alias gbD='git branch -D'
 alias gl='git l'
 alias gr='git reset'
+alias grhh='git reset --hard HEAD'
 alias grp='git reset -p'
 alias grev='git rev-parse'
 alias gcat='git cat-file -p'
@@ -251,14 +252,12 @@ alias nv='node -v'
 # asciinema shell recordings
 alias rec='asciinema rec -i 1 .shell-recordings/`date +%Y-%m-%d`.cast'
 
-# replacing rm with trash-cli
-alias rm='trash-put'
-
 # yadm dotfiles manager
 alias ya='yadm add'
 alias yd='yadm diff'
 alias yl='yadm list'
-alias yc='yadm commit'
+alias yc='yadm commit --verbose'
+alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
 alias yp='yadm push'
 

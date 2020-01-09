@@ -342,9 +342,9 @@ command! -bang -nargs=? -complete=dir GFiles
 
 nnoremap <c-p> :GFiles<cr>
 nnoremap <c-t> :Files<cr>
-nnoremap <c-i> :History<cr>
+nnoremap <c-o> :History<cr>
 nnoremap <c-r> :History:<cr>
-nnoremap <c-o> :Buffers<cr>
+nnoremap <tab> :Buffers<cr>
 nnoremap X :MRU<cr>
 
 " commit finder
@@ -473,7 +473,7 @@ let g:AutoPairsShortcutBackInsert = ''
 " nnn file manager
 nnoremap <leader>nn :NnnPicker '%:p:h'<cr>
 nnoremap <leader>nc :NnnPicker<cr>
-let g:nnn#layout = { 'right': '~30%' }
+let g:nnn#layout = { 'right': '~45%' }
 
 " ---- local extensions ----
 
