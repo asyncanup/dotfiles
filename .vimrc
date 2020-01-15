@@ -276,6 +276,9 @@ function ResetToSectionMarks()
 endfunction
 nnoremap <leader>mm :call ResetToSectionMarks()<cr>
 
+" load and open text from a relative github link into a buffer
+nnoremap <leader>gh yiW:e <c-r>=substitute(substitute(@", "github", "raw.githubusercontent", ""), "blob/", "", "")<cr><cr>
+
 " ---- terminal commands ----
 
 " enter insert mode in terminal immediately
@@ -335,8 +338,6 @@ autocmd BufWritePre *.py YAPF
 nnoremap <a-g> :Goyo 100<cr>
 
 " file finder
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 command! -bang -nargs=? -complete=dir GFiles
     \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
 
@@ -357,6 +358,20 @@ if has('nvim') && !exists('g:fzf_layout')
   autocmd  FileType fzf set laststatus=0 noshowmode noruler
     \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 endif
+
+" allows deleting buffers en-masse
+function! Bufs()
+  redir => list
+  silent ls
+  redir END
+  return split(list, "\n")
+endfunction
+command! DeleteBuffers call fzf#run(fzf#wrap({
+  \ 'source': Bufs(),
+  \ 'sink*': { lines -> execute('bwipeout '.join(map(lines, {_, line -> split(line)[0]}))) },
+  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+\ }))
+nnoremap <a-s-x> :DeleteBuffers<cr>
 
 " search in open buffers
 nnoremap <c-f> :Lines<cr>

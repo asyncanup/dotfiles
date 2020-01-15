@@ -104,7 +104,7 @@ bind t eval 'stuff ^Y^A:'
 # ---- layouts ----
 
 layout autosave on
-bind l eval 'layout new sh' 'screen -t dotfiles nvim' 'split -v' 'focus right' 'screen -t git' 'layout new code' 'screen -t code nvim' 'layout select sh'
+bind l eval 'layout new splitscreen' 'screen -t dotfiles nvim' 'screen -t git' 'split -v' 'focus right' 'layout new fullscreen' 'screen -t code nvim' 'layout select splitscreen'
 
 # ---- status line ----
 

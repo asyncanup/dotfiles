@@ -2,6 +2,7 @@
   "segments": [
     "exit_code",
     "newline",
+    "time",
     "virtual_env",
     "ssh",
     "git",

@@ -31,3 +31,5 @@
 
 [core]
   excludesfile = ~/.gitignore
+[push]
+	default = simple

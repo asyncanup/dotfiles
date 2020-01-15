@@ -115,6 +115,10 @@ git-remotes() {
   cut -d$'\t' -f1
 }
 
+alias gcd='cd $(git rev-parse --show-toplevel)'
+
+alias g='git'
+complete -F _complete_alias g
 alias gs='git status'
 alias gcl='git clone'
 alias gd='git diff'
@@ -146,11 +150,6 @@ alias grev='git rev-parse'
 alias gcat='git cat-file -p'
 alias gpl='git pull'
 
-alias g='git'
-complete -F _complete_alias g
-
-alias gcd='cd $(git rev-parse --show-toplevel)'
-
 bind '"\er": redraw-current-line'
 bind '"\C-g\C-f": "$(git-files)\e\C-e\er"'
 bind '"\C-g\C-b": "$(git-branches)\e\C-e\er"'
@@ -161,16 +160,21 @@ bind '"\C-g\C-r": "$(git-remotes)\e\C-e\er"'
 # ---- other aliases ----
 export EDITOR="nvim"
 export VISUAL="nvim"
+export PAGER="bat --paging always"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 shopt -s nocaseglob
 
 alias less='less -K'
+alias rmf='rm -rf'
 
 alias b='bazel'
 complete -F _complete_alias b
 alias bb='bazel build --verbose_failures --sandbox_debug'
 alias br='bazel run'
 alias bq='bazel query'
+alias bc='bazel clean'
+alias bce='bazel clean --expunge'
 alias bqb='bazel query --output=build'
 alias bqr='bazel query --output=run'
 
@@ -235,12 +239,16 @@ n ()
     # stty stop undef
     # stty lwrap undef
     # stty lnext undef
-    nnn "$@"
+    nnn -c "$@"
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
+export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen'
+export NNN_BMS='d:~/Downloads;h:~;a:~/av;t:~/av/cloud/labels/tempo_labeler;u:~/av/ui;b:~/.cache/bazel/_bazel_abishnoi/78b1e4ab3b2c7eb3081b40c3c6f0f663/external'
+export NNN_CONTEXT_COLORS='4123'
+export NNN_TRASH=1
 
 alias nb='npm run build'
 alias ns='npm start'
@@ -251,6 +259,7 @@ alias nv='node -v'
 
 # asciinema shell recordings
 alias rec='asciinema rec -i 1 .shell-recordings/`date +%Y-%m-%d`.cast'
+alias recplay='asciinema play -i 0.1'
 
 # yadm dotfiles manager
 alias ya='yadm add'
