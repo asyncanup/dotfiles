@@ -43,8 +43,11 @@ screen -t 'sh' bash
 
 # ---- key bindings ----
 
-# shortcut to create a new editor window
+# create a new editor window
 bind e screen nvim
+
+# open a new nnn file window
+bind n screen /usr/bin/nnn -c
 
 # reload .screenrc
 bind r eval 'source $HOME/.screenrc' 'echo ".screenrc reloaded!"'
@@ -93,7 +96,7 @@ bind -c rsz -k ku eval 'focus up'    'command -c rsz' # Up
 bind -c rsz -k kd eval 'focus down'  'command -c rsz' # Down
 
 # faster copy mode
-bind a copy
+bind y copy
 
 # copy to clipboard from copy mode
 bindkey -m ' ' eval 'stuff \040' 'writebuf' 'exec sh -c "/usr/bin/xsel -b < /tmp/screen-exchange"'

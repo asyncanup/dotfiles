@@ -39,7 +39,7 @@ HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
-export PATH="$PATH:~/bin"
+export PATH="$PATH:~/bin:~/.local/bin"
 
 # ---- comment this when you want pyenv to control python ----
 #export PATH="/usr/bin:/usr/local/bin:$PATH"
@@ -47,10 +47,6 @@ export PATH="$PATH:~/bin"
 # ---- git shortcuts ----
 is_in_git_repo() {
   git rev-parse HEAD > /dev/null 2>&1
-}
-
-fzf-down() {
-  fzf --height 50% "$@"
 }
 
 function gg() {
@@ -68,17 +64,17 @@ FZF-EOF" --preview-window=right:60%
 git-files() {
   is_in_git_repo || return
   git -c color.status=always status --short |
-  fzf-down -m --ansi --nth 2..,.. \
-    --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' \
+  fzf --height 90% -m --ansi --nth 2..,.. \
+    --preview '(git diff --color=always -- {-1} | sed 1,4d; bat --color always {-1})' \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
-    --preview-window=right:60% |
+    --preview-window=right:70% |
   cut -c4- | sed 's/.* -> //'
 }
 
 git-branches() {
   is_in_git_repo || return
   git branch -a --color=always | grep -v '/HEAD\s' | sort |
-  fzf-down --ansi --multi --tac \
+  fzf --height 50% --ansi --multi --tac \
     --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1) | head -'$LINES \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
     --preview-window=right:70% |
@@ -89,7 +85,7 @@ git-branches() {
 git-tags() {
   is_in_git_repo || return
   git tag --sort -version:refname |
-  fzf-down --multi \
+  fzf --height 50% --multi \
     --preview 'git show --color=always {} | head -'$LINES \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
     --preview-window=right:70%
@@ -98,7 +94,7 @@ git-tags() {
 git-commit-hashes() {
   is_in_git_repo || return
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
-  fzf-down --ansi --no-sort --reverse --multi \
+  fzf --height 50% --ansi --no-sort --reverse --multi \
     --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always | head -'$LINES \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
     --preview-window=right:40% |
@@ -108,7 +104,7 @@ git-commit-hashes() {
 git-remotes() {
   is_in_git_repo || return
   git remote -v | awk '{print $1 "\t" $2}' | uniq |
-  fzf-down --tac \
+  fzf --height 50% --tac \
     --preview 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" {1} | head -200' \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
     --preview-window=right:70% |
@@ -129,6 +125,7 @@ alias gco='git checkout'
 alias gcob='git checkout -b'
 alias gcof='git checkout $(git branch | fzf)'
 alias ga='git add'
+alias gaf='git add $(git-files)'
 alias gap='git add -p'
 alias gst='git stash'
 alias gstl='git stash list'
@@ -161,7 +158,8 @@ bind '"\C-g\C-r": "$(git-remotes)\e\C-e\er"'
 export EDITOR="nvim"
 export VISUAL="nvim"
 export PAGER="bat --paging always"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANPAGER=most
 
 shopt -s nocaseglob
 
@@ -186,7 +184,6 @@ alias sebc='nvim ~/.bash_custom && . ~/.bash_custom'
 
 alias c='xclip -selection clipboard'
 alias v='xclip -o'
-alias clip='xsel -b <'
 
 alias apt='sudo apt-get install'
 alias aptremove='sudo apt-get remove'
@@ -245,7 +242,7 @@ n ()
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
-export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen'
+export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen;t:_tree $nnn;c:_/home/abishnoi/bin/copyfilepath $nnn'
 export NNN_BMS='d:~/Downloads;h:~;a:~/av;t:~/av/cloud/labels/tempo_labeler;u:~/av/ui;b:~/.cache/bazel/_bazel_abishnoi/78b1e4ab3b2c7eb3081b40c3c6f0f663/external'
 export NNN_CONTEXT_COLORS='4123'
 export NNN_TRASH=1
@@ -269,6 +266,13 @@ alias yc='yadm commit --verbose'
 alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
 alias yp='yadm push'
+
+# select directors with fzf
+list-dirs() {
+  fd ${1:-.} -t d |
+  fzf --height 50% --multi --ansi
+}
+bind '"\C-f\C-d": "$(list-dirs)\e\C-e\er"'
 
 # ---- load local customization file ----
 [ -s "$HOME/.bash_custom.local" ] && \. "$HOME/.bash_custom.local"

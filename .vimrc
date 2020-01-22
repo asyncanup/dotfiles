@@ -2,6 +2,12 @@
 " Ctrl commands are most commonly used, generally cyclable commands
 " Alt commands are uncommonly used, generally cyclable commands
 " <leader> commands are commonly used, generally non-cyclable commands
+"
+" Order of sections is important. Plugin custom mappings and initialization
+" variables come before loading plugins because some plugin customizations
+" require that in order to not set default key mappings.
+" Environment and editor (non-plugin) mappings come after loading plugins
+" so that they are not overridden by key mappings set by plugins
 
 " ---- environment settings ----
 
@@ -47,6 +53,172 @@ set undodir=~/.vim/undodir
 " set leader key
 let mapleader = ","
 
+" ---- plugin settings ----
+
+" deoblete init
+let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
+let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
+let g:deoplete#enable_at_startup = 1
+
+" enable buffer list, with numbers
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tagbar#enabled = 1
+
+" powerline fonts
+let g:airline_powerline_fonts = 1
+let g:airline_left_alt_sep = ''
+
+" js code formatter config
+let g:prettier#autoformat = 0
+let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v10.17.0/bin/prettier"
+nnoremap <leader>p :PrettierAsync<cr>
+" autocmd BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+
+" python code formatter config
+autocmd BufWritePre *.py YAPF
+
+" fullscreen zen writing mode
+nnoremap <a-g> :Goyo 100<cr>
+
+" commit finder
+nnoremap gm :BCommits<cr>
+nnoremap gl :Commits<cr>
+
+" cleaner look for FZF, removes the redundant statusline that says TERMINAL
+if has('nvim') && !exists('g:fzf_layout')
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+endif
+
+" allows deleting buffers en-masse
+function! Bufs()
+  redir => list
+  silent ls
+  redir END
+  return split(list, "\n")
+endfunction
+command! DeleteBuffers call fzf#run(fzf#wrap({
+  \ 'source': Bufs(),
+  \ 'sink*': { lines -> execute('bwipeout '.join(map(lines, {_, line -> split(line)[0]}))) },
+  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+\ }))
+nnoremap <leader>bd :DeleteBuffers<cr>
+nnoremap <a-s-x> :DeleteBuffers<cr>
+
+" search in open buffers
+nnoremap <c-f> :Lines<cr>
+
+" search in current buffer
+nnoremap <a-f> :BLines<cr>
+
+" search in project
+function RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
+
+nnoremap <bslash> :Rg<cr>
+vnoremap <bslash> y<esc>:Rg <c-r>=escape(@",'/\')<cr><cr>
+
+" git operations
+nnoremap gb :Gblame<cr>
+
+" show file list
+let g:NERDTreeWinPos = "right"
+nnoremap <leader>gf :NERDTreeFind<cr>zz
+
+" go to definition
+nnoremap gf :YcmCompleter GoTo<cr>
+
+" go to references
+nnoremap yr :YcmCompleter GoToReferences<cr>
+
+" try to fix issue
+nnoremap yx :YcmCompleter FixIt<cr>
+
+" toggle linting
+nnoremap <a-e> :ALEToggle<cr>
+
+" git commands
+nnoremap <leader>gd :Gdiffsplit<cr>
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gc :Gcommit -v<cr>
+
+" vim screen update time is relevant for signify (git)
+set updatetime=100
+
+" git hunk jumping
+nmap <a-l> <plug>(signify-next-hunk)zz
+nmap <a-h> <plug>(signify-prev-hunk)zz
+nnoremap <a-;> :SignifyHunkDiff<cr>
+nnoremap <a-d> :SignifyDiff<cr>
+nnoremap <a-u> :SignifyHunkUndo<cr>
+omap ic <plug>(signify-motion-inner-pending)
+xmap ic <plug>(signify-motion-inner-visual)
+omap ac <plug>(signify-motion-outer-pending)
+xmap ac <plug>(signify-motion-outer-visual)
+
+" mark colors
+highlight SignatureMarkText ctermfg=gray guifg=gray ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
+
+" stop rooter from changing directory automatically
+let g:rooter_manual_only = 1
+nnoremap <a-c> :Rooter<cr>
+
+" startify lists
+let g:startify_lists = [
+      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+      \ { 'type': 'commands',  'header': ['   Commands']       },
+      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+      \ ]
+
+let g:startify_custom_header = ''
+let g:startify_files_number = 20
+let g:startify_session_persistence = 1
+let g:startify_bookmarks = [ '~/.todo' ]
+
+" vim easymotion shortcuts
+nmap <leader>t <plug>(easymotion-t)
+xmap <leader>t <plug>(easymotion-t)
+omap <leader>t <plug>(easymotion-t)
+
+nmap <leader>f <plug>(easymotion-overwin-f)
+xmap <leader>f <plug>(easymotion-bd-f)
+omap <leader>f <plug>(easymotion-bd-f)
+
+nmap <leader>l <plug>(easymotion-overwin-line)
+xmap <leader>l <plug>(easymotion-bd-jk)
+omap <leader>l <plug>(easymotion-bd-jk)
+
+nmap <leader>s <plug>(easymotion-overwin-f2)
+xmap <leader>s <plug>(easymotion-bd-f2)
+omap <leader>s <plug>(easymotion-bd-f2)
+
+" cycle through color schemes
+nnoremap <leader>cn :CycleColorNext<cr>
+nnoremap <leader>cp :CycleColorPrev<cr>
+
+" show tag bar (file outline)
+nnoremap <a-s-t> :TagbarToggle<cr>
+
+" auto-pairs disable back insert (so a-b can have custom mapping)
+let g:AutoPairsShortcutBackInsert = ''
+
+" nnn file manager
+nnoremap <leader>nn :NnnPicker '%:p:h'<cr>
+nnoremap <leader>nc :NnnPicker<cr>
+let g:nnn#layout = { 'right': '~45%' }
+
+" " enhanced jumps
+" let g:EnhancedJumps_no_mappings = 1
+
 " ---- load plugins ----
 
 " load vim-plug
@@ -84,6 +256,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
 Plug 'mcchrish/nnn.vim'
+Plug 'inkarkat/vim-ingo-library' | Plug 'inkarkat/vim-EnhancedJumps'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
@@ -105,14 +278,47 @@ endif
 
 call plug#end()
 
+" ---- settings that require plugins loaded ----
+
+" file finder
+command! -bang -nargs=? -complete=dir GFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
+nnoremap <c-p> :GFiles<cr>
+nnoremap <c-t> :call fzf#run({'source': 'fd', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <a-t> :call fzf#run({'source': 'fd . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <c-o> :History<cr>
+nnoremap <c-r> :History:<cr>
+nnoremap <tab> :Buffers<cr>
+
+" go to previous and next cursor locations in same buffer
+map g- <plug>EnhancedJumpsLocalOlder
+map g_ <plug>EnhancedJumpsLocalNewer
+
+" color scheme
+colorscheme PaperColor
+set bg=dark
+
+" signify colors (must be after color scheme)
+highlight SignifySignAdd    ctermfg=magenta guifg=#00ff00 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
+highlight SignifySignDelete ctermfg=blue    guifg=#ff0000 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
+highlight SignifySignChange ctermfg=green   guifg=#ffff00 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
+
+" line number color (overrides colorscheme)
+highlight CursorLineNr ctermfg=blue
+
+" set auto complete delay for deoplete
+if has('nvim')
+  call deoplete#custom#option('auto_complete_delay', 500)
+endif
+
 " ---- editor commands ----
 " included here so that plugins can't overwrite bindings
 
 " navigate panels (windows)
-nnoremap <s-up> <c-w>k
-nnoremap <s-down> <c-w>j
-nnoremap <s-left> <c-w>h
-nnoremap <s-right> <c-w>l
+nnoremap <up> <c-w>k
+nnoremap <down> <c-w>j
+nnoremap <left> <c-w>h
+nnoremap <right> <c-w>l
 
 " when searching locally, reposition found location to center of screen
 nnoremap n nzz
@@ -127,9 +333,11 @@ inoremap <c-x><c-x> <esc>I
 inoremap <a-b> <esc>lBi
 inoremap <a-f> <esc>lWi
 
-" go to last edited spot and back
+" go to previous and next cursor locations across buffers
 nnoremap - <c-o>zz
 nnoremap _ <c-i>zz
+
+" go to previous and next edit locations in same buffer
 nnoremap <a--> g;zz
 nnoremap <a-_> g,zz
 
@@ -247,10 +455,6 @@ vnoremap <c-k> :m '<-2<cr>gv=gv
 " open help to the right
 autocmd FileType help wincmd L
 
-" color scheme
-colorscheme PaperColor
-set bg=dark
-
 " open current file in a tab
 nnoremap <c-w>t :tabedit <c-r>=expand('%p')<cr><cr>
 
@@ -264,9 +468,8 @@ nnoremap <leader>u :set invrelativenumber<cr>
 " make ^ navigate to alternate buffer, instead of c-^
 nnoremap ^ <c-^>
 
-" make block contents go to their own line
-nnoremap <leader>bb a<cr><esc>k$%i<cr><esc>k0wd0k0wy0jPa<tab><esc>ly0j0Pldwi<bs><esc>l
-nnoremap <leader>bc :s/, /,\r/g<cr>
+" make block contents go to their own line, splitting by comma
+nnoremap <leader>cs :s/\v([\[\(])/\1\r/<cr>:s/, /,\r/g<cr>:s/\v([\]\)])/\r\1/<cr>kVj%j
 
 " mark just sections in the file
 function ResetToSectionMarks()
@@ -309,186 +512,6 @@ if has ("nvim")
   " faster exit from terminal and close window
   tnoremap <c-q> <c-\><c-n>:b #<cr>
 endif
-
-" ---- plugin commands ----
-
-" deoblete init
-let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
-let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
-let g:deoplete#enable_at_startup = 1
-
-" enable buffer list, with numbers
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tagbar#enabled = 1
-
-" powerline fonts
-let g:airline_powerline_fonts = 1
-let g:airline_left_alt_sep = ''
-
-" js code formatter config
-let g:prettier#autoformat = 0
-let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v10.17.0/bin/prettier"
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-
-" python code formatter config
-autocmd BufWritePre *.py YAPF
-
-" fullscreen zen writing mode
-nnoremap <a-g> :Goyo 100<cr>
-
-" file finder
-command! -bang -nargs=? -complete=dir GFiles
-    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-nnoremap <c-p> :GFiles<cr>
-nnoremap <c-t> :Files<cr>
-nnoremap <c-o> :History<cr>
-nnoremap <c-r> :History:<cr>
-nnoremap <tab> :Buffers<cr>
-nnoremap X :MRU<cr>
-
-" commit finder
-nnoremap gm :BCommits<cr>
-nnoremap gl :Commits<cr>
-
-" cleaner look for FZF, removes the redundant statusline that says TERMINAL
-if has('nvim') && !exists('g:fzf_layout')
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-endif
-
-" allows deleting buffers en-masse
-function! Bufs()
-  redir => list
-  silent ls
-  redir END
-  return split(list, "\n")
-endfunction
-command! DeleteBuffers call fzf#run(fzf#wrap({
-  \ 'source': Bufs(),
-  \ 'sink*': { lines -> execute('bwipeout '.join(map(lines, {_, line -> split(line)[0]}))) },
-  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
-\ }))
-nnoremap <a-s-x> :DeleteBuffers<cr>
-
-" search in open buffers
-nnoremap <c-f> :Lines<cr>
-
-" search in current buffer
-nnoremap <a-f> :BLines<cr>
-
-" search in project
-function RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
-
-nnoremap <bslash> :Rg<cr>
-vnoremap <bslash> y<esc>:Rg <c-r>=escape(@",'/\')<cr><cr>
-
-" git operations
-nnoremap gb :Gblame<cr>
-
-" show file list
-let g:NERDTreeWinPos = "right"
-nnoremap <leader>gf :NERDTreeFind<cr>zz
-
-" go to definition
-nnoremap gf :YcmCompleter GoTo<cr>
-
-" go to references
-nnoremap yr :YcmCompleter GoToReferences<cr>
-
-" try to fix issue
-nnoremap yx :YcmCompleter FixIt<cr>
-
-" toggle linting
-nnoremap <a-e> :ALEToggle<cr>
-
-" git commands
-nnoremap <leader>gd :Gdiffsplit<cr>
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gc :Gcommit -v<cr>
-
-" vim screen update time is relevant for signify (git)
-set updatetime=100
-
-" line number color
-highlight CursorLineNr ctermfg=blue
-
-" signify colors
-highlight SignifySignAdd    ctermfg=darkgreen  guifg=#00ff00 cterm=NONE gui=NONE
-highlight SignifySignDelete ctermfg=magenta    guifg=#ff0000 cterm=NONE gui=NONE
-highlight SignifySignChange ctermfg=blue       guifg=#ffff00 cterm=NONE gui=NONE
-
-" git hunk jumping
-nmap <a-l> <plug>(signify-next-hunk)zz
-nmap <a-h> <plug>(signify-prev-hunk)zz
-nnoremap <a-;> :SignifyHunkDiff<cr>
-nnoremap <a-d> :SignifyDiff<cr>
-nnoremap <a-u> :SignifyHunkUndo<cr>
-omap ic <plug>(signify-motion-inner-pending)
-xmap ic <plug>(signify-motion-inner-visual)
-omap ac <plug>(signify-motion-outer-pending)
-xmap ac <plug>(signify-motion-outer-visual)
-
-" mark colors
-highlight SignatureMarkText ctermfg=gray guifg=gray ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
-
-" stop rooter from changing directory automatically
-let g:rooter_manual_only = 1
-nnoremap <a-c> :Rooter<cr>
-
-" startify lists
-let g:startify_lists = [
-      \ { 'type': 'sessions',  'header': ['   Sessions']       },
-      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-      \ { 'type': 'commands',  'header': ['   Commands']       },
-      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-      \ ]
-
-let g:startify_custom_header = ''
-let g:startify_files_number = 20
-let g:startify_session_persistence = 1
-let g:startify_bookmarks = [ '~/.todo' ]
-
-" vim easymotion shortcuts
-nmap <leader>t <plug>(easymotion-t)
-xmap <leader>t <plug>(easymotion-t)
-omap <leader>t <plug>(easymotion-t)
-
-nmap <leader>f <plug>(easymotion-overwin-f)
-xmap <leader>f <plug>(easymotion-bd-f)
-omap <leader>f <plug>(easymotion-bd-f)
-
-nmap <leader>l <plug>(easymotion-overwin-line)
-xmap <leader>l <plug>(easymotion-bd-jk)
-omap <leader>l <plug>(easymotion-bd-jk)
-
-nmap <leader>s <plug>(easymotion-overwin-f2)
-xmap <leader>s <plug>(easymotion-bd-f2)
-omap <leader>s <plug>(easymotion-bd-f2)
-
-" cycle through color schemes
-nnoremap <leader>cn :CycleColorNext<cr>
-nnoremap <leader>cp :CycleColorPrev<cr>
-
-" show tag bar (file outline)
-nnoremap <a-t> :TagbarToggle<cr>
-
-" auto-pairs disable back insert (so a-b can have custom mapping)
-let g:AutoPairsShortcutBackInsert = ''
-
-" nnn file manager
-nnoremap <leader>nn :NnnPicker '%:p:h'<cr>
-nnoremap <leader>nc :NnnPicker<cr>
-let g:nnn#layout = { 'right': '~45%' }
 
 " ---- local extensions ----
 
