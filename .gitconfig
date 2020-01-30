@@ -12,6 +12,7 @@
   cob = checkout -b
   d = diff
   dc = diff --cached
+  dni = diff --no-index
   st = stash
   pl = pull
   c = commit

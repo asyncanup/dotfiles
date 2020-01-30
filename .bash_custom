@@ -34,12 +34,17 @@ export PATH="~/.pyenv/bin:$PATH"
 command -v pyenv &> /dev/null && eval "$(pyenv init -)"
 command -v pyenv &> /dev/null && eval "$(pyenv virtualenv-init -)"
 
+# go
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/src
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+
 # ---- save history across terminals ----
 HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
-export PATH="$PATH:~/bin:~/.local/bin"
+export PATH="$PATH:~/bin:~/.local/bin:~/bin/node_modules/.bin"
 
 # ---- comment this when you want pyenv to control python ----
 #export PATH="/usr/bin:/usr/local/bin:$PATH"
@@ -119,7 +124,8 @@ alias gs='git status'
 alias gcl='git clone'
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gdiff='gd $(git merge-base master HEAD)..HEAD'
+alias gdi='git diff --no-index'
+alias gdmh='gd $(git merge-base master HEAD)..HEAD'
 alias gsh='git show'
 alias gco='git checkout'
 alias gcob='git checkout -b'
@@ -133,7 +139,7 @@ alias gstp='git stash pop'
 alias gstc='git stash clear'
 alias gc='git commit --verbose'
 alias gcm='git commit -m'
-alias gca='git commit --verbose -a'
+alias gca='git add $(git-files); git commit --verbose'
 alias gcam='git commit -am'
 alias gcc='git commit --verbose --amend'
 alias gb='git branch'
@@ -146,6 +152,7 @@ alias grp='git reset -p'
 alias grev='git rev-parse'
 alias gcat='git cat-file -p'
 alias gpl='git pull'
+alias gpom='git pull origin master'
 
 bind '"\er": redraw-current-line'
 bind '"\C-g\C-f": "$(git-files)\e\C-e\er"'
@@ -158,13 +165,13 @@ bind '"\C-g\C-r": "$(git-remotes)\e\C-e\er"'
 export EDITOR="nvim"
 export VISUAL="nvim"
 export PAGER="bat --paging always"
-# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANPAGER=most
 
 shopt -s nocaseglob
 
 alias less='less -K'
 alias rmf='rm -rf'
+alias cl='clear'
 
 alias b='bazel'
 complete -F _complete_alias b
@@ -183,7 +190,7 @@ alias seb='nvim ~/.bashrc && . ~/.bashrc'
 alias sebc='nvim ~/.bash_custom && . ~/.bash_custom'
 
 alias c='xclip -selection clipboard'
-alias v='xclip -o'
+alias v='xclip -selection cliboard -o'
 
 alias apt='sudo apt-get install'
 alias aptremove='sudo apt-get remove'
@@ -220,6 +227,7 @@ alias t-newday="echo $'\n'$(date +%Y-%m-%d)$'\n' >> ~/.todo"
 alias t-edit='nvim ~/.todo'
 alias t-entry='echo >> ~/.todo'
 alias t-tail='tail ~/.todo'
+alias tt='t-tail'
 alias t-amend='LAST_TIME=$(tail -1 ~/.todo | sed -n '\''s/^\([0-9]*:[0-9]*\) .*/\1/p'\'') && [[ ! -z "$LAST_TIME" ]] && tmpfile=$(mktemp) && head -n -1 ~/.todo > $tmpfile && cat $tmpfile > ~/.todo && rm $tmpfile && echo "$LAST_TIME" >> ~/.todo'
 
 # nnn file manager
@@ -243,7 +251,6 @@ n ()
     fi
 }
 export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen;t:_tree $nnn;c:_/home/abishnoi/bin/copyfilepath $nnn'
-export NNN_BMS='d:~/Downloads;h:~;a:~/av;t:~/av/cloud/labels/tempo_labeler;u:~/av/ui;b:~/.cache/bazel/_bazel_abishnoi/78b1e4ab3b2c7eb3081b40c3c6f0f663/external'
 export NNN_CONTEXT_COLORS='4123'
 export NNN_TRASH=1
 
@@ -267,12 +274,36 @@ alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
 alias yp='yadm push'
 
+# stack overflow cli
+alias st='~/.pyenv/versions/3.7.0/bin/socli -i -q'
+
+# searching and opening web links
+function s() {
+  lynx https://duckduckgo.com/?q="$*"
+}
+function g() {
+  lynx https://google.com/?q="$*"
+}
+alias l="lynx"
+
+# lynx config location
+export LYNX_CFG=~/.config/lynx/lynx.cfg
+export LYNX_LSS=~/.config/lynx/lynx.lss
+
+# replacing rm with trash-cli
+alias rm='~/.pyenv/versions/3.7.0/bin/trash-put'
+
 # select directors with fzf
 list-dirs() {
   fd ${1:-.} -t d |
   fzf --height 50% --multi --ansi
 }
 bind '"\C-f\C-d": "$(list-dirs)\e\C-e\er"'
+
+# fd shortcuts
+alias fdh='fd --hidden'
+alias fdi='fd --no-ignore'
+alias fdih='fd --hidden --no-ignore'
 
 # ---- load local customization file ----
 [ -s "$HOME/.bash_custom.local" ] && \. "$HOME/.bash_custom.local"

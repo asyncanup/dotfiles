@@ -38,6 +38,12 @@ set hidden
 " lazy redraw so screen doesn't flicker on fast changes
 set lazyredraw
 
+" don't add 2 spaces after a full stop when joining lines
+set nojoinspaces
+
+" default text width
+set textwidth=80
+
 " backups
 set backup
 set backupdir=~/.vim/backup/
@@ -72,6 +78,7 @@ let g:airline_left_alt_sep = ''
 " js code formatter config
 let g:prettier#autoformat = 0
 let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v10.17.0/bin/prettier"
+let g:prettier#config#tab_width = 4
 nnoremap <leader>p :PrettierAsync<cr>
 " autocmd BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
@@ -131,10 +138,10 @@ nnoremap gb :Gblame<cr>
 
 " show file list
 let g:NERDTreeWinPos = "right"
-nnoremap <leader>gf :NERDTreeFind<cr>zz
+nnoremap <leader>nt :NERDTreeFind<cr>zz
 
 " go to definition
-nnoremap gf :YcmCompleter GoTo<cr>
+nnoremap <space> :YcmCompleter GoTo<cr>
 
 " go to references
 nnoremap yr :YcmCompleter GoToReferences<cr>
@@ -306,19 +313,21 @@ highlight SignifySignChange ctermfg=green   guifg=#ffff00 cterm=NONE gui=NONE ct
 " line number color (overrides colorscheme)
 highlight CursorLineNr ctermfg=blue
 
-" set auto complete delay for deoplete
-if has('nvim')
-  call deoplete#custom#option('auto_complete_delay', 500)
-endif
-
 " ---- editor commands ----
 " included here so that plugins can't overwrite bindings
+
+" make x not yank to the default register ("+)
+nnoremap x "_x
 
 " navigate panels (windows)
 nnoremap <up> <c-w>k
 nnoremap <down> <c-w>j
 nnoremap <left> <c-w>h
 nnoremap <right> <c-w>l
+inoremap <s-up> <esc><c-w>k
+inoremap <s-down> <esc><c-w>j
+inoremap <s-left> <esc><c-w>h
+inoremap <s-right> <esc><c-w>l
 
 " when searching locally, reposition found location to center of screen
 nnoremap n nzz
@@ -326,6 +335,9 @@ nnoremap N Nzz
 
 " enter a line above in insert mode
 inoremap <c-o> <esc>O
+
+" crudely rename a variable
+nnoremap <c-s-r> :YcmCompleter RefactorRename 
 
 " bash movement shortcuts in insert mode
 inoremap <c-e> <esc>A
@@ -483,26 +495,25 @@ nnoremap <leader>mm :call ResetToSectionMarks()<cr>
 nnoremap <leader>gh yiW:e <c-r>=substitute(substitute(@", "github", "raw.githubusercontent", ""), "blob/", "", "")<cr><cr>
 
 " ---- terminal commands ----
-
-" enter insert mode in terminal immediately
-if has('nvim')
-  autocmd TermOpen * setlocal nonumber norelativenumber
-  autocmd TermOpen term://* startinsert
-endif
-
-" open a terminal in split
-function TermHorizontalSplit()
-  exec winheight(0)/2."split" | terminal
-endfunction
-function TermVerticalSplit()
-  exec winwidth(0)/2."vsplit" | terminal
-endfunction
-
-nnoremap `s :call TermHorizontalSplit()<cr>
-nnoremap `v :call TermVerticalSplit()<cr>
-nnoremap `t :terminal<cr>
-
 if has ("nvim")
+
+  " enter insert mode in terminal immediately
+  if has('nvim')
+    autocmd TermOpen * setlocal nonumber norelativenumber
+    autocmd TermOpen term://* startinsert
+  endif
+
+  " open a terminal in split
+  function TermHorizontalSplit()
+    exec winheight(0)/2."split" | terminal
+  endfunction
+  function TermVerticalSplit()
+    exec winwidth(0)/2."vsplit" | terminal
+  endfunction
+  nnoremap `s :call TermHorizontalSplit()<cr>
+  nnoremap `v :call TermVerticalSplit()<cr>
+  nnoremap `t :terminal<cr>
+
   " escaping from terminal
   tnoremap <leader><esc> <c-\><c-n>
 
@@ -511,6 +522,14 @@ if has ("nvim")
 
   " faster exit from terminal and close window
   tnoremap <c-q> <c-\><c-n>:b #<cr>
+
+  " navigation away from terminal windows
+  tnoremap <s-up> <c-\><c-n><c-w>k
+  tnoremap <s-down> <c-\><c-n><c-w>j
+  tnoremap <s-left> <c-\><c-n><c-w>h
+  tnoremap <s-right> <c-\><c-n><c-w>l
+
+  autocmd BufEnter term://* normal a
 endif
 
 " ---- local extensions ----
