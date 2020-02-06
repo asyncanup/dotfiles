@@ -3,32 +3,45 @@
   name = Anup Bishnoi
 
 [alias]
-  cl = clone
-  a = add
-  ap = add -p
   s = status
+  cl = clone
+  d = diff
+  dc = diff --cached
+  di = diff --no-index
   sh = show
   co = checkout
   cob = checkout -b
-  d = diff
-  dc = diff --cached
-  dni = diff --no-index
+  a = add
+  ap = add -p
   st = stash
-  pl = pull
-  c = commit
-  cc = commit --amend
-  ca = commit -a
+  stl = stash list
+  stp = stash pop
+  sts = stash show
+  stc = stash clear
+  c = commit --verbose
   cm = commit -m
   cam = commit -a -m
+  cc = commit --verbose --amend
+  ca = commit -a
   b = branch
   bd = branch --delete
   bD = branch -D
   l = log --pretty=format:\"%Cgreen%ad %Creset%s%Cgreen%d %Cblue- %an %Cgreen%h\" --graph --date=short
   r = reset
+  rs = reset --soft
+  rh = reset --hard
+  rsh = reset --soft HEAD^
+  rhh = reset --hard HEAD
   rp = reset -p
   rev = rev-parse
+  cat = cat-file -p
+  pl = pull
+  pom = pull origin master
   type = cat-file -t
-  dump = cat-file -p
+  m = merge --no-ff
+  mf = merge --ff
+  rb = rebase -i
+  rbm = rebase -i master
 
 [core]
   excludesfile = ~/.gitignore

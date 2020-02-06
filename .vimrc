@@ -324,6 +324,10 @@ nnoremap <up> <c-w>k
 nnoremap <down> <c-w>j
 nnoremap <left> <c-w>h
 nnoremap <right> <c-w>l
+nnoremap <s-up> <c-w>k
+nnoremap <s-down> <c-w>j
+nnoremap <s-left> <c-w>h
+nnoremap <s-right> <c-w>l
 inoremap <s-up> <esc><c-w>k
 inoremap <s-down> <esc><c-w>j
 inoremap <s-left> <esc><c-w>h

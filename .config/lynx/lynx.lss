@@ -75,7 +75,7 @@ li.blue:	bold:			blue
 strong.a:	bold:			black:		red
 em.a:		reverse:		black:		blue
 strong.b:	bold:			white:		red
-em.b:		reverse:		white:		blue
+em.b:		reverse:		white
 strong.debug:	reverse:		green
 font.letter:	normal:			white:		blue
 input.submit:	normal:			cyan

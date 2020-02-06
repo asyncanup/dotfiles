@@ -56,7 +56,7 @@ is_in_git_repo() {
 
 function gg() {
   is_in_git_repo || return
-  git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"  | \
+  git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" $1 | \
    fzf --height 75% --ansi --no-sort --reverse --tiebreak=index --preview \
    'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}"); [ $# -eq 0 ] || git show --color=always $1 ; }; f {}' \
    --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up,ctrl-m:execute:
@@ -117,42 +117,56 @@ git-remotes() {
 }
 
 alias gcd='cd $(git rev-parse --show-toplevel)'
+alias gcf='git add $(git-files); git commit --verbose'
+gdbr() {
+  git diff $(git merge-base $1 HEAD)..HEAD
+}
+alias gdm='git diff $(git merge-base master HEAD)..HEAD'
+alias gcof='git checkout $(git branch | fzf)'
+alias gaf='git add $(git-files)'
 
 alias g='git'
 complete -F _complete_alias g
-alias gs='git status'
-alias gcl='git clone'
-alias gd='git diff'
-alias gdc='git diff --cached'
-alias gdi='git diff --no-index'
-alias gdmh='gd $(git merge-base master HEAD)..HEAD'
-alias gsh='git show'
-alias gco='git checkout'
-alias gcob='git checkout -b'
-alias gcof='git checkout $(git branch | fzf)'
-alias ga='git add'
-alias gaf='git add $(git-files)'
-alias gap='git add -p'
-alias gst='git stash'
-alias gstl='git stash list'
-alias gstp='git stash pop'
-alias gstc='git stash clear'
-alias gc='git commit --verbose'
-alias gcm='git commit -m'
-alias gca='git add $(git-files); git commit --verbose'
-alias gcam='git commit -am'
-alias gcc='git commit --verbose --amend'
-alias gb='git branch'
-alias gbd='git branch --delete'
-alias gbD='git branch -D'
-alias gl='git l'
-alias gr='git reset'
-alias grhh='git reset --hard HEAD'
-alias grp='git reset -p'
-alias grev='git rev-parse'
-alias gcat='git cat-file -p'
-alias gpl='git pull'
-alias gpom='git pull origin master'
+
+alias gs='g s'
+alias gcl='g cl'
+alias gd='g d'
+alias gdc='g dc'
+alias gdi='g di'
+alias gsh='g sh'
+alias gco='g co'
+alias gcob='g cob'
+alias ga='g a'
+alias gap='g ap'
+alias gst='g st'
+alias gstl='g stl'
+alias gstp='g stp'
+alias gsts='g sts'
+alias gstc='g stc'
+alias gc='g c'
+alias gcm='g cm'
+alias gcam='g cam'
+alias gcc='g cc'
+alias gca='g ca'
+alias gb='g b'
+alias gbd='g bd'
+alias gbD='g bD'
+alias gl='g l'
+alias gr='g r'
+alias grs='g rs'
+alias grh='g rh'
+alias grsh='g rsh'
+alias grhh='g rhh'
+alias grp='g rp'
+alias grev='g rev'
+alias gcat='g cat'
+alias gpl='g pl'
+alias gpom='g pom'
+alias gtype='g type'
+alias gm='g m'
+alias gmf='g mf'
+alias grb='g rb'
+alias grbm='g rbm'
 
 bind '"\er": redraw-current-line'
 bind '"\C-g\C-f": "$(git-files)\e\C-e\er"'
@@ -175,8 +189,10 @@ alias cl='clear'
 
 alias b='bazel'
 complete -F _complete_alias b
-alias bb='bazel build --verbose_failures --sandbox_debug'
+alias bb='bazel build'
+alias bbv='bazel build --verbose_failures --sandbox_debug'
 alias br='bazel run'
+alias brv='bazel run'
 alias bq='bazel query'
 alias bc='bazel clean'
 alias bce='bazel clean --expunge'
@@ -266,6 +282,16 @@ alias rec='asciinema rec -i 1 .shell-recordings/`date +%Y-%m-%d`.cast'
 alias recplay='asciinema play -i 0.1'
 
 # yadm dotfiles manager
+yadm-git-files() {
+  yadm -c color.status=always status --short |
+  fzf --height 90% -m --ansi --nth 2..,.. \
+    --preview '(yadm diff --color=always -- {-1} | sed 1,4d; bat --color always {-1})' \
+    --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
+    --preview-window=right:70% |
+  cut -c4- | sed 's/.* -> //'
+}
+alias ycf='yadm add $(yadm-git-files); yadm commit --verbose'
+
 alias ya='yadm add'
 alias yd='yadm diff'
 alias yl='yadm list'
@@ -273,9 +299,6 @@ alias yc='yadm commit --verbose'
 alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
 alias yp='yadm push'
-
-# stack overflow cli
-alias st='~/.pyenv/versions/3.7.0/bin/socli -i -q'
 
 # searching and opening web links
 function s() {
@@ -291,7 +314,8 @@ export LYNX_CFG=~/.config/lynx/lynx.cfg
 export LYNX_LSS=~/.config/lynx/lynx.lss
 
 # replacing rm with trash-cli
-alias rm='~/.pyenv/versions/3.7.0/bin/trash-put'
+alias trash='~/.pyenv/versions/3.7.0/bin/trash-put'
+alias rm='\rm'
 
 # select directors with fzf
 list-dirs() {
@@ -304,6 +328,8 @@ bind '"\C-f\C-d": "$(list-dirs)\e\C-e\er"'
 alias fdh='fd --hidden'
 alias fdi='fd --no-ignore'
 alias fdih='fd --hidden --no-ignore'
+
+alias diff='git diff --no-index'
 
 # ---- load local customization file ----
 [ -s "$HOME/.bash_custom.local" ] && \. "$HOME/.bash_custom.local"
