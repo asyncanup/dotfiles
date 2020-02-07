@@ -215,9 +215,6 @@ nnoremap <leader>cp :CycleColorPrev<cr>
 " show tag bar (file outline)
 nnoremap <a-s-t> :TagbarToggle<cr>
 
-" auto-pairs disable back insert (so a-b can have custom mapping)
-let g:AutoPairsShortcutBackInsert = ''
-
 " nnn file manager
 nnoremap <leader>nn :NnnPicker '%:p:h'<cr>
 nnoremap <leader>nc :NnnPicker<cr>
@@ -257,7 +254,6 @@ Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-scripts/CycleColor'
 Plug 'flazz/vim-colorschemes'
-Plug 'jiangmiao/auto-pairs'
 Plug 'majutsushi/tagbar'
 Plug 'plasticboy/vim-markdown'
 Plug 'kana/vim-textobj-user'
