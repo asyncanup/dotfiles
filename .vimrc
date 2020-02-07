@@ -138,7 +138,7 @@ nnoremap gb :Gblame<cr>
 
 " show file list
 let g:NERDTreeWinPos = "right"
-nnoremap <leader>nt :NERDTreeFind<cr>zz
+nnoremap <leader>nt :NERDTreeFind<cr>zz50<c-w>|
 
 " go to definition
 nnoremap <space> :YcmCompleter GoTo<cr>
@@ -341,7 +341,7 @@ nnoremap N Nzz
 inoremap <c-o> <esc>O
 
 " crudely rename a variable
-nnoremap <c-s-r> :YcmCompleter RefactorRename 
+nnoremap <c-s-r> :YcmCompleter RefactorRename<space>
 
 " bash movement shortcuts in insert mode
 inoremap <c-e> <esc>A

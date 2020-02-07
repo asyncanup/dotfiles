@@ -3,7 +3,7 @@
   name = Anup Bishnoi
 
 [alias]
-  s = status
+  s = status -s
   cl = clone
   d = diff
   dc = diff --cached
@@ -22,7 +22,7 @@
   cm = commit -m
   cam = commit -a -m
   cc = commit --verbose --amend
-  ca = commit -a
+  ca = commit --verbose -a
   b = branch
   bd = branch --delete
   bD = branch -D
@@ -42,6 +42,7 @@
   mf = merge --ff
   rb = rebase -i
   rbm = rebase -i master
+  rba = rebase --abort
 
 [core]
   excludesfile = ~/.gitignore
