@@ -4,3 +4,4 @@ cd ~
 sudo apt-get --assume-yes install git curl lynx python3 python3-pip neovim python3-neovim exuberant-ctags
 pip3 install powerline-shell
 nvim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
+mkdir -p .local/share/nvim/session .vim/backup
