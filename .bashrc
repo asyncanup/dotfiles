@@ -86,9 +86,9 @@ _update_ps1() {
   PS1=$(powerline-shell $?)
 }
 
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-  PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-fi
+#if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+#  PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+#fi
 
 # pyenv
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
@@ -417,9 +417,6 @@ alias yp='yadm push'
 # searching and opening web links
 s() {
   lynx https://duckduckgo.com/?q="$*"
-}
-g() {
-  lynx https://google.com/?q="$*"
 }
 alias l="lynx"
 
