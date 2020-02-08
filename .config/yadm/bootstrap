@@ -1,7 +1,16 @@
 #!/bin/bash
 
 cd ~
-sudo apt-get --assume-yes install git curl lynx python3 python3-pip neovim python3-neovim exuberant-ctags
+
+sudo apt-get --assume-yes install git curl lynx python3 python3-pip
+sudo apt-get --assume-yes install neovim python3-neovim exuberant-ctags fzf
+sudo apt-get --assume-yes install tldr
+
+wget https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb
+sudo apt-get --assume-yes install ./bat-musl_0.12.1_amd64.deb
+rm bat-musl_0.12.1_amd64.deb
+
 pip3 install powerline-shell
 nvim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
 mkdir -p .local/share/nvim/session .vim/backup
+
