@@ -81,4 +81,4 @@ class Color(DefaultColor):
     This subclass is required when the user chooses to use 'default' theme.
     Because the segments require a 'Color' class for every theme.
     """
-    pass
+    REPO_DIRTY_BG = 24
