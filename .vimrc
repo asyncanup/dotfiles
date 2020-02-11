@@ -312,9 +312,6 @@ highlight CursorLineNr ctermfg=blue
 " ---- editor commands ----
 " included here so that plugins can't overwrite bindings
 
-" make x not yank to the default register ("+)
-nnoremap x "_x
-
 " navigate panels (windows)
 nnoremap <up> <c-w>k
 nnoremap <down> <c-w>j

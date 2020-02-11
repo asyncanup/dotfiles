@@ -10,17 +10,6 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=50000
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -102,8 +91,9 @@ export GOPATH=$HOME/src
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
 # ---- save history across terminals ----
+HISTSIZE=10000
+HISTFILESIZE=50000
 HISTCONTROL=ignoredups:erasedups
-shopt -s histappend
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 export PATH="$PATH:~/bin:~/.local/bin:~/bin/node_modules/.bin"
@@ -313,11 +303,10 @@ alias bqb='bazel query --output=build'
 alias bqr='bazel query --output=run'
 alias bf='bazel fetch'
 
-alias sbr='. ~/.bashrc'
-alias sbc='. ~/.bash_custom'
-alias sbcl='. ~/.bash_custom.local'
+alias sb='. ~/.bashrc'
+alias sbl='. ~/.basrc.local'
 alias seb='nvim ~/.bashrc && . ~/.bashrc'
-alias sebc='nvim ~/.bash_custom && . ~/.bash_custom'
+alias sebl='nvim ~/.bashrc.local && . ~/.bashrc'
 
 alias c='xclip -selection clipboard'
 alias v='xclip -selection cliboard -o'
@@ -361,8 +350,7 @@ alias tt='t-tail'
 alias t-amend='LAST_TIME=$(tail -1 ~/.todo | sed -n '\''s/^\([0-9]*:[0-9]*\) .*/\1/p'\'') && [[ ! -z "$LAST_TIME" ]] && tmpfile=$(mktemp) && head -n -1 ~/.todo > $tmpfile && cat $tmpfile > ~/.todo && rm $tmpfile && echo "$LAST_TIME" >> ~/.todo'
 
 # nnn file manager
-n ()
-{
+n() {
     # Block nesting of nnn in subshells
     if [ "${NNNLVL:-0}" -ge 1 ]; then
         echo "nnn is already running"
@@ -408,6 +396,7 @@ alias ycf='yadm add $(yadm-git-files); yadm commit --verbose'
 
 alias ya='yadm add'
 alias yd='yadm diff'
+alias yds='yadm diff --stat'
 alias yl='yadm list'
 alias yc='yadm commit --verbose'
 alias yca='yadm commit -a --verbose'
@@ -453,7 +442,7 @@ alias fdid='fd -I --type d'
 alias diff='git diff --no-index'
 
 # ---- load local customization file ----
-[ -s "$HOME/.bash_custom.local" ] && \. "$HOME/.bash_custom.local"
+[ -s "$HOME/.bashrc.local" ] && \. "$HOME/.bashrc.local"
 
 # ---- end ----
 
