@@ -408,9 +408,6 @@ alias ypl='yadm pull'
 s() {
   lynx https://duckduckgo.com/?q="$*"
 }
-g() {
-  lynx https://google.com/?q="$*"
-}
 alias l="lynx"
 
 # lynx config location
