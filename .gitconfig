@@ -23,6 +23,7 @@
   cam = commit -a -m
   cc = commit --verbose --amend
   ca = commit --verbose -a
+  p = push
   b = branch
   bd = branch --delete
   bD = branch -D
@@ -40,9 +41,10 @@
   type = cat-file -t
   m = merge --no-ff
   mf = merge --ff
-  rb = rebase -i
-  rbm = rebase -i master
-  rba = rebase --abort
+  ri = rebase -i
+  rim = rebase -i master
+  ra = rebase --abort
+  rc = rebase --continue
 
 [core]
   excludesfile = ~/.gitignore

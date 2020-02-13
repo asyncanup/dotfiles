@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "gtop": "^1.0.1",
     "http-server": "^0.12.1",
     "tldr": "^3.3.2"
   }
