@@ -203,31 +203,7 @@ gdbr() {
 alias gdm='git diff $(git merge-base master HEAD)..HEAD'
 alias gcof='git checkout $(git branch | fzf)'
 alias gaf='git add $(git-files)'
-gg() {
-  echo
-  git status -s
-  if [[ $? != 0 ]]; then
-    return 1
-  fi
-  echo
-  printf "${CYAN}A${BLUE}dd, ${CYAN}D${BLUE}iff, sh${CYAN}O${BLUE}w, ${CYAN}C${BLUE}ommit, ${CYAN}L${BLUE}og, ${CYAN}B${BLUE}ranch, ${CYAN}R${BLUE}eset, ${CYAN}S${BLUE}tash, reset ${CYAN}H${BLUE}ard${RESET}: "
-  read -n1 key
-  echo
-  case $key in
-    $'\e'|q)    return 0 ;;
-    a)          gcf ;;
-    d)          gd ;;
-    o)          gsh ;;
-    c)          gc ;;
-    l)          glog ;;
-    r)          gr ;;
-    s)          gst ;;
-    h)          grhh ;;
-    b)          gco $(git-branches) ;;
-    *)          ;;
-  esac
-  gg
-}
+alias ghist='git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"'
 
 alias g='git'
 complete -F _complete_alias g
@@ -269,9 +245,80 @@ alias gpom='g pom'
 alias gtype='g type'
 alias gm='g m'
 alias gmf='g mf'
-alias grb='g rb'
-alias grbm='g rbm'
-alias grba='g rba'
+alias gri='g ri'
+alias grim='g rim'
+alias gra='g ra'
+alias grc='g rc'
+gp() {
+  g p $@
+}
+
+gg() {
+  echo
+  git status -s
+  if [[ $? != 0 ]]; then
+    return 1
+  fi
+  echo
+
+  help=""
+  help+="${CYAN}a${BLUE}dd,   "
+  help+="${CYAN}d${BLUE}iff,  "
+  help+="add pa${CYAN}t${BLUE}ch,   "
+  help+="added d${CYAN}i${BLUE}ff,        "
+  help+="stashed di${CYAN}f${BLUE}f,      "
+  help+="commit histor${CYAN}y${BLUE},    "
+
+  help+="\n"
+
+  help+="sh${CYAN}o${BLUE}w,  "
+  help+="${CYAN}l${BLUE}og,   "
+  help+="${CYAN}b${BLUE}ranch,      "
+  help+="p${CYAN}u${BLUE}ll,              "
+  help+="${CYAN}c${BLUE}ommit,            "
+  help+="${CYAN}p${BLUE}ush,              "
+
+  help+="\n"
+
+  help+="${CYAN}s${BLUE}tash, "
+  help+="${CYAN}r${BLUE}eset, "
+  help+="reset ${CYAN}h${BLUE}ard,  "
+  help+="stash ${CYAN}j${BLUE}ust patch,  "
+  help+="patch ${CYAN}w${BLUE}ith stash,  "
+  help+="rebase to ${CYAN}m${BLUE}aster${RESET}"
+
+  help+="\n:"
+
+  printf "$help"
+
+  read -n1 key
+  echo
+  case $key in
+    $'\e'|q)    return 0 ;;
+    a)          git add $(git-files) ;;
+    d)          git diff ;;
+    t)          git add $(git-files) -p ;;
+    i)          git diff --cached ;;
+    f)          git stash show -p ;;
+    y)          ghist ;;
+
+    o)          git show ;;
+    l)          glog ;;
+    b)          git checkout $(git-branches) ;;
+    u)          git pull ;;
+    c)          git commit --verbose ;;
+    p)          gp ;;
+
+    s)          git stash ;;
+    r)          git reset ;;
+    h)          git reset --hard HEAD ;;
+    j)          git stash -p ;;
+    w)          git stash pop ;;
+    m)          git rebase -i master ;;
+    *)          ;;
+  esac
+  gg
+}
 
 bind '"\er": redraw-current-line'
 bind '"\C-g\C-f": "$(git-files)\e\C-e\er"'
@@ -437,7 +484,7 @@ bind '"\C-f\C-e": "$(list-all-dirs)\e\C-e\er"'
 alias fdh='fd --hidden'
 alias fdi='fd --no-ignore'
 alias fdih='fd --hidden --no-ignore'
-alias fdid='fd -I --type d'
+alias fdid='fd --no-ignore --type d'
 
 alias diff='git diff --no-index'
 

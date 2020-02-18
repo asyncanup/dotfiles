@@ -83,7 +83,7 @@ nnoremap <leader>p :PrettierAsync<cr>
 " autocmd BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " python code formatter config
-autocmd BufWritePre *.py YAPF
+" autocmd BufWritePre *.py YAPF
 
 " fullscreen zen writing mode
 nnoremap <a-g> :Goyo 100<cr>
@@ -454,12 +454,24 @@ nnoremap g; ;
 nnoremap g, ,
 
 " move the line up or down
-nnoremap <c-j> :m .+1<cr>==
-nnoremap <c-k> :m .-2<cr>==
-inoremap <c-j> <esc>:m .+1<cr>==gi
-inoremap <c-k> <esc>:m .-2<cr>==gi
-vnoremap <c-j> :m '>+1<cr>gv=gv
-vnoremap <c-k> :m '<-2<cr>gv=gv
+nnoremap <c-j> :m .+1<cr>
+nnoremap <c-k> :m .-2<cr>
+inoremap <c-j> <esc>:m .+1<cr>gi
+inoremap <c-k> <esc>:m .-2<cr>gi
+vnoremap <c-j> :m '>+1<cr>gv
+vnoremap <c-k> :m '<-2<cr>gv
+
+" move the line up or down by a number
+let c = 1
+while c <= 20
+  execute "nnoremap " . c . "<c-k> :m .-" . (c+1) . "<cr>"
+  execute "nnoremap " . c . "<c-j> :m .+" . c . "<cr>"
+  execute "inoremap " . c . "<c-j> <esc>:m .+" . c . "<cr>gi"
+  execute "inoremap " . c . "<c-k> <esc>:m .-" . (c+1) . "<cr>gi"
+  execute "vnoremap " . c . "<c-j> :m '>+" . c . "<cr>gv"
+  execute "vnoremap " . c . "<c-k> :m '<-" . (c+1) . "<cr>gv"
+  let c += 1
+endwhile
 
 " open help to the right
 autocmd FileType help wincmd L
