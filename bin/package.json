@@ -12,6 +12,7 @@
   "dependencies": {
     "gtop": "^1.0.1",
     "http-server": "^0.12.1",
+    "jira-cl": "^1.2.2",
     "tldr": "^3.3.2"
   }
 }

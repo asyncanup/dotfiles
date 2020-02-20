@@ -198,7 +198,7 @@ gcf() {
   fi
 }
 gdbr() {
-  git diff $(git merge-base $1 HEAD)..HEAD
+  git diff $1..HEAD
 }
 alias gdm='git diff $(git merge-base master HEAD)..HEAD'
 alias gcof='git checkout $(git branch | fzf)'
@@ -262,8 +262,8 @@ gg() {
 
   branch=""
   branch+="                           "
-  branch+="${RED}$(git rev-parse --abbrev-ref HEAD) "
-  branch+="${ORANGE}$(git rev-parse --short HEAD)${RESET}"
+  branch+="${ORANGE}$(git rev-parse --abbrev-ref HEAD) "
+  branch+="${RED}$(git rev-parse --short HEAD)${RESET}"
   echo -e "$branch"
 
   help=""
@@ -290,13 +290,11 @@ gg() {
   help+="reset ${CYAN}h${BLUE}ard,  "
   help+="stash ${CYAN}j${BLUE}ust patch,  "
   help+="patch ${CYAN}w${BLUE}ith stash,  "
-  help+="rebase to ${CYAN}m${BLUE}aster${RESET}"
-
-  help+="\n:"
+  help+="rebase to ${CYAN}m${BLUE}aster${RESET}\n"
 
   printf "$help"
 
-  read -n1 key
+  read -p ":" -n1 key
   echo
   case $key in
     $'\e'|q)    return 0 ;;
@@ -321,7 +319,7 @@ gg() {
     w)          git stash pop ;;
     m)          git rebase -i master ;;
 
-    $';')       printf '$ git '; read cmd; git $cmd ;;
+    $';')       read -e -p "$ " -i "git " cmd; bash -lic "$cmd" ;;
     *)          ;;
   esac
   gg
@@ -359,8 +357,13 @@ alias bqb='bazel query --output=build'
 alias bqr='bazel query --output=run'
 alias bf='bazel fetch'
 
+alias j='jira'
+complete -F _complete_alias j
+alias ji='jira issue'
+alias jj='jira issue | grep In.Progress'
+
 alias sb='. ~/.bashrc'
-alias sbl='. ~/.basrc.local'
+alias sbl='. ~/.bashrc.local'
 alias seb='nvim ~/.bashrc && . ~/.bashrc'
 alias sebl='nvim ~/.bashrc.local && . ~/.bashrc'
 
