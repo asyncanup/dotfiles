@@ -257,7 +257,12 @@ gg() {
   if [[ $? != 0 ]]; then
     return 1
   fi
-  echo
+
+  branch=""
+  branch+="                           "
+  branch+="${RED}$(git rev-parse --abbrev-ref HEAD) "
+  branch+="${ORANGE}$(git rev-parse --short HEAD)${RESET}"
+  echo -e "$branch"
 
   help=""
   help+="${CYAN}a${BLUE}dd,   "
@@ -313,6 +318,8 @@ gg() {
     j)          git stash -p ;;
     w)          git stash pop ;;
     m)          git rebase -i master ;;
+
+    $';')       printf '$ git '; read cmd; git $cmd ;;
     *)          ;;
   esac
   gg

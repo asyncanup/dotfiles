@@ -220,6 +220,9 @@ nnoremap <leader>nn :NnnPicker '%:p:h'<cr>
 nnoremap <leader>nc :NnnPicker<cr>
 let g:nnn#layout = { 'right': '~45%' }
 
+" disable vim features on large files
+let g:LargeFile = 10
+
 " " enhanced jumps
 " let g:EnhancedJumps_no_mappings = 1
 
@@ -260,6 +263,7 @@ Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
 Plug 'mcchrish/nnn.vim'
 Plug 'inkarkat/vim-ingo-library' | Plug 'inkarkat/vim-EnhancedJumps'
+Plug 'vim-scripts/LargeFile'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
@@ -490,7 +494,7 @@ nnoremap <leader>u :set invrelativenumber<cr>
 nnoremap ^ <c-^>
 
 " make block contents go to their own line, splitting by comma
-nnoremap <leader>cs :s/\v([\[\(])/\1\r/<cr>:s/, /,\r/g<cr>:s/\v([\]\)])/\r\1/<cr>kVj%j
+nnoremap <leader>cs :s/\v([\[\(])/\1\r    /<cr>:s/\v([\]\)])/\r\1/<cr>k:s/\v\,\ ?/,\r    /g<cr>j0V%j
 
 " mark just sections in the file
 function ResetToSectionMarks()
