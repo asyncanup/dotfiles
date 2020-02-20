@@ -62,8 +62,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# fzf bash completion and key bindings
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+# z directory auto jump
 [ -f ~/.z.bash ] && source ~/.z.bash
 
 export NVM_DIR="$HOME/.nvm"
@@ -88,7 +90,7 @@ command -v pyenv &> /dev/null && eval "$(pyenv virtualenv-init -)"
 # go
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/src
-export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 # ---- save history across terminals ----
 HISTSIZE=10000
@@ -98,7 +100,7 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; h
 
 export PATH="$PATH:~/bin:~/.local/bin:~/bin/node_modules/.bin"
 
-# ---- comment this when you want pyenv to control python ----
+# ---- pyenv controls python when this line is commented ----
 #export PATH="/usr/bin:/usr/local/bin:$PATH"
 
 # ---- colors ----

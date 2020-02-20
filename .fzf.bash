@@ -1,6 +1,6 @@
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source ~/.fzf/shell/completion.bash 2> /dev/null
+[[ -f ~/.fzf/shell/completion.bash ]] && source ~/.fzf/shell/completion.bash 2> /dev/null
 
 # Key bindings
 # ------------
