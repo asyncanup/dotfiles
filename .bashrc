@@ -104,23 +104,34 @@ export PATH="$PATH:~/bin:~/.local/bin:~/bin/node_modules/.bin"
 #export PATH="/usr/bin:/usr/local/bin:$PATH"
 
 # ---- colors ----
-BLACK='\033[0;30m'
-DARKGRAY='\033[1;30m'
-RED='\033[0;31m'
-LIGHTRED='\033[1;31m'
-GREEN='\033[0;32m'
-LIGHTGREEN='\033[1;32m'
-ORANGE='\033[0;33m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-LIGHTBLUE='\033[1;34m'
-PURPLE='\033[0;35m'
-LIGHTPURPLE='\033[1;35m'
-CYAN='\033[0;36m'
-LIGHTCYAN='\033[1;36m'
-LIGHTGRAY='\033[0;37m'
-WHITE='\033[1;37m'
-RESET='\033[0m'
+BLACK='\e[0;30m'
+DARKGRAY='\e[1;30m'
+RED='\e[0;31m'
+LIGHTRED='\e[1;31m'
+GREEN='\e[0;32m'
+LIGHTGREEN='\e[1;32m'
+ORANGE='\e[0;33m'
+YELLOW='\e[1;33m'
+BLUE='\e[0;34m'
+LIGHTBLUE='\e[1;34m'
+PURPLE='\e[0;35m'
+LIGHTPURPLE='\e[1;35m'
+CYAN='\e[0;36m'
+LIGHTCYAN='\e[1;36m'
+LIGHTGRAY='\e[0;37m'
+WHITE='\e[1;37m'
+RESET='\e[0m'
+
+BG_BLUE='\e[48;5;130m'
+BG_CYAN='\e[48;5;24m'
+BG_DARKGRAY='\e[48;5;237m'
+BG_GRAY='\e[48;5;238m'
+FG_BLUE='\e[38;5;130m'
+FG_CYAN='\e[38;5;24m'
+FG_DARKGRAY='\e[38;5;237m'
+FG_GRAY='\e[38;5;238m'
+FG_LIGHTGRAY='\e[38;5;250m'
+FG_WHITE='\e[38;5;15m'
 
 # ---- git shortcuts ----
 is_in_git_repo() {
@@ -254,17 +265,28 @@ gp() {
 }
 
 gg() {
-  echo
-  git status -s
-  if [[ $? != 0 ]]; then
+  if ! git status >/dev/null 2>&1; then
+    echo "Not a git repository"
     return 1
   fi
 
-  branch=""
-  branch+="                           "
-  branch+="${ORANGE}$(git rev-parse --abbrev-ref HEAD) "
-  branch+="${RED}$(git rev-parse --short HEAD)${RESET}"
-  echo -e "$branch"
+  time="$(date +%H:%M:%S)"
+  branch="$(git rev-parse --abbrev-ref HEAD)"
+  commit_hash="$(git rev-parse --short HEAD)"
+  dir="$(pwd | sed s,$HOME,~,)"
+  echo -e "\
+${BG_GRAY}${FG_LIGHTGRAY} $time \
+${BG_CYAN}${FG_GRAY}${FG_WHITE} $branch \
+${BG_BLUE}${FG_CYAN}${FG_WHITE} $commit_hash \
+${BG_DARKGRAY}${FG_BLUE}${FG_LIGHTGRAY} $dir \
+${RESET}${FG_DARKGRAY}${RESET}"
+
+  echo
+  git status -s
+  echo
+  if [[ $? != 0 ]]; then
+    return 1
+  fi
 
   help=""
   help+="${CYAN}a${BLUE}dd,   "
@@ -319,7 +341,7 @@ gg() {
     w)          git stash pop ;;
     m)          git rebase -i master ;;
 
-    $';')       read -e -p "$ " -i "git " cmd; bash -lic "$cmd" ;;
+    $';')       read -e -p "$ " cmd; bash -lic "$cmd" ;;
     *)          ;;
   esac
   gg
@@ -497,6 +519,13 @@ alias fdih='fd --hidden --no-ignore'
 alias fdid='fd --no-ignore --type d'
 
 alias diff='git diff --no-index'
+
+# watch files
+watchfile() {
+  while inotifywait -e modify -e close_write $1 2>/dev/null; do
+    $1 2>&1 | bat -l ${2:-python}
+  done
+}
 
 # ---- load local customization file ----
 [ -s "$HOME/.bashrc.local" ] && \. "$HOME/.bashrc.local"

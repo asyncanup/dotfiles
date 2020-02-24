@@ -1,5 +1,8 @@
 #!/bin/bash
-info="$(jira issue | grep In.Progress | cut -d ' ' -f3)"
+
+set -e
+
+info="$(~/bin/node_modules/.bin/jira issue | grep In.Progress | cut -d ' ' -f3)"
 expire="$(($(date +%s) + 10800))"
 curl \
   -H 'Content-type: application/json; charset=utf-8' \
