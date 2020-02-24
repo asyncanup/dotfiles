@@ -122,15 +122,17 @@ LIGHTGRAY='\e[0;37m'
 WHITE='\e[1;37m'
 RESET='\e[0m'
 
-BG_BLUE='\e[48;5;130m'
-BG_CYAN='\e[48;5;24m'
+BG_BLUE='\e[48;5;24m'
 BG_DARKGRAY='\e[48;5;237m'
 BG_GRAY='\e[48;5;238m'
-FG_BLUE='\e[38;5;130m'
-FG_CYAN='\e[38;5;24m'
+BG_GREEN='\e[48;5;22m'
+BG_ORANGE='\e[48;5;130m'
+FG_BLUE='\e[38;5;24m'
 FG_DARKGRAY='\e[38;5;237m'
 FG_GRAY='\e[38;5;238m'
+FG_GREEN='\e[38;5;22m'
 FG_LIGHTGRAY='\e[38;5;250m'
+FG_ORANGE='\e[38;5;130m'
 FG_WHITE='\e[38;5;15m'
 
 # ---- git shortcuts ----
@@ -264,6 +266,7 @@ gp() {
   g p $@
 }
 
+# primary git interface
 gg() {
   if ! git status >/dev/null 2>&1; then
     echo "Not a git repository"
@@ -276,9 +279,9 @@ gg() {
   dir="$(pwd | sed s,$HOME,~,)"
   echo -e "\
 ${BG_GRAY}${FG_LIGHTGRAY} $time \
-${BG_CYAN}${FG_GRAY}${FG_WHITE} $branch \
-${BG_BLUE}${FG_CYAN}${FG_WHITE} $commit_hash \
-${BG_DARKGRAY}${FG_BLUE}${FG_LIGHTGRAY} $dir \
+${BG_BLUE}${FG_GRAY}${FG_WHITE} $branch \
+${BG_GREEN}${FG_BLUE}${FG_WHITE} $commit_hash \
+${BG_DARKGRAY}${FG_GREEN}${FG_LIGHTGRAY} $dir \
 ${RESET}${FG_DARKGRAY}${RESET}"
 
   echo
