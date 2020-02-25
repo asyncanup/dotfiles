@@ -73,12 +73,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # powerline shell
-_update_ps1() {
+update-ps1() {
   PS1=$(powerline-shell $?)
 }
 
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-  PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ update-ps1 ]]; then
+  PROMPT_COMMAND="update-ps1; $PROMPT_COMMAND"
 fi
 
 # pyenv
@@ -104,23 +104,23 @@ export PATH="$PATH:~/bin:~/.local/bin:~/bin/node_modules/.bin"
 #export PATH="/usr/bin:/usr/local/bin:$PATH"
 
 # ---- colors ----
-BLACK='\e[0;30m'
-DARKGRAY='\e[1;30m'
-RED='\e[0;31m'
-LIGHTRED='\e[1;31m'
-GREEN='\e[0;32m'
-LIGHTGREEN='\e[1;32m'
-ORANGE='\e[0;33m'
-YELLOW='\e[1;33m'
-BLUE='\e[0;34m'
-LIGHTBLUE='\e[1;34m'
-PURPLE='\e[0;35m'
-LIGHTPURPLE='\e[1;35m'
-CYAN='\e[0;36m'
-LIGHTCYAN='\e[1;36m'
-LIGHTGRAY='\e[0;37m'
-WHITE='\e[1;37m'
-RESET='\e[0m'
+C_BLACK='\e[0;30m'
+C_DARKGRAY='\e[1;30m'
+C_RED='\e[0;31m'
+C_LIGHTRED='\e[1;31m'
+C_GREEN='\e[0;32m'
+C_LIGHTGREEN='\e[1;32m'
+C_ORANGE='\e[0;33m'
+C_YELLOW='\e[1;33m'
+C_BLUE='\e[0;34m'
+C_LIGHTBLUE='\e[1;34m'
+C_PURPLE='\e[0;35m'
+C_LIGHTPURPLE='\e[1;35m'
+C_CYAN='\e[0;36m'
+C_LIGHTCYAN='\e[1;36m'
+C_LIGHTGRAY='\e[0;37m'
+C_WHITE='\e[1;37m'
+C_RESET='\e[0m'
 
 BG_BLUE='\e[48;5;24m'
 BG_DARKGRAY='\e[48;5;237m'
@@ -135,13 +135,39 @@ FG_LIGHTGRAY='\e[38;5;250m'
 FG_ORANGE='\e[38;5;130m'
 FG_WHITE='\e[38;5;15m'
 
+# ---- keys ----
+capture-keypress() {
+  read -s -N1
+  K1="$REPLY"
+  read -s -N2 -t 0.001
+  K2="$REPLY"
+  read -s -N1 -t 0.001
+  K3="$REPLY"
+  echo "$K1$K2$K3"
+}
+
+KEY_INSERT=$'\x1b\x5b\x32\x7e'
+KEY_DELETE=$'\x1b\x5b\x33\x7e'
+KEY_HOME=$'\x1b\x4f\x48'
+KEY_END=$'\x1b\x4f\x46'
+KEY_PAGEUP=$'\x1b\x5b\x35\x7e'
+KEY_PAGEDOWN=$'\x1b\x5b\x36\x7e'
+KEY_UP=$'\x1b\x5b\x41'
+KEY_DOWN=$'\x1b\x5b\x42'
+KEY_RIGHT=$'\x1b\x5b\x43'
+KEY_LEFT=$'\x1b\x5b\x44'
+KEY_TAB=$'\x09'
+KEY_ENTER=$'\x0a'
+KEY_ESCAPE=$'\x1b'
+KEY_SPACE=$'\x20'
+
 # ---- git shortcuts ----
-is_in_git_repo() {
+is-in-git-repo() {
   git rev-parse HEAD > /dev/null 2>&1
 }
 
 glog() {
-  is_in_git_repo || return
+  is-in-git-repo || return
   git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" $1 | \
    fzf --height 75% --ansi --no-sort --reverse --tiebreak=index --preview \
    'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}"); [ $# -eq 0 ] || git show --color=always $1 ; }; f {}' \
@@ -153,7 +179,7 @@ FZF-EOF" --preview-window=right:60%
 }
 
 git-files() {
-  is_in_git_repo || return
+  is-in-git-repo || return
   git -c color.status=always status --short |
   fzf --height 90% -m --ansi --nth 2..,.. \
     --preview '(git diff --color=always -- {-1} | sed 1,4d; bat --color always {-1})' \
@@ -163,7 +189,7 @@ git-files() {
 }
 
 git-branches() {
-  is_in_git_repo || return
+  is-in-git-repo || return
   git branch -a --color=always | grep -v '/HEAD\s' | sort |
   fzf --height 50% --ansi --multi --tac \
     --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1) | head -'$LINES \
@@ -174,7 +200,7 @@ git-branches() {
 }
 
 git-tags() {
-  is_in_git_repo || return
+  is-in-git-repo || return
   git tag --sort -version:refname |
   fzf --height 50% --multi \
     --preview 'git show --color=always {} | head -'$LINES \
@@ -183,7 +209,7 @@ git-tags() {
 }
 
 git-commit-hashes() {
-  is_in_git_repo || return
+  is-in-git-repo || return
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
   fzf --height 50% --ansi --no-sort --reverse --multi \
     --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always | head -'$LINES \
@@ -193,7 +219,7 @@ git-commit-hashes() {
 }
 
 git-remotes() {
-  is_in_git_repo || return
+  is-in-git-repo || return
   git remote -v | awk '{print $1 "\t" $2}' | uniq |
   fzf --height 50% --tac \
     --preview 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" {1} | head -200' \
@@ -288,72 +314,80 @@ gg() {
   fi
 
   echo -e \
-    "${BG_GRAY}${FG_LIGHTGRAY} $time"\
+    "\n${BG_GRAY}${FG_LIGHTGRAY} $time"\
     "${branch_bg}${FG_GRAY}${FG_WHITE} $branch"\
     "${BG_GREEN}${branch_fg}${FG_WHITE} $commit_hash"\
     "${BG_DARKGRAY}${FG_GREEN}${FG_LIGHTGRAY} $dir"\
-    "${RESET}${FG_DARKGRAY}${RESET}"
+    "${C_RESET}${FG_DARKGRAY}${C_RESET}"
 
   echo
   git status -s
   echo
 
   help=""
-  help+="${CYAN}a${BLUE}dd,   "
-  help+="${CYAN}d${BLUE}iff,  "
-  help+="add pa${CYAN}t${BLUE}ch,   "
-  help+="added d${CYAN}i${BLUE}ff,        "
-  help+="stashed di${CYAN}f${BLUE}f,      "
-  help+="commit histor${CYAN}y${BLUE},    "
+  help+="${C_CYAN}a${C_BLUE}dd,   "
+  help+="${C_CYAN}d${C_BLUE}iff,  "
+  help+="add pa${C_CYAN}t${C_BLUE}ch,   "
+  help+="added d${C_CYAN}i${C_BLUE}ff,        "
+  help+="stashed di${C_CYAN}f${C_BLUE}f,      "
+  help+="commit histor${C_CYAN}y${C_BLUE},    "
 
   help+="\n"
 
-  help+="sh${CYAN}o${BLUE}w,  "
-  help+="${CYAN}l${BLUE}og,   "
-  help+="${CYAN}b${BLUE}ranch,      "
-  help+="p${CYAN}u${BLUE}ll,              "
-  help+="${CYAN}c${BLUE}ommit,            "
-  help+="${CYAN}p${BLUE}ush,              "
+  help+="sh${C_CYAN}o${C_BLUE}w,  "
+  help+="${C_CYAN}l${C_BLUE}og,   "
+  help+="${C_CYAN}b${C_BLUE}ranch,      "
+  help+="p${C_CYAN}u${C_BLUE}ll,              "
+  help+="${C_CYAN}c${C_BLUE}ommit,            "
+  help+="${C_CYAN}p${C_BLUE}ush,              "
 
   help+="\n"
 
-  help+="${CYAN}s${BLUE}tash, "
-  help+="${CYAN}r${BLUE}eset, "
-  help+="reset ${CYAN}h${BLUE}ard,  "
-  help+="stash ${CYAN}j${BLUE}ust patch,  "
-  help+="patch ${CYAN}w${BLUE}ith stash,  "
-  help+="rebase to ${CYAN}m${BLUE}aster${RESET}\n"
+  help+="${C_CYAN}s${C_BLUE}tash, "
+  help+="${C_CYAN}r${C_BLUE}eset, "
+  help+="reset ${C_CYAN}h${C_BLUE}ard,  "
+  help+="stash ${C_CYAN}j${C_BLUE}ust patch,  "
+  help+="patch ${C_CYAN}w${C_BLUE}ith stash,  "
+  help+="rebase to ${C_CYAN}m${C_BLUE}aster${C_RESET}"
 
-  printf "$help"
+  echo -e "$help"
 
-  read -p ":" -n1 key
-  echo
-  case $key in
-    $'\e'|q)    return 0 ;;
-    a)          git add $(git-files) ;;
-    d)          git diff ;;
-    t)          git add $(git-files) -p ;;
-    i)          git diff --cached ;;
-    f)          git stash show -p ;;
-    y)          ghist ;;
+  while true; do
+    prompt="\r${C_CYAN}${C_RESET}"
+    echo -en $prompt ""
+    pressed_key=$(capture-keypress)
+    case $pressed_key in
+      a)           echo add; git add $(git-files) ;;
+      d)           echo diff; git diff ;;
+      t)           echo add patch; git add $(git-files) -p ;;
+      i)           echo added diff; git diff --cached ;;
+      f)           echo stashed diff; git stash show -p ;;
+      y)           echo commit history; ghist ;;
 
-    o)          git show ;;
-    l)          glog ;;
-    b)          git checkout $(git-branches) ;;
-    u)          git pull ;;
-    c)          git commit --verbose ;;
-    p)          gp ;;
+      o)           echo show; git show ;;
+      l)           echo log; glog ;;
+      b)           echo branch; git checkout $(git-branches) ;;
+      u)           echo pull; git pull ;;
+      c)           echo commit; git commit --verbose ;;
+      p)           echo push; gp ;;
 
-    s)          git stash ;;
-    r)          git reset ;;
-    h)          git reset --hard HEAD ;;
-    j)          git stash -p ;;
-    w)          git stash pop ;;
-    m)          git rebase -i master ;;
+      s)           echo stash; git stash ;;
+      r)           echo reset; git reset ;;
+      h)           echo reset hard; git reset --hard HEAD ;;
+      j)           echo stash just patch; git stash -p ;;
+      w)           echo patch with stash; git stash pop ;;
+      m)           echo rebase to master; git rebase -i master ;;
 
-    $';')       read -e -p "$ " cmd; bash -lic "$cmd" ;;
-    *)          ;;
-  esac
+      $';')        echo command; read -e -p "$ " cmd; bash -lic "$cmd" ;;
+
+      $KEY_ESCAPE|\
+      q)           echo quit; return 0 ;;
+      $KEY_SPACE)  echo refresh; break ;;
+      *)           continue ;;
+    esac
+    break
+  done
+
   gg
 }
 
