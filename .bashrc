@@ -277,19 +277,26 @@ gg() {
   branch="$(git rev-parse --abbrev-ref HEAD)"
   commit_hash="$(git rev-parse --short HEAD)"
   dir="$(pwd | sed s,$HOME,~,)"
-  echo -e "\
-${BG_GRAY}${FG_LIGHTGRAY} $time \
-${BG_BLUE}${FG_GRAY}${FG_WHITE} $branch \
-${BG_GREEN}${FG_BLUE}${FG_WHITE} $commit_hash \
-${BG_DARKGRAY}${FG_GREEN}${FG_LIGHTGRAY} $dir \
-${RESET}${FG_DARKGRAY}${RESET}"
+
+  # when in the middle of a rebase, or other multi-step operations
+  if [[ "$branch" == "HEAD" ]]; then
+    branch_bg="$BG_ORANGE"
+    branch_fg="$FG_ORANGE"
+  else
+    branch_bg="$BG_BLUE"
+    branch_fg="$FG_BLUE"
+  fi
+
+  echo -e \
+    "${BG_GRAY}${FG_LIGHTGRAY} $time"\
+    "${branch_bg}${FG_GRAY}${FG_WHITE} $branch"\
+    "${BG_GREEN}${branch_fg}${FG_WHITE} $commit_hash"\
+    "${BG_DARKGRAY}${FG_GREEN}${FG_LIGHTGRAY} $dir"\
+    "${RESET}${FG_DARKGRAY}${RESET}"
 
   echo
   git status -s
   echo
-  if [[ $? != 0 ]]; then
-    return 1
-  fi
 
   help=""
   help+="${CYAN}a${BLUE}dd,   "
