@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Updating system-level dependencies"
+echo Updating system-level dependencies
 sudo apt-get update
 sudo apt-get -y upgrade
 
@@ -109,6 +109,7 @@ fi
 echo installing global npm scripts
 cd bin && npm install && cd ~
 
-echo ensuring some local config files exist
+echo set up local files and folders
 touch ~/.todo
 touch ~/.screenrc.local
+mkdir src
