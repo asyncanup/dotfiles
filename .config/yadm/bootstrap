@@ -60,7 +60,7 @@ install-from-pip() {
 echo installing basic tools
 
 install-by-same-name \
-    git wget curl lynx screen python3 tldr xclip
+    git wget curl lynx screen python3 tldr xclip inotify-tools
 
 install-by-binary-name \
     pip3 python3-pip \

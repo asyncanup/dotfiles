@@ -337,8 +337,8 @@ inoremap <s-left> <esc><c-w>h
 inoremap <s-right> <esc><c-w>l
 
 " when searching locally, reposition found location to center of screen
-nnoremap n nzz
-nnoremap N Nzz
+nnoremap n n
+nnoremap N N
 
 " enter a line above in insert mode
 inoremap <c-o> <esc>O
