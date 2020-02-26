@@ -111,13 +111,16 @@ bind l eval 'layout new splitscreen' 'screen -t dotfiles nvim' 'screen -t git' '
 
 # ---- status line ----
 
-backtick 1 1 1 screen_agenda
-# recurring tasks
-backtick 2 1 1 screen_task
+# current agenda and currently active task
+# (recommended to add to .screenrc.local)
+# backtick 1 1 1 screen_agenda
+# backtick 2 1 1 screen_task
 
 # the following two lines give a two-line status, with the current window highlighted
 hardstatus alwayslastline
 hardstatus string '%{= kG}%2` %= %{= kw}%-w%{+s} %n*%t%?(%u)%? %{-}%+w %= %{W}%1`  %{g}%{B}%M %d %{W}%c%{g}'
+
+source $HOME/.screenrc.local
 
 # HELP: hardstatus format
 # %=     padding
