@@ -1,48 +1,115 @@
 #!/bin/bash
 
+set -e
+
+echo Updating system-level dependencies
 sudo apt-get update
 sudo apt-get -y upgrade
 
 cd ~
 
-alias apt='sudo apt-get --assume-yes install'
+# helper functions
+install-by-binary-name() {
+    binary_name_and_package_list=( "$@" )
+    binary_name=""
+    for i in "${!binary_name_and_package_list[@]}"; do
+        if (( $i % 2 )); then # odd -> name on apt
+            if ! command -v $binary_name >/dev/null 2>&1; then
+                package="${binary_name_and_package_list[$i]}"
+                sudo apt install -y $package
+            fi
+        else # even -> binary_name
+            binary_name="${binary_name_and_package_list[$i]}"
+        fi
+    done
+}
 
-# basic useful tools
-apt git wget curl lynx python3 python3-pip neovim python3-neovim exuberant-ctags xclip
+install-by-same-name() {
+    for name in $@; do
+        if ! command -v $name >/dev/null 2>&1; then
+            sudo apt install -y $name
+        fi
+    done
+}
 
-# more useful but not so basic tools
-apt inotify-tools fzf tldr
+install-from-url() {
+    name_and_url_list=( "$@" )
+    name=""
+    for i in "${!name_and_url_list[@]}"; do
+        if (( $i % 2 )); then # odd -> url
+            if ! command -v $name >/dev/null 2>&1; then
+                url="${name_and_url_list[$i]}"
+                wget "$url"
+                sudo apt install -y "./$(basename $url)"
+                rm "$(basename $url)"
+            fi
+        else # even, name
+            name="${name_and_url_list[$i]}"
+        fi
+    done
+}
 
-# get and install bat, ripgrep, fd
-wget https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb
-wget https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
-wget https://github.com/sharkdp/fd/releases/download/v7.4.0/fd-musl_7.4.0_amd64.deb
+install-from-pip() {
+    for lib in $@; do
+        if ! command -v $lib >/dev/null 2>&1; then
+            pip3 install $lib
+        fi
+    done
+}
 
-apt ./bat-musl_0.12.1_amd64.deb ./ripgrep_11.0.2_amd64.deb ./fd-musl_7.4.0_amd64.deb
-rm bat-musl_0.12.1_amd64.deb ./ripgrep_11.0.2_amd64.deb ./fd-musl_7.4.0_amd64.deb
+echo installing basic tools
 
-# powerline shell
-pip3 install powerline-shell
+install-by-same-name \
+    git wget curl lynx screen python3 tldr xclip inotify-tools
+
+install-by-binary-name \
+    pip3 python3-pip \
+    nvim "neovim python3-neovim" \
+    ctags exuberant-ctags
+
+install-from-url \
+    bat https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb \
+    rg https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb \
+    fd https://github.com/sharkdp/fd/releases/download/v7.4.0/fd-musl_7.4.0_amd64.deb \
+
+install-from-pip \
+    powerline-shell
+
+echo installing nvim plugins
 mkdir -p .local/share/nvim/session .vim/backup
 nvim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
 
-# nvm
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+echo installing pyenv
+if ! command -v pyenv >/dev/null 2>&1; then
+    sudo apt install -y \
+        make build-essential libssl-dev zlib1g-dev libbz2-dev \
+        libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev \
+        xz-utils tk-dev libffi-dev liblzma-dev python-openssl
+    curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+fi
 
-# pyenv
-apt make build-essential libssl-dev zlib1g-dev libbz2-dev \
-    libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev \
-    xz-utils tk-dev libffi-dev liblzma-dev python-openssl
-curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+echo installing go
+if ! command -v go >/dev/null 2>&1; then
+    wget https://dl.google.com/go/go1.13.8.linux-amd64.tar.gz
+    sudo tar -xvf go1.13.8.linux-amd64.tar.gz
+    rm go1.13.8.linux-amd64.tar.gz
+    sudo mv go /usr/local/
+fi
 
-# go
-wget https://dl.google.com/go/go1.13.8.linux-amd64.tar.gz
-sudo tar -xvf go1.13.8.linux-amd64.tar.gz
-rm go1.13.8.linux-amd64.tar.gz
-sudo mv go /usr/local/
+echo installing nvm
+[ -s "$NVM_DIR/nvm.sh" ] || \
+    wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+source "$NVM_DIR/nvm.sh"
 
-# install npm globally installed tools
+echo installing node
+if ! command -v node >/dev/null 2>&1; then
+    nvm install --latest-npm stable
+fi
+
+echo installing global npm scripts
 cd bin && npm install && cd ~
 
-# todo file
+echo set up local files and folders
 touch ~/.todo
+touch ~/.screenrc.local
+mkdir src

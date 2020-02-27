@@ -44,6 +44,12 @@ set nojoinspaces
 " default text width
 set textwidth=80
 
+" expand tab
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+
 " backups
 set backup
 set backupdir=~/.vim/backup/
@@ -121,7 +127,7 @@ nnoremap <c-f> :Lines<cr>
 nnoremap <a-f> :BLines<cr>
 
 " search in project
-function RipgrepFzf(query, fullscreen)
+function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
   let reload_command = printf(command_fmt, '{q}')
@@ -497,7 +503,7 @@ nnoremap ^ <c-^>
 nnoremap <leader>cs :s/\v([\[\(])/\1\r    /<cr>:s/\v([\]\)])/\r\1/<cr>k:s/\v\,\ ?/,\r    /g<cr>j0V%j
 
 " mark just sections in the file
-function ResetToSectionMarks()
+function! ResetToSectionMarks()
   normal m " comment to remove trailing space
   vim /\v^...\-\-\-\ / %
   cdo normal m.
@@ -517,10 +523,10 @@ if has ("nvim")
   endif
 
   " open a terminal in split
-  function TermHorizontalSplit()
+  function! TermHorizontalSplit()
     exec winheight(0)/2."split" | terminal
   endfunction
-  function TermVerticalSplit()
+  function! TermVerticalSplit()
     exec winwidth(0)/2."vsplit" | terminal
   endfunction
   nnoremap `s :call TermHorizontalSplit()<cr>
