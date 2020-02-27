@@ -137,11 +137,11 @@ FG_WHITE='\e[38;5;15m'
 
 # ---- keys ----
 capture-keypress() {
-  read -s -N1
+  read -s -n1
   K1="$REPLY"
-  read -s -N2 -t 0.001
+  read -s -n2 -t 0.001
   K2="$REPLY"
-  read -s -N1 -t 0.001
+  read -s -n1 -t 0.001
   K3="$REPLY"
   echo "$K1$K2$K3"
 }
@@ -160,6 +160,12 @@ KEY_TAB=$'\x09'
 KEY_ENTER=$'\x0a'
 KEY_ESCAPE=$'\x1b'
 KEY_SPACE=$'\x20'
+
+# ---- common regular expressions ----
+
+RE_EXT='[a-z][a-z][a-z]?[a-z]?'
+RE_NAME='[^\/]+'
+RE_FILENAME="$RE_NAME\.$RE_EXT"
 
 # ---- git shortcuts ----
 is-in-git-repo() {
@@ -267,6 +273,7 @@ alias gcm='g cm'
 alias gcam='g cam'
 alias gcc='g cc'
 alias gca='g ca'
+alias gcp='g cp'
 alias gb='g b'
 alias gbd='g bd'
 alias gbD='g bD'
@@ -353,9 +360,21 @@ gg() {
   echo -e "$help"
 
   while true; do
-    prompt="\r${C_CYAN}${C_RESET}"
-    echo -en $prompt ""
-    pressed_key=$(capture-keypress)
+    echo -en "\r$(tput el)${C_CYAN}${C_RESET} "
+
+    read -s -n1
+    K1="$REPLY"
+    read -s -n1 -t 0.3
+    K2="$REPLY"
+    read -s -n2 -t 0.001
+    K3="$REPLY"
+    pressed_key="$K1$K2$K3"
+    if [[ "$pressed_key" =~ [a-z][a-z] ]]; then
+      echo -n 'use semicolon (;) for typing long commands'
+      read -s -e -t 2
+      continue
+    fi
+
     case $pressed_key in
       a)           echo add; git add $(git-files) ;;
       d)           echo diff; git diff ;;
@@ -378,7 +397,7 @@ gg() {
       w)           echo patch with stash; git stash pop ;;
       m)           echo rebase to master; git rebase -i master ;;
 
-      $';')        echo command; read -e -p "$ " cmd; bash -lic "$cmd" ;;
+      $';')        echo shell; read -e -p "$ " cmd; bash -lic "$cmd" ;;
 
       $KEY_ESCAPE|\
       q)           echo quit; return 0 ;;
@@ -409,6 +428,8 @@ shopt -s nocaseglob
 alias less='less -K'
 alias rmf='rm -rf'
 alias cl='clear'
+alias ge='grep -E'
+alias gv='grep -v'
 
 alias b='bazel'
 complete -F _complete_alias b
