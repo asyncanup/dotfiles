@@ -514,7 +514,7 @@ n() {
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
-export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen;t:_tree $nnn;c:_/home/abishnoi/bin/copyfilepath $nnn'
+export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen;t:_tree $nnn;c:_~/bin/copyfilepath $nnn'
 export NNN_CONTEXT_COLORS='4123'
 export NNN_TRASH=1
 
