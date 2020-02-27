@@ -11,4 +11,4 @@ fi
 # Key bindings
 # ------------
 [[ -f ~/.fzf/shell/key-bindings.bash ]] && \
-  source "~/.fzf/shell/key-bindings.bash"
+  source "$HOME/.fzf/shell/key-bindings.bash"
