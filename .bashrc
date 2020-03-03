@@ -73,12 +73,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # powerline shell
-update-ps1() {
+_update_ps1() {
   PS1=$(powerline-shell $?)
 }
 
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ update-ps1 ]]; then
-  PROMPT_COMMAND="update-ps1; $PROMPT_COMMAND"
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+  PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
 
 # pyenv
@@ -167,13 +167,20 @@ RE_EXT='[a-z][a-z][a-z]?[a-z]?'
 RE_NAME='[^\/]+'
 RE_FILENAME="$RE_NAME\.$RE_EXT"
 
+cecho() {
+  color=\$${1:-RESET}
+  echo -ne "$(eval echo ${color})"
+  cat
+  echo -ne "${RESET}"
+}
+
 # ---- git shortcuts ----
-is-in-git-repo() {
+is_in_git_repo() {
   git rev-parse HEAD > /dev/null 2>&1
 }
 
 glog() {
-  is-in-git-repo || return
+  is_in_git_repo || return
   git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" $1 | \
    fzf --height 75% --ansi --no-sort --reverse --tiebreak=index --preview \
    'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}"); [ $# -eq 0 ] || git show --color=always $1 ; }; f {}' \
@@ -185,7 +192,7 @@ FZF-EOF" --preview-window=right:60%
 }
 
 git-files() {
-  is-in-git-repo || return
+  is_in_git_repo || return
   git -c color.status=always status --short |
   fzf --height 90% -m --ansi --nth 2..,.. \
     --preview '(git diff --color=always -- {-1} | sed 1,4d; bat --color always {-1})' \
@@ -195,7 +202,7 @@ git-files() {
 }
 
 git-branches() {
-  is-in-git-repo || return
+  is_in_git_repo || return
   git branch -a --color=always | grep -v '/HEAD\s' | sort |
   fzf --height 50% --ansi --multi --tac \
     --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1) | head -'$LINES \
@@ -206,7 +213,7 @@ git-branches() {
 }
 
 git-tags() {
-  is-in-git-repo || return
+  is_in_git_repo || return
   git tag --sort -version:refname |
   fzf --height 50% --multi \
     --preview 'git show --color=always {} | head -'$LINES \
@@ -215,7 +222,7 @@ git-tags() {
 }
 
 git-commit-hashes() {
-  is-in-git-repo || return
+  is_in_git_repo || return
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
   fzf --height 50% --ansi --no-sort --reverse --multi \
     --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always | head -'$LINES \
@@ -225,7 +232,7 @@ git-commit-hashes() {
 }
 
 git-remotes() {
-  is-in-git-repo || return
+  is_in_git_repo || return
   git remote -v | awk '{print $1 "\t" $2}' | uniq |
   fzf --height 50% --tac \
     --preview 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" {1} | head -200' \
@@ -299,54 +306,35 @@ gp() {
   g p $@
 }
 
-# primary git interface
 gg() {
-  if ! git status >/dev/null 2>&1; then
-    echo "Not a git repository"
+  echo
+  git status -s
+  if [[ $? != 0 ]]; then
     return 1
   fi
 
-  time="$(date +%H:%M:%S)"
-  branch="$(git rev-parse --abbrev-ref HEAD)"
-  commit_hash="$(git rev-parse --short HEAD)"
-  dir="$(pwd | sed s,$HOME,~,)"
-
-  # when in the middle of a rebase, or other multi-step operations
-  if [[ "$branch" == "HEAD" ]]; then
-    branch_bg="$BG_ORANGE"
-    branch_fg="$FG_ORANGE"
-  else
-    branch_bg="$BG_BLUE"
-    branch_fg="$FG_BLUE"
-  fi
-
-  echo -e \
-    "\n${BG_GRAY}${FG_LIGHTGRAY} $time"\
-    "${branch_bg}${FG_GRAY}${FG_WHITE} $branch"\
-    "${BG_GREEN}${branch_fg}${FG_WHITE} $commit_hash"\
-    "${BG_DARKGRAY}${FG_GREEN}${FG_LIGHTGRAY} $dir"\
-    "${C_RESET}${FG_DARKGRAY}${C_RESET}"
-
-  echo
-  git status -s
-  echo
+  branch=""
+  branch+="                           "
+  branch+="${ORANGE}$(git rev-parse --abbrev-ref HEAD) "
+  branch+="${RED}$(git rev-parse --short HEAD)${RESET}"
+  echo -e "$branch"
 
   help=""
-  help+="${C_CYAN}a${C_BLUE}dd,   "
-  help+="${C_CYAN}d${C_BLUE}iff,  "
-  help+="add pa${C_CYAN}t${C_BLUE}ch,   "
-  help+="added d${C_CYAN}i${C_BLUE}ff,        "
-  help+="stashed di${C_CYAN}f${C_BLUE}f,      "
-  help+="commit histor${C_CYAN}y${C_BLUE},    "
+  help+="${CYAN}a${BLUE}dd,   "
+  help+="${CYAN}d${BLUE}iff,  "
+  help+="add pa${CYAN}t${BLUE}ch,   "
+  help+="added d${CYAN}i${BLUE}ff,        "
+  help+="stashed di${CYAN}f${BLUE}f,      "
+  help+="commit histor${CYAN}y${BLUE},    "
 
   help+="\n"
 
-  help+="sh${C_CYAN}o${C_BLUE}w,  "
-  help+="${C_CYAN}l${C_BLUE}og,   "
-  help+="${C_CYAN}b${C_BLUE}ranch,      "
-  help+="p${C_CYAN}u${C_BLUE}ll,              "
-  help+="${C_CYAN}c${C_BLUE}ommit,            "
-  help+="${C_CYAN}p${C_BLUE}ush,              "
+  help+="sh${CYAN}o${BLUE}w,  "
+  help+="${CYAN}l${BLUE}og,   "
+  help+="${CYAN}b${BLUE}ranch,      "
+  help+="p${CYAN}u${BLUE}ll,              "
+  help+="${CYAN}c${BLUE}ommit,            "
+  help+="${CYAN}p${BLUE}ush,              "
 
   help+="\n"
 
@@ -407,6 +395,34 @@ gg() {
     break
   done
 
+  read -p ":" -n1 key
+  echo
+  case $key in
+    $'\e'|q)    return 0 ;;
+    a)          git add $(git-files) ;;
+    d)          git diff ;;
+    t)          git add $(git-files) -p ;;
+    i)          git diff --cached ;;
+    f)          git stash show -p ;;
+    y)          ghist ;;
+
+    o)          git show ;;
+    l)          glog ;;
+    b)          git checkout $(git-branches) ;;
+    u)          git pull ;;
+    c)          git commit --verbose ;;
+    p)          gp ;;
+
+    s)          git stash ;;
+    r)          git reset ;;
+    h)          git reset --hard HEAD ;;
+    j)          git stash -p ;;
+    w)          git stash pop ;;
+    m)          git rebase -i master ;;
+
+    $';')       read -e -p "$ " -i "git " cmd; bash -lic "$cmd" ;;
+    *)          ;;
+  esac
   gg
 }
 
@@ -538,7 +554,7 @@ yadm-git-files() {
     --preview-window=right:70% |
   cut -c4- | sed 's/.* -> //'
 }
-alias ycf='yadm add $(yadm-git-files); yadm commit --verbose'
+alias ycf='yadm add $(yadm-git-files); yadm commit --verbose && yadm push'
 
 alias ya='yadm add'
 alias yd='yadm diff'
@@ -584,13 +600,6 @@ alias fdih='fd --hidden --no-ignore'
 alias fdid='fd --no-ignore --type d'
 
 alias diff='git diff --no-index'
-
-# watch files
-watchfile() {
-  while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    $1 2>&1 | bat -l ${2:-python}
-  done
-}
 
 # ---- load local customization file ----
 [ -s "$HOME/.bashrc.local" ] && \. "$HOME/.bashrc.local"
