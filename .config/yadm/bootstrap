@@ -1,8 +1,12 @@
-#!/bin/bash
+#!/bin/bash -i
 
 set -e
 
-echo Updating system-level dependencies
+now() {
+    echo -e "\n$CYAN $1 $RESET"
+}
+
+now "updating system-level dependencies"
 sudo apt-get update
 sudo apt-get -y upgrade
 
@@ -16,6 +20,7 @@ install-by-binary-name() {
         if (( $i % 2 )); then # odd -> name on apt
             if ! command -v $binary_name >/dev/null 2>&1; then
                 package="${binary_name_and_package_list[$i]}"
+                now "installing $package"
                 sudo apt install -y $package
             fi
         else # even -> binary_name
@@ -27,6 +32,7 @@ install-by-binary-name() {
 install-by-same-name() {
     for name in $@; do
         if ! command -v $name >/dev/null 2>&1; then
+            now "installing $name"
             sudo apt install -y $name
         fi
     done
@@ -38,6 +44,7 @@ install-from-url() {
     for i in "${!name_and_url_list[@]}"; do
         if (( $i % 2 )); then # odd -> url
             if ! command -v $name >/dev/null 2>&1; then
+                now "installing $name"
                 url="${name_and_url_list[$i]}"
                 wget "$url"
                 sudo apt install -y "./$(basename $url)"
@@ -52,20 +59,19 @@ install-from-url() {
 install-from-pip() {
     for lib in $@; do
         if ! command -v $lib >/dev/null 2>&1; then
+            now "pip installing $lib"
             pip3 install $lib
         fi
     done
 }
 
-echo installing basic tools
-
 install-by-same-name \
-    git wget curl lynx screen python3 tldr xclip inotify-tools
+    git wget curl lynx screen python3 tldr xclip
 
 install-by-binary-name \
     pip3 python3-pip \
-    nvim "neovim python3-neovim" \
-    ctags exuberant-ctags
+    ctags exuberant-ctags \
+    inotifywait inotify-tools
 
 install-from-url \
     bat https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb \
@@ -75,12 +81,8 @@ install-from-url \
 install-from-pip \
     powerline-shell
 
-echo installing nvim plugins
-mkdir -p .local/share/nvim/session .vim/backup
-nvim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
-
-echo installing pyenv
 if ! command -v pyenv >/dev/null 2>&1; then
+    now "installing pyenv"
     sudo apt install -y \
         make build-essential libssl-dev zlib1g-dev libbz2-dev \
         libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev \
@@ -88,28 +90,49 @@ if ! command -v pyenv >/dev/null 2>&1; then
     curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 fi
 
-echo installing go
+if ! command -v nvim >/dev/null 2>&1; then
+    now "installing nvim"
+    curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    chmod u+x nvim.appimage
+    mv ./nvim.appimage ~/bin/nvim
+
+    now "installing nvim python support"
+    pyenv virtualenv neovim2
+
+    now "installing nvim plugins"
+    mkdir -p .local/share/nvim/session .vim/backup
+    nvim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
+fi
+
 if ! command -v go >/dev/null 2>&1; then
+    now "installing go"
     wget https://dl.google.com/go/go1.13.8.linux-amd64.tar.gz
     sudo tar -xvf go1.13.8.linux-amd64.tar.gz
     rm go1.13.8.linux-amd64.tar.gz
     sudo mv go /usr/local/
 fi
 
-echo installing nvm
-[ -s "$NVM_DIR/nvm.sh" ] || \
+if ! [ -s "$NVM_DIR/nvm.sh" ]; then
+    now "installing nvm"
     wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+fi
 source "$NVM_DIR/nvm.sh"
 
-echo installing node
 if ! command -v node >/dev/null 2>&1; then
+    now "installing node"
     nvm install --latest-npm stable
 fi
 
-echo installing global npm scripts
+sudo apt -y autoremove
+
+now "installing global npm scripts"
 cd bin && npm install && cd ~
 
-echo set up local files and folders
-touch ~/.todo
-touch ~/.screenrc.local
-mkdir src
+if ! [ -e ~/.todo ] || ! [ -d ~/src ]; then
+    now "set up local files and folders"
+    touch ~/.todo
+    touch ~/.screenrc.local
+    mkdir -p ~/src
+fi
+
+now "done"
