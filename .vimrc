@@ -222,6 +222,7 @@ nnoremap <leader>cp :CycleColorPrev<cr>
 nnoremap <a-s-t> :TagbarToggle<cr>
 
 " nnn file manager
+nnoremap <leader>o :NnnPicker '%:p:h'<cr>
 nnoremap <leader>nn :NnnPicker '%:p:h'<cr>
 nnoremap <leader>nc :NnnPicker<cr>
 let g:nnn#layout = { 'right': '~45%' }
@@ -512,6 +513,9 @@ nnoremap <leader>mm :call ResetToSectionMarks()<cr>
 
 " load and open text from a relative github link into a buffer
 nnoremap <leader>gh yiW:e <c-r>=substitute(substitute(@", "github", "raw.githubusercontent", ""), "blob/", "", "")<cr><cr>
+
+" remove trailing whitespace
+nnoremap <leader>W :%s/\v\ +$//
 
 " ---- terminal commands ----
 if has ("nvim")

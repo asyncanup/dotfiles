@@ -259,6 +259,7 @@ alias gd='g d'
 alias gdc='g dc'
 alias gdi='g di'
 alias gsh='g sh'
+alias gcf='g cf'
 alias gco='g co'
 alias gcob='g cob'
 alias ga='g a'
@@ -364,7 +365,7 @@ gg() {
 
     read -s -n1
     K1="$REPLY"
-    read -s -n1 -t 0.3
+    read -s -n1 -t 0.2
     K2="$REPLY"
     read -s -n2 -t 0.001
     K3="$REPLY"
@@ -443,6 +444,7 @@ alias bce='bazel clean --expunge'
 alias bqb='bazel query --output=build'
 alias bqr='bazel query --output=run'
 alias bf='bazel fetch'
+alias bi='bazel info'
 
 alias j='jira'
 complete -F _complete_alias j

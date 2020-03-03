@@ -9,6 +9,7 @@
   dc = diff --cached
   di = diff --no-index
   sh = show
+  cf = diff --name-only --diff-filter=U
   co = checkout
   cob = checkout -b
   a = add
