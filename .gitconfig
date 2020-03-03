@@ -23,6 +23,7 @@
   cam = commit -a -m
   cc = commit --verbose --amend
   ca = commit --verbose -a
+  cp = cherry-pick
   p = push
   b = branch
   bd = branch --delete
