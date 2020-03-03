@@ -340,7 +340,7 @@ gg() {
   echo
 
   help=""
-  help+="${C_CYAN}a${C_BLUE}dd,   "
+  help+="  ${C_CYAN}a${C_BLUE}dd,   "
   help+="${C_CYAN}d${C_BLUE}iff,  "
   help+="add pa${C_CYAN}t${C_BLUE}ch,   "
   help+="added d${C_CYAN}i${C_BLUE}ff,        "
@@ -349,7 +349,7 @@ gg() {
 
   help+="\n"
 
-  help+="sh${C_CYAN}o${C_BLUE}w,  "
+  help+="  sh${C_CYAN}o${C_BLUE}w,  "
   help+="${C_CYAN}l${C_BLUE}og,   "
   help+="${C_CYAN}b${C_BLUE}ranch,      "
   help+="p${C_CYAN}u${C_BLUE}ll,              "
@@ -358,7 +358,7 @@ gg() {
 
   help+="\n"
 
-  help+="${C_CYAN}s${C_BLUE}tash, "
+  help+="  ${C_CYAN}s${C_BLUE}tash, "
   help+="${C_CYAN}r${C_BLUE}eset, "
   help+="reset ${C_CYAN}h${C_BLUE}ard,  "
   help+="stash ${C_CYAN}j${C_BLUE}ust patch,  "

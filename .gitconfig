@@ -52,3 +52,5 @@
   excludesfile = ~/.gitignore
 [push]
   default = simple
+[merge]
+  renamelimit = 3000
