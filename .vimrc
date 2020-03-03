@@ -441,8 +441,8 @@ nnoremap <a-p>i :w<cr>:source ~/.vimrc<cr>:PlugInstall<cr>
 nnoremap <a-p>c :w<cr>:source ~/.vimrc<cr>:PlugClean<cr>
 
 " marks
-nnoremap J ]`zz
-nnoremap K [`zz
+nnoremap J ]`
+nnoremap K [`
 
 " use ag if available to search for text
 if executable('ag')
