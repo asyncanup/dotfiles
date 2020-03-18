@@ -346,33 +346,19 @@ gg() {
   git status -s
   echo
 
-  help=""
-  help+="  ${C_CYAN}a${C_BLUE}dd,   "
-  help+="${C_CYAN}d${C_BLUE}iff,  "
-  help+="add pa${C_CYAN}t${C_BLUE}ch,   "
-  help+="added d${C_CYAN}i${C_BLUE}ff,        "
-  help+="stashed di${C_CYAN}f${C_BLUE}f,      "
-  help+="commit histor${C_CYAN}y${C_BLUE},    "
+  printf "  ${H}b${B}ranch"         # branch
+  printf "   add/${H}c${B}ommit "   # add/commit
+  printf "   ${H}d${B}iff "         # diff
+  printf "   diff ${H}m${B}aster  " # diff master
+  printf "   sta${H}g${B}ed"        # staged
+  printf "   rebase/${H}p${B}ush\n" # rebase/push
 
-  help+="\n"
-
-  help+="  sh${C_CYAN}o${C_BLUE}w,  "
-  help+="${C_CYAN}l${C_BLUE}og,   "
-  help+="${C_CYAN}b${C_BLUE}ranch,      "
-  help+="p${C_CYAN}u${C_BLUE}ll,              "
-  help+="${C_CYAN}c${C_BLUE}ommit,            "
-  help+="${C_CYAN}p${C_BLUE}ush,              "
-
-  help+="\n"
-
-  help+="  ${C_CYAN}s${C_BLUE}tash, "
-  help+="${C_CYAN}r${C_BLUE}eset, "
-  help+="reset ${C_CYAN}h${C_BLUE}ard,  "
-  help+="stash ${C_CYAN}j${C_BLUE}ust patch,  "
-  help+="patch ${C_CYAN}w${C_BLUE}ith stash,  "
-  help+="rebase to ${C_CYAN}m${C_BLUE}aster${C_RESET}"
-
-  echo -e "$help"
+  printf "  ${H}l${B}og   "         # log
+  printf "   comm${H}i${B}t logs"   # commit logs
+  printf "   ${H}s${B}tash"         # stash
+  printf "   ${H}u${B}pdate master" # update master
+  printf "   ${H}r${B}eset "        # reset
+  printf "   reset ${H}h${B}ard\n"  # reset hard
 
   while true; do
     echo -en "\r$(tput el)${C_CYAN}${C_RESET} "
@@ -391,26 +377,19 @@ gg() {
     fi
 
     case $pressed_key in
-      a)           echo add; git add $(git-files) ;;
-      d)           echo diff; git diff ;;
-      t)           echo add patch; git add $(git-files) -p ;;
-      i)           echo added diff; git diff --cached ;;
-      f)           echo stashed diff; git stash show -p ;;
-      y)           echo commit history; ghist ;;
-
-      o)           echo show; git show ;;
-      l)           echo log; glog ;;
       b)           echo branch; git checkout $(git-branches) ;;
-      u)           echo pull; git pull ;;
-      c)           echo commit; git commit --verbose ;;
-      p)           echo push; gp ;;
+      c)           echo add/commit; git add $(git-files); git commit --verbose ;;
+      d)           echo diff; git diff ;;
+      m)           echo diff master; git diff master..HEAD ;;
+      g)           echo staged; git diff --cached ;;
+      p)           echo rebase/push; git rebase -i master; gp ;;
 
+      l)           echo log; glog ;;
+      i)           echo commit logs; ghist ;;
       s)           echo stash; git stash ;;
+      u)           echo update master; git checkout master; git pull; git checkout - ;;
       r)           echo reset; git reset ;;
       h)           echo reset hard; git reset --hard HEAD ;;
-      j)           echo stash just patch; git stash -p ;;
-      w)           echo patch with stash; git stash pop ;;
-      m)           echo rebase to master; git rebase -i master ;;
 
       $';')        echo shell; read -e -p "$ " cmd; bash -lic "$cmd" ;;
 
