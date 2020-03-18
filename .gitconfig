@@ -4,10 +4,13 @@
 
 [alias]
   s = status -s
+  f = fetch
   cl = clone
   d = diff
   dc = diff --cached
   di = diff --no-index
+  dm = diff master..HEAD
+  dms = diff master..HEAD --stat
   sh = show
   cf = diff --name-only --diff-filter=U
   co = checkout
@@ -17,7 +20,7 @@
   st = stash
   stl = stash list
   stp = stash pop
-  sts = stash show
+  sts = stash show -p
   stc = stash clear
   c = commit --verbose
   cm = commit -m
@@ -43,6 +46,7 @@
   type = cat-file -t
   m = merge --no-ff
   mf = merge --ff
+  rb = rebase
   ri = rebase -i
   rim = rebase -i master
   ra = rebase --abort

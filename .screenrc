@@ -11,6 +11,7 @@ escape ^Aa
 
 # easier other (alternate window) switching
 bindkey ^^ other
+bindkey ^N other
 
 # easier copy mode
 bindkey ^_ eval 'copy' 'stuff ?'
@@ -59,6 +60,7 @@ bindkey ^L next
 # switch to previous and next layouts
 bindkey ^[[1;3C eval 'layout prev' 'layout show' # Alt + left
 bindkey ^[[1;3D eval 'layout next' 'layout show' # Alt + right
+bindkey ^B eval 'layout next' 'layout show'
 
 # horizontal panel split
 # and get rid of silly xoff freezing

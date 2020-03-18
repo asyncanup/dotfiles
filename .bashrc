@@ -242,17 +242,20 @@ git-remotes() {
 }
 
 alias gcd='cd $(git rev-parse --show-toplevel)'
-gcf() {
+
+function gcf() {
   files="$(git-files)"
   if [[ $files != '' ]]; then
     git add $files
     git commit --verbose
   fi
 }
+
 gdbr() {
   git diff $1..HEAD
 }
-alias gdm='git diff $(git merge-base master HEAD)..HEAD'
+
+alias gdmm='git diff $(git merge-base master HEAD)..HEAD'
 alias gcof='git checkout $(git branch | fzf)'
 alias gaf='git add $(git-files)'
 alias ghist='git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"'
@@ -261,10 +264,13 @@ alias g='git'
 complete -F _complete_alias g
 
 alias gs='g s'
+alias gf='g f'
 alias gcl='g cl'
 alias gd='g d'
 alias gdc='g dc'
 alias gdi='g di'
+alias gdm='g dm'
+alias gdms='g dms'
 alias gsh='g sh'
 alias gcf='g cf'
 alias gco='g co'
@@ -299,6 +305,7 @@ alias gpom='g pom'
 alias gtype='g type'
 alias gm='g m'
 alias gmf='g mf'
+alias grb='g rb'
 alias gri='g ri'
 alias grim='g rim'
 alias gra='g ra'
@@ -441,10 +448,15 @@ alias gv='grep -v'
 
 alias b='bazel'
 complete -F _complete_alias b
+
+function bbc() {
+  bazel build $@ 2>&1 | bat -l bash --style grid --paging never
+}
+
 alias bb='bazel build'
 alias bbv='bazel build --verbose_failures --sandbox_debug'
 alias br='bazel run'
-alias brv='bazel run'
+alias brv='bazel run --verbose_failures --sandbox_debug'
 alias bq='bazel query'
 alias bc='bazel clean'
 alias bce='bazel clean --expunge'
@@ -525,8 +537,9 @@ n() {
 }
 export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen;t:_tree $nnn;c:_~/bin/copyfilepath $nnn'
 export NNN_CONTEXT_COLORS='4123'
-export NNN_TRASH=1
+export NNN_OPENER=bat
 
+alias ni='npm init -y'
 alias nb='npm run build'
 alias ns='npm start'
 alias nr='npm run'
@@ -547,7 +560,7 @@ yadm-git-files() {
     --preview-window=right:70% |
   cut -c4- | sed 's/.* -> //'
 }
-alias ycf='yadm add $(yadm-git-files); yadm commit --verbose && yadm push'
+alias ycf='yadm add $(yadm-git-files); yadm commit --verbose; yadm push'
 
 alias ya='yadm add'
 alias yd='yadm diff'
@@ -561,6 +574,7 @@ alias ypl='yadm pull'
 
 # searching and opening web links
 s() {
+  # must use $*, not $@
   lynx https://duckduckgo.com/?q="$*"
 }
 alias l="lynx"
@@ -569,9 +583,11 @@ alias l="lynx"
 export LYNX_CFG=~/.config/lynx/lynx.cfg
 export LYNX_LSS=~/.config/lynx/lynx.lss
 
-# replacing rm with trash-cli
+# bat style
+export BAT_STYLE=grid,snip
+
+# send to trash. alternative to `rm`.
 alias trash='~/.pyenv/versions/3.7.0/bin/trash-put'
-alias rm='\rm'
 
 # select directors with fzf
 list-dirs() {
@@ -595,9 +611,14 @@ alias fdid='fd --no-ignore --type d'
 alias diff='git diff --no-index'
 
 # watch files
-watchfile() {
+watch-and-run-file() {
   while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    $1 2>&1 | bat -l ${2:-python}
+    $1 2>&1 | bat -l ${2:-python} --style grid
+  done
+}
+watch-and-run-command() {
+  while inotifywait -e modify -e close_write $1 2>/dev/null; do
+    $2 2>&1 | bat -l ${3:-python} --style grid
   done
 }
 

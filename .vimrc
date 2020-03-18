@@ -128,7 +128,7 @@ nnoremap <a-f> :BLines<cr>
 
 " search in project
 function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -g "!yarn.lock" -g "!package-lock.json" %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
   let reload_command = printf(command_fmt, '{q}')
   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
@@ -167,8 +167,8 @@ nnoremap <leader>gc :Gcommit -v<cr>
 set updatetime=100
 
 " git hunk jumping
-nmap <a-l> <plug>(signify-next-hunk)zz
-nmap <a-h> <plug>(signify-prev-hunk)zz
+nmap <a-l> <plug>(signify-next-hunk)
+nmap <a-h> <plug>(signify-prev-hunk)
 nnoremap <a-;> :SignifyHunkDiff<cr>
 nnoremap <a-d> :SignifyDiff<cr>
 nnoremap <a-u> :SignifyHunkUndo<cr>
@@ -230,8 +230,8 @@ let g:nnn#layout = { 'right': '~45%' }
 " disable vim features on large files
 let g:LargeFile = 10
 
-" " enhanced jumps
-" let g:EnhancedJumps_no_mappings = 1
+" enhanced jumps
+let g:EnhancedJumps_no_mappings = 1
 
 " ---- load plugins ----
 
@@ -269,7 +269,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
 Plug 'mcchrish/nnn.vim'
-Plug 'inkarkat/vim-ingo-library' | Plug 'inkarkat/vim-EnhancedJumps'
 Plug 'vim-scripts/LargeFile'
 " ---- place to add new plugins ----
 
@@ -294,6 +293,10 @@ call plug#end()
 
 " ---- settings that require plugins loaded ----
 
+" go to previous and next cursor locations in same buffer
+map g- <plug>EnhancedJumpsLocalOlder
+map g_ <plug>EnhancedJumpsLocalNewer
+
 " file finder
 command! -bang -nargs=? -complete=dir GFiles
     \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
@@ -303,10 +306,6 @@ nnoremap <a-t> :call fzf#run({'source': 'fd . <c-r>=expand("%:h")<cr>', 'sink': 
 nnoremap <c-o> :History<cr>
 nnoremap <c-r> :History:<cr>
 nnoremap <tab> :Buffers<cr>
-
-" go to previous and next cursor locations in same buffer
-map g- <plug>EnhancedJumpsLocalOlder
-map g_ <plug>EnhancedJumpsLocalNewer
 
 " color scheme
 colorscheme PaperColor
@@ -354,12 +353,12 @@ inoremap <a-b> <esc>lBi
 inoremap <a-f> <esc>lWi
 
 " go to previous and next cursor locations across buffers
-nnoremap - <c-o>zz
-nnoremap _ <c-i>zz
+nnoremap - <c-o>
+nnoremap _ <c-i>
 
 " go to previous and next edit locations in same buffer
-nnoremap <a--> g;zz
-nnoremap <a-_> g,zz
+nnoremap <a--> g;
+nnoremap <a-_> g,
 
 " use semicolon for command prompt (no shift key)
 nnoremap ; :
@@ -445,10 +444,10 @@ nnoremap <a-p>c :w<cr>:source ~/.vimrc<cr>:PlugClean<cr>
 nnoremap J ]`
 nnoremap K [`
 
-" use ag if available to search for text
+" use rg if available to search for text
 if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup
+  " Use rg via grep
+  set grepprg=rg\ --vimgrep
 endif
 
 " change current directory to current file's parent
@@ -477,8 +476,6 @@ let c = 1
 while c <= 20
   execute "nnoremap " . c . "<c-k> :m .-" . (c+1) . "<cr>"
   execute "nnoremap " . c . "<c-j> :m .+" . c . "<cr>"
-  execute "inoremap " . c . "<c-j> <esc>:m .+" . c . "<cr>gi"
-  execute "inoremap " . c . "<c-k> <esc>:m .-" . (c+1) . "<cr>gi"
   execute "vnoremap " . c . "<c-j> :m '>+" . c . "<cr>gv"
   execute "vnoremap " . c . "<c-k> :m '<-" . (c+1) . "<cr>gv"
   let c += 1
