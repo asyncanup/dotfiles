@@ -272,7 +272,7 @@ alias gdi='g di'
 alias gdm='g dm'
 alias gdms='g dms'
 alias gsh='g sh'
-alias gcf='g cf'
+alias gcfs='g cfs'
 alias gco='g co'
 alias gcob='g cob'
 alias ga='g a'
@@ -346,8 +346,10 @@ gg() {
   git status -s
   echo
 
+  H="${C_CYAN}"
+  B="${C_BLUE}"
   printf "  ${H}b${B}ranch"         # branch
-  printf "   add/${H}c${B}ommit "   # add/commit
+  printf "   ${H}a${B}dd/${H}c${B}ommit " # add/commit
   printf "   ${H}d${B}iff "         # diff
   printf "   diff ${H}m${B}aster  " # diff master
   printf "   sta${H}g${B}ed"        # staged
@@ -378,14 +380,18 @@ gg() {
 
     case $pressed_key in
       b)           echo branch; git checkout $(git-branches) ;;
-      c)           echo add/commit; git add $(git-files); git commit --verbose ;;
+      a|c)         echo add/commit; git add $(git-files); git commit --verbose ;;
       d)           echo diff; git diff ;;
       m)           echo diff master; git diff master..HEAD ;;
       g)           echo staged; git diff --cached ;;
-      p)           echo rebase/push; git rebase -i master; gp ;;
+      p)           echo rebase/push
+                   [[ $(git merge-base HEAD master) != $(git rev-parse master) ]] && \
+                     git rebase -i master
+                   gp ;;
 
       l)           echo log; glog ;;
-      i)           echo commit logs; ghist ;;
+      i)           echo commit logs
+                   git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B" ;;
       s)           echo stash; git stash ;;
       u)           echo update master; git checkout master; git pull; git checkout - ;;
       r)           echo reset; git reset ;;
@@ -406,10 +412,9 @@ gg() {
 
 bind '"\er": redraw-current-line'
 bind '"\C-g\C-f": "$(git-files)\e\C-e\er"'
-bind '"\C-g\C-b": "$(git-branches)\e\C-e\er"'
+bind '"\C-g\C-r": "$(git-branches)\e\C-e\er"'
 bind '"\C-g\C-t": "$(git-tags)\e\C-e\er"'
 bind '"\C-g\C-h": "$(git-commit-hashes)\e\C-e\er"'
-bind '"\C-g\C-r": "$(git-remotes)\e\C-e\er"'
 
 # ---- other aliases ----
 export EDITOR="nvim"
@@ -432,10 +437,16 @@ function bbc() {
   bazel build $@ 2>&1 | bat -l bash --style grid --paging never
 }
 
+function bbp() {
+  bazel build $@ 2>&1 | bat -l python --style grid --paging never
+}
+
 alias bb='bazel build'
 alias bbv='bazel build --verbose_failures --sandbox_debug'
+alias bbw='bazel build --workspace_status_command'
 alias br='bazel run'
 alias brv='bazel run --verbose_failures --sandbox_debug'
+alias brw='bazel run --workspace_status_command'
 alias bq='bazel query'
 alias bc='bazel clean'
 alias bce='bazel clean --expunge'
@@ -592,12 +603,12 @@ alias diff='git diff --no-index'
 # watch files
 watch-and-run-file() {
   while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    $1 2>&1 | bat -l ${2:-python} --style grid
+    $1 2>&1 | bat -l ${2:-python} --style grid --paging never
   done
 }
-watch-and-run-command() {
+onfilechange() {
   while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    $2 2>&1 | bat -l ${3:-python} --style grid
+    $2 2>&1 | bat -l ${3:-bash} --style grid --paging never
   done
 }
 

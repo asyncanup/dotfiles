@@ -1,2 +1,9 @@
-#!/bin/bash
-tail -1 ~/.todo
+#!/usr/bin/env python3
+
+import os
+
+with open(os.getenv('HOME') + '/.todo', 'r') as todo_file:
+  last_item = todo_file.readlines()[-1].strip()
+
+task_width = 60
+print(last_item[:task_width].ljust(task_width))

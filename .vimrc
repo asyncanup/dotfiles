@@ -304,7 +304,6 @@ nnoremap <c-p> :GFiles<cr>
 nnoremap <c-t> :call fzf#run({'source': 'fd', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <a-t> :call fzf#run({'source': 'fd . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <c-o> :History<cr>
-nnoremap <c-r> :History:<cr>
 nnoremap <tab> :Buffers<cr>
 
 " color scheme
@@ -344,7 +343,7 @@ nnoremap N N
 inoremap <c-o> <esc>O
 
 " crudely rename a variable
-nnoremap <c-s-r> :YcmCompleter RefactorRename<space>
+nnoremap <c-r> :YcmCompleter RefactorRename<space>
 
 " bash movement shortcuts in insert mode
 inoremap <c-e> <esc>A
@@ -513,6 +512,18 @@ nnoremap <leader>gh yiW:e <c-r>=substitute(substitute(@", "github", "raw.githubu
 
 " remove trailing whitespace
 nnoremap <leader>W :%s/\v\ +$//
+
+" change multiple occurrences of selected text easily
+nnoremap c* *<c-o>cgn
+nnoremap c# #<C-o>cgn
+
+" conflict navigation and selection
+" ]x moves to next conflic, [x to previous
+" ]> keeps remote copy, [< keeps yours
+nnoremap ]x /\v^\={7}$<cr>:noh<cr>zz
+nnoremap [x /\v^\={7}$<cr>:noh<cr>zz
+nnoremap ]< $?\v^\={7}\ <cr>d/\v^\>{7}\ <cr>dd?\v^\<{7}\ <cr>dd<c-o>zz
+nnoremap ]> ?\v^\<{7}\ <cr>d/\v^\={7}$<cr>dd/\v^\>{7}\ <cr>dd<c-o>zz
 
 " ---- terminal commands ----
 if has ("nvim")
