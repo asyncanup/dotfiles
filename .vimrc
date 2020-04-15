@@ -525,6 +525,10 @@ nnoremap [x /\v^\={7}$<cr>:noh<cr>zz
 nnoremap ]< $?\v^\={7}\ <cr>d/\v^\>{7}\ <cr>dd?\v^\<{7}\ <cr>dd<c-o>zz
 nnoremap ]> ?\v^\<{7}\ <cr>d/\v^\={7}$<cr>dd/\v^\>{7}\ <cr>dd<c-o>zz
 
+" select just pasted (or just copied, or just edited) block
+" (gv already selects last visually selected block)
+nnoremap gp `[v`]
+
 " ---- terminal commands ----
 if has ("nvim")
 
