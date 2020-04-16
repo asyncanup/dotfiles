@@ -144,8 +144,6 @@ if ! command -v neovim-node-host >/dev/null 2>&1; then
     npm install -g neovim
 fi
 
-sudo apt -y autoremove
-
 now "installing global npm scripts"
 cd bin && npm install && cd ~
 
@@ -162,5 +160,7 @@ fi
 
 now "turn off animations in system ui"
 gsettings set org.gnome.desktop.interface enable-animations false
+
+sudo apt -y autoremove
 
 now "done"
