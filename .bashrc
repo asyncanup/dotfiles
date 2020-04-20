@@ -537,7 +537,15 @@ alias pv='python --version'
 alias nv='node -v'
 
 # asciinema shell recordings
-alias rec='asciinema rec -i 1 .shell-recordings/`date +%Y-%m-%d`.cast'
+function rec() {
+  REC_FILE=".shell-recordings/$(date +%Y-%m-%d).cast"
+  echo "$REC_FILE"
+  if [ -f "$REC_FILE" ]; then
+    asciinema rec -i 1 --append "$REC_FILE"
+  else
+    asciinema rec -i 1 "$REC_FILE"
+  fi
+}
 alias recplay='asciinema play -i 0.1'
 
 # yadm dotfiles manager
