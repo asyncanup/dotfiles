@@ -21,6 +21,7 @@
   stl = stash list
   stp = stash pop
   sts = stash show -p
+  stss = stash show -p --stat
   stc = stash clear
   c = commit --verbose
   cm = commit -m
