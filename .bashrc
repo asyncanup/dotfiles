@@ -515,10 +515,9 @@ n() {
     fi
     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
     # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
-    # stty start undef
-    # stty stop undef
-    # stty lwrap undef
-    # stty lnext undef
+    # TODO: revert this back to `nnn -c $@` once .yadm/config/bootstrap has a
+    # way to install only the latest nnn.
+    # -c means different things in new vs old versions :|
     nnn $@
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
