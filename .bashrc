@@ -519,7 +519,7 @@ n() {
     # stty stop undef
     # stty lwrap undef
     # stty lnext undef
-    nnn -c "$@"
+    nnn $@
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
