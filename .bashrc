@@ -568,7 +568,7 @@ alias yc='yadm commit --verbose'
 alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
 alias yp='yadm push'
-alias ypl='yadm pull'
+alias ypl='yadm pull --rebase'
 
 # searching and opening web links
 s() {
