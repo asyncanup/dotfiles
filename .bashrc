@@ -281,6 +281,7 @@ alias gst='g st'
 alias gstl='g stl'
 alias gstp='g stp'
 alias gsts='g sts'
+alias gstss='g stss'
 alias gstc='g stc'
 alias gc='g c'
 alias gcm='g cm'
@@ -360,7 +361,7 @@ gg() {
   printf "   ${H}s${B}tash"         # stash
   printf "   ${H}u${B}pdate master" # update master
   printf "   ${H}r${B}eset "        # reset
-  printf "   reset ${H}h${B}ard\n"  # reset hard
+  printf "   reset ${H}H${B}ard\n"  # reset hard
 
   while true; do
     echo -en "\r$(tput el)${C_CYAN}${C_RESET} "
@@ -395,7 +396,7 @@ gg() {
       s)           echo stash; git stash ;;
       u)           echo update master; git checkout master; git pull; git checkout - ;;
       r)           echo reset; git reset ;;
-      h)           echo reset hard; git reset --hard HEAD ;;
+      H)           echo reset hard; git reset --hard HEAD ;;
 
       $';')        echo shell; read -e -p "$ " cmd; bash -lic "$cmd" ;;
 
