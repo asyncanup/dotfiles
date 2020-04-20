@@ -163,8 +163,11 @@ if ! [ -e ~/.todo ] || ! [ -d ~/src ]; then
       ~/.shell-recordings
 fi
 
-now "turn off animations in system ui"
+now "set system-wide gnome settings"
+# turn-off animations
 gsettings set org.gnome.desktop.interface enable-animations false
+# keyboard shortcut to kill X server, return to login screen if system hangs
+gsettings set org.gnome.desktop.input-sources xkb-options "['terminate:ctrl_alt_bksp']"
 
 sudo apt -y autoremove
 
