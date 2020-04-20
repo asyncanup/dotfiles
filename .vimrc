@@ -198,7 +198,6 @@ let g:startify_session_persistence = 1
 let g:startify_bookmarks = [ '~/.todo' ]
 
 " vim easymotion shortcuts
-nmap <leader>t <plug>(easymotion-t)
 xmap <leader>t <plug>(easymotion-t)
 omap <leader>t <plug>(easymotion-t)
 
@@ -528,6 +527,9 @@ nnoremap ]> ?\v^\<{7}\ <cr>d/\v^\={7}$<cr>dd/\v^\>{7}\ <cr>dd<c-o>zz
 " select just pasted (or just copied, or just edited) block
 " (gv already selects last visually selected block)
 nnoremap gp `[v`]
+
+nnoremap <leader>t4 :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<cr>
+nnoremap <leader>t2 :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<cr>
 
 " ---- terminal commands ----
 if has ("nvim")
