@@ -92,6 +92,9 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/src
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
+# dotnet
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
 # ---- save history across terminals ----
 HISTSIZE=10000
 HISTFILESIZE=50000
