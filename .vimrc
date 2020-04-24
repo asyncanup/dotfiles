@@ -269,6 +269,7 @@ Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
 Plug 'mcchrish/nnn.vim'
 Plug 'vim-scripts/LargeFile'
+Plug 'pgr0ss/vim-github-url'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
