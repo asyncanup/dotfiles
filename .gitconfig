@@ -42,7 +42,7 @@
   rp = reset -p
   rev = rev-parse
   cat = cat-file -p
-  pl = pull
+  pl = pull --rebase
   pom = pull origin master
   type = cat-file -t
   m = merge --no-ff
