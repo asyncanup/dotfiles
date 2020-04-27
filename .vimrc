@@ -515,7 +515,7 @@ nnoremap <leader>mm :call ResetToSectionMarks()<cr>
 nnoremap <leader>gh yiW:e <c-r>=substitute(substitute(@", "github", "raw.githubusercontent", ""), "blob/", "", "")<cr><cr>
 
 " remove trailing whitespace
-nnoremap <leader>W :%s/\v\ +$//
+nnoremap <leader>W :%s/\v\ +$//<cr>
 
 " change multiple occurrences of selected text easily
 nnoremap c* *<c-o>cgn
