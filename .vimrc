@@ -148,6 +148,7 @@ nnoremap <leader>nt :NERDTreeFind<cr>zz50<c-w>|
 
 " go to definition
 nnoremap <space> :YcmCompleter GoTo<cr>
+nnoremap <enter> :YcmCompleter GoToReferences<cr>
 
 " go to references
 nnoremap yr :YcmCompleter GoToReferences<cr>
@@ -221,10 +222,12 @@ nnoremap <leader>cp :CycleColorPrev<cr>
 nnoremap <a-s-t> :TagbarToggle<cr>
 
 " nnn file manager
-nnoremap <leader>o :NnnPicker '%:p:h'<cr>
-nnoremap <leader>nn :NnnPicker '%:p:h'<cr>
-nnoremap <leader>nc :NnnPicker<cr>
+nnoremap <leader><tab> :NnnPicker '%:p:h'<cr>
 let g:nnn#layout = { 'right': '~45%' }
+let g:nnn#action = {
+      \ '<c-t>': 'tab split',
+      \ '<c-x>': 'split',
+      \ '<c-v>': 'vsplit' }
 
 " disable vim features on large files
 let g:LargeFile = 10
