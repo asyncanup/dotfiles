@@ -244,7 +244,9 @@ git-remotes() {
   cut -d$'\t' -f1
 }
 
-alias gcd='cd $(git rev-parse --show-toplevel)'
+# base shortcuts
+alias g='git'
+complete -F _complete_alias g
 
 function gcf() {
   files="$(git-files)"
@@ -258,66 +260,16 @@ gdbr() {
   git diff $1..HEAD
 }
 
+gp() {
+  g p $@
+}
+
+alias gcd='cd $(git rev-parse --show-toplevel)'
+
 alias gdmm='git diff $(git merge-base master HEAD)..HEAD'
 alias gcof='git checkout $(git branch | fzf)'
 alias gaf='git add $(git-files)'
 alias ghist='git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"'
-alias gcc='git add $(git-files); git commit --verbose --amend'
-
-alias g='git'
-complete -F _complete_alias g
-
-alias gs='g s'
-alias gf='g f'
-alias gcl='g cl'
-alias gd='g d'
-alias gdc='g dc'
-alias gdi='g di'
-alias gdm='g dm'
-alias gdms='g dms'
-alias gsh='g sh'
-alias gcfs='g cfs'
-alias gco='g co'
-alias gcob='g cob'
-alias ga='g a'
-alias gap='g ap'
-alias gst='g st'
-alias gstl='g stl'
-alias gstp='g stp'
-alias gsts='g sts'
-alias gstss='g stss'
-alias gstc='g stc'
-alias gc='g c'
-alias gcm='g cm'
-alias gcam='g cam'
-alias gca='g ca'
-alias gcp='g cp'
-alias gb='g b'
-alias gbd='g bd'
-alias gbD='g bD'
-alias gl='g l'
-alias glp='g lp'
-alias gr='g r'
-alias grs='g rs'
-alias grh='g rh'
-alias grsh='g rsh'
-alias grhh='g rhh'
-alias grp='g rp'
-alias grev='g rev'
-alias gcat='g cat'
-alias gpl='g pl'
-alias gpom='g pom'
-alias gtype='g type'
-alias gm='g m'
-alias gmf='g mf'
-alias grb='g rb'
-alias gri='g ri'
-alias grim='g rim'
-alias gra='g ra'
-alias grc='g rc'
-gp() {
-  g p $@
-}
 
 # primary git interface
 gg() {
@@ -520,10 +472,7 @@ n() {
     fi
     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
     # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
-    # TODO: revert this back to `nnn -c $@` once .yadm/config/bootstrap has a
-    # way to install only the latest nnn.
-    # -c means different things in new vs old versions :|
-    nnn $@
+    nnn -c $@
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
@@ -531,7 +480,7 @@ n() {
 }
 export NNN_PLUG='x:_chmod +x $nnn;g:_git status;o:fzopen;t:_tree $nnn;c:_~/bin/copyfilepath $nnn'
 export NNN_CONTEXT_COLORS='4123'
-export NNN_OPENER=bat
+export NNN_OPENER="bat --paging always"
 
 alias ni='npm init -y'
 alias nb='npm run build'
