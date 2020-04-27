@@ -1,7 +1,3 @@
-[user]
-  email = pixelsallover@gmail.com
-  name = Anup Bishnoi
-
 [alias]
   s = status -s
   f = fetch
@@ -27,6 +23,9 @@
   cm = commit -m
   cam = commit -a -m
   ca = commit --verbose -a
+  cc = commit --verbose --amend
+  cu = config user.name
+  ce = config user.email
   cp = cherry-pick
   p = push
   b = branch
