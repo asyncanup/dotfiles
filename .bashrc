@@ -511,13 +511,13 @@ yadm-git-files() {
     --preview-window=right:70% |
   cut -c4- | sed 's/.* -> //'
 }
-alias ycf='yadm add $(yadm-git-files); yadm commit --verbose; yadm push'
 
-alias ya='yadm add'
+alias ya='yadm add $(yadm-git-files)'
 alias yd='yadm diff'
 alias yds='yadm diff --stat'
 alias yl='yadm list'
 alias yc='yadm commit --verbose'
+alias yac='yadm add $(yadm-git-files); yadm commit --verbose'
 alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
 alias yp='yadm push'
