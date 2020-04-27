@@ -306,14 +306,14 @@ gg() {
   H="${C_CYAN}"
   B="${C_BLUE}"
   printf "  ${H}b${B}ranch"         # branch
-  printf "   ${H}a${B}dd/${H}c${B}ommit " # add/commit
+  printf "   ${H}a${B}dd/${H}c${B}ommit  " # add/commit
   printf "   ${H}d${B}iff "         # diff
   printf "   diff ${H}m${B}aster  " # diff master
   printf "   sta${H}g${B}ed"        # staged
   printf "   rebase/${H}p${B}ush\n" # rebase/push
 
   printf "  ${H}l${B}og   "         # log
-  printf "   comm${H}i${B}t logs"   # commit logs
+  printf "   comm${H}i${B}ts diff"  # commit logs
   printf "   ${H}s${B}tash"         # stash
   printf "   ${H}u${B}pdate master" # update master
   printf "   ${H}r${B}eset "        # reset
@@ -347,8 +347,8 @@ gg() {
                    gp ;;
 
       l)           echo log; glog ;;
-      i)           echo commit logs
-                   git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B" ;;
+      i)           echo commits diff
+                   git diff $(git merge-base master HEAD)..HEAD ;;
       s)           echo stash; git stash ;;
       u)           echo update master; git checkout master; git pull; git checkout - ;;
       r)           echo reset; git reset ;;
