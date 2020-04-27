@@ -1,3 +1,4 @@
 *-bish
 *.bish
 .bish.*
+.DS_Store
