@@ -6,13 +6,14 @@ now() {
     echo -e "\n$C_CYAN $1 $C_RESET"
 }
 
+# ---- update ----
 now "updating system-level dependencies"
 sudo apt-get update
 sudo apt-get -y upgrade
 
 cd ~
 
-# helper functions
+# ---- helper functions ----
 install-by-binary-name() {
     binary_name_and_package_list=( "$@" )
     binary_name=""
@@ -65,8 +66,10 @@ install-from-pip() {
     done
 }
 
+# ---- install stuff
+
 install-by-same-name \
-    git wget curl lynx screen python3 tldr xclip tree asciinema xsel nnn cmake
+    git wget curl lynx screen python3 tldr xclip tree asciinema xsel cmake
 
 install-by-binary-name \
     pip3 python3-pip \
@@ -77,6 +80,7 @@ install-from-url \
     bat https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb \
     rg https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb \
     fd https://github.com/sharkdp/fd/releases/download/v7.4.0/fd-musl_7.4.0_amd64.deb \
+    nnn https://github.com/jarun/nnn/releases/download/v3.1/nnn_3.1-1_ubuntu18.04.amd64.deb
 
 install-from-pip \
     powerline-shell
@@ -90,9 +94,8 @@ if ! command -v pyenv >/dev/null 2>&1; then
     curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 fi
 
-if ! $(pyenv versions | grep neovim4 >/dev/null); then
+if ! $(pyenv versions | grep neovim2 >/dev/null); then
     now "installing neovim python2 support"
-    exit 0
     pyenv install 2.7.17
     pyenv virtualenv 2.7.17 neovim2
     pyenv local neovim2
@@ -152,6 +155,8 @@ fi
 now "installing global npm scripts"
 cd bin && npm install && cd ~
 
+# ---- setup environment ----
+
 if ! [ -e ~/.todo ] || ! [ -d ~/src ]; then
     now "set up local files and folders"
     touch \
@@ -171,4 +176,5 @@ gsettings set org.gnome.desktop.input-sources xkb-options "['terminate:ctrl_alt_
 
 sudo apt -y autoremove
 
+# ---- done ----
 now "done"
