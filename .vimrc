@@ -131,13 +131,13 @@ function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -g "!yarn.lock" -g "!package-lock.json" %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
   let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command.',alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up']}
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
 
-nnoremap <bslash> :Rg<cr>
-vnoremap <bslash> y<esc>:Rg <c-r>=escape(@",'/\')<cr><cr>
+nnoremap <bslash> :Rg <c-r>=expand('<cword>')<cr><cr>
+vnoremap <bslash> y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
 
 " git operations
 nnoremap gb :Gblame<cr>
