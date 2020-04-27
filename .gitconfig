@@ -19,6 +19,7 @@
   sts = stash show -p
   stss = stash show -p --stat
   stc = stash clear
+  apl = apply
   c = commit --verbose
   cm = commit -m
   cam = commit -a -m
