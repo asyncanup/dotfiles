@@ -543,7 +543,7 @@ alias nv='node -v'
 
 # asciinema shell recordings
 function rec() {
-  REC_FILE="~/.shell-recordings/$(date +%Y-%m-%d).cast"
+  REC_FILE="$HOME/.shell-recordings/$(date +%Y-%m-%d).cast"
   echo "$REC_FILE"
   if [ -f "$REC_FILE" ]; then
     asciinema rec -i 1 --append "$REC_FILE"
