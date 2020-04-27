@@ -273,6 +273,7 @@ Plug 'kana/vim-textobj-line'
 Plug 'mcchrish/nnn.vim'
 Plug 'vim-scripts/LargeFile'
 Plug 'pgr0ss/vim-github-url'
+Plug 'nelstrom/vim-visual-star-search'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
