@@ -69,12 +69,13 @@ install-from-pip() {
 # ---- install stuff
 
 install-by-same-name \
-    git wget curl lynx screen python3 tldr xclip tree asciinema xsel cmake
+    git wget curl lynx screen python3 tldr xclip tree asciinema xsel cmake most
 
 install-by-binary-name \
     pip3 python3-pip \
     ctags exuberant-ctags \
-    inotifywait inotify-tools
+    inotifywait inotify-tools \
+    gnome-open libgnome2-bin
 
 install-from-url \
     bat https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb \
