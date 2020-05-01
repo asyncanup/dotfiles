@@ -136,6 +136,11 @@ if ! command -v neovim-node-host >/dev/null 2>&1; then
     npm install -g neovim
 fi
 
+if ! command -v yarn >/dev/null 2>&1; then
+    now "installing yarn"
+    curl -o- -L https://yarnpkg.com/install.sh | bash
+fi
+
 if ! command -v nvim >/dev/null 2>&1; then
     now "installing nvim"
     curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
