@@ -51,6 +51,9 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # ---- custom ----
 
+# add custom scripts/dependencies to path
+export PATH="$PATH:~/bin:~/.local/bin"
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -76,25 +79,16 @@ export NVM_DIR="$HOME/.nvm"
 # yarn
 export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin"
 
-# powerline shell
-update-ps1() {
-  PS1=$(powerline-shell $?)
-}
-
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ update-ps1 ]]; then
-  PROMPT_COMMAND="update-ps1; $PROMPT_COMMAND"
-fi
-
 # pyenv
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-export PATH="~/.pyenv/bin:$PATH"
+export PATH="$PATH:~/.pyenv/bin"
 command -v pyenv &> /dev/null && eval "$(pyenv init -)"
 command -v pyenv &> /dev/null && eval "$(pyenv virtualenv-init -)"
 
 # go
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/src
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 
 # dotnet
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -105,7 +99,14 @@ HISTFILESIZE=50000
 HISTCONTROL=ignoredups:erasedups
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
-export PATH="$PATH:~/bin:~/.local/bin:~/bin/node_modules/.bin"
+# powerline shell
+update-ps1() {
+  PS1=$(powerline-shell $?)
+}
+
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ update-ps1 ]]; then
+  PROMPT_COMMAND="update-ps1; $PROMPT_COMMAND"
+fi
 
 # ---- pyenv controls python when this line is commented ----
 #export PATH="/usr/bin:/usr/local/bin:$PATH"
