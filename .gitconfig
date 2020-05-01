@@ -50,6 +50,7 @@
   rb = rebase
   ri = rebase -i
   rim = rebase -i master
+  rbm = rebase master
   ra = rebase --abort
   rc = rebase --continue
 
