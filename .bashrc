@@ -68,9 +68,13 @@ fi
 # z directory auto jump
 [ -f ~/.z.bash ] && source ~/.z.bash
 
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# yarn
+export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin"
 
 # powerline shell
 update-ps1() {
@@ -412,10 +416,13 @@ alias bqr='bazel query --output=run'
 alias bf='bazel fetch'
 alias bi='bazel info'
 
-alias j='jira'
+alias jira='ypx jira'
+alias j='ypx jira'
 complete -F _complete_alias j
-alias ji='jira issue'
-alias jj='jira issue | grep In.Progress'
+alias ji='ypx jira issue'
+alias jj='ypx jira issue | grep In.Progress'
+
+alias tldr='ypx tldr'
 
 alias sb='. ~/.bashrc'
 alias sbl='. ~/.bashrc.local'
@@ -512,7 +519,7 @@ yadm-git-files() {
   cut -c4- | sed 's/.* -> //'
 }
 
-alias ya='yadm add $(yadm-git-files)'
+alias ya='yadm add'
 alias yd='yadm diff'
 alias yds='yadm diff --stat'
 alias yl='yadm list'
