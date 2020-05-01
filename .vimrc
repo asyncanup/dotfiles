@@ -223,7 +223,7 @@ nnoremap <a-s-t> :TagbarToggle<cr>
 
 " nnn file manager
 nnoremap <leader><tab> :NnnPicker '%:p:h'<cr>
-let g:nnn#layout = { 'right': '~45%' }
+let g:nnn#layout = { 'down': '~35%' }
 let g:nnn#action = {
       \ '<c-t>': 'tab split',
       \ '<c-x>': 'split',
