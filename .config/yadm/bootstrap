@@ -164,9 +164,6 @@ if ! command -v nvim >/dev/null 2>&1; then
     nvim '+UpdateRemotePlugins' '+qall'
 fi
 
-now "installing global npm scripts"
-cd bin && npm install && cd ~
-
 # ---- setup environment ----
 
 if ! [ -e ~/.todo ] || ! [ -d ~/src ]; then
