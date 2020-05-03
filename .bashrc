@@ -48,7 +48,7 @@ alias l='ls -CF'
 # ---- custom ----
 
 # add custom scripts/dependencies to path
-export PATH="$PATH:~/bin:~/.local/bin"
+export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -92,7 +92,7 @@ export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 # dotnet
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-# ---- save history across terminals ----
+# save history across terminals
 HISTSIZE=10000
 HISTFILESIZE=50000
 HISTCONTROL=ignoredups:erasedups
@@ -107,7 +107,7 @@ if [[ $TERM != linux && ! $PROMPT_COMMAND =~ update-ps1 ]]; then
   PROMPT_COMMAND="update-ps1; $PROMPT_COMMAND"
 fi
 
-# ---- pyenv controls python when this line is commented ----
+# pyenv controls python when this line is commented
 #export PATH="/usr/bin:/usr/local/bin:$PATH"
 
 # ---- colors ----
@@ -538,14 +538,14 @@ s() {
 alias l="lynx"
 
 # lynx config location
-export LYNX_CFG=~/.config/lynx/lynx.cfg
-export LYNX_LSS=~/.config/lynx/lynx.lss
+export LYNX_CFG=$HOME/.config/lynx/lynx.cfg
+export LYNX_LSS=$HOME/.config/lynx/lynx.lss
 
 # bat style
 export BAT_STYLE=grid,snip
 
 # send to trash. alternative to `rm`.
-alias trash='~/.pyenv/versions/3.7.0/bin/trash-put'
+alias trash='$HOME/.pyenv/versions/3.7.0/bin/trash-put'
 
 # select directors with fzf
 list-dirs() {
