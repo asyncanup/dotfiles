@@ -95,6 +95,12 @@ if ! command -v pyenv >/dev/null 2>&1; then
     curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 fi
 
+if ! command -v rbenv >/dev/null 2>&1; then
+    now "install rbenv & ruby"
+    sudo apt install -y autoconf bison libyaml-dev libgdbm-dev
+    curl -sL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash -
+fi
+
 if ! $(pyenv versions | grep neovim2 >/dev/null); then
     now "installing neovim python2 support"
     pyenv install 2.7.17

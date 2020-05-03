@@ -77,9 +77,12 @@ export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin"
 
 # pyenv
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-export PATH="$PATH:~/.pyenv/bin"
+export PATH="$PATH:$HOME/.pyenv/bin"
 command -v pyenv &> /dev/null && eval "$(pyenv init -)"
 command -v pyenv &> /dev/null && eval "$(pyenv virtualenv-init -)"
+
+# rbenv
+export PATH="$PATH:$HOME/.rbenv/bin"
 
 # go
 export GOROOT=/usr/local/go
