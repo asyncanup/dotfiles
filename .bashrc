@@ -355,7 +355,7 @@ gg() {
       i)           echo commits diff
                    git diff $(git merge-base master HEAD)..HEAD ;;
       s)           echo stash; git stash ;;
-      u)           echo update master; git checkout master; git pull; git checkout - ;;
+      u)           echo update master; git checkout master; git pull --rebase; git checkout - ;;
       r)           echo reset; git reset ;;
       H)           echo reset hard; git reset --hard HEAD ;;
 
