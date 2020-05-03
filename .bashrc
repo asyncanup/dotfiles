@@ -202,7 +202,7 @@ git-files() {
   is-in-git-repo || return
   git -c color.status=always status --short |
   fzf --height 90% -m --ansi --nth 2..,.. \
-    --preview '(git diff --color=always -- {-1} | sed 1,4d; bat --color always {-1})' \
+    --preview '(git diff --color=always -- {-1} | sed 1,4d; bat --style full --color always '{-1}')' \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
     --preview-window=right:70% |
   cut -c4- | sed 's/.* -> //'
