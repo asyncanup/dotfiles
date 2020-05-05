@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
-package_name=$1
+# $1 is of the form <package_name:package_bin>, where:
+# - package_name is what we use in `yarn add <package_name>`
+# - package_bin is the binary name exposed by the package in its package.json
+#
+# if $1 is simply of the form <package_name>, then package_bin is assumed to be
+# the same as package_name
+if [[ $(echo $1 | sed -n /\:/p) == "" ]]; then
+  package_name=$1
+  package_bin=$1
+else
+  package_name=$(echo $1 | sed s/:.*$//)
+  package_bin=$(echo $1 | sed s/^.*://)
+fi
+
 package_dir="/tmp/ypx/$package_name"
 if [[ ! -d "$package_dir" ]]; then
   mkdir -p $package_dir
@@ -9,4 +22,4 @@ if [[ ! -d "$package_dir" ]]; then
 fi
 
 PATH="$package_dir/node_modules/.bin":$PATH;
-"$@"
+$package_bin "${@:2}"
