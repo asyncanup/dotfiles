@@ -456,6 +456,8 @@ complete -F _complete_alias d
 alias e='nvim'
 complete -F _complete_alias e
 
+alias nvim-format='xargs nvim -n "+set nomore" "+bufdo YcmCompleter Format"'
+
 alias psa='ps -a | grep'
 alias kk='kill -9'
 alias jl='jobs -l'
