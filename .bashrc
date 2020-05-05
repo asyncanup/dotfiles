@@ -183,6 +183,7 @@ RE_NAME='[^\/]+'
 RE_FILENAME="$RE_NAME\.$RE_EXT"
 
 # ---- git shortcuts ----
+
 is-in-git-repo() {
   git rev-parse HEAD > /dev/null 2>&1
 }
@@ -344,11 +345,11 @@ gg() {
       b)           echo branch; git checkout $(git-branches) ;;
       a|c)         echo add/commit; git add $(git-files); git commit --verbose ;;
       d)           echo diff; git diff ;;
-      m)           echo diff master; git diff master..HEAD ;;
+      m)           echo diff master; git diff origin/master..HEAD ;;
       g)           echo staged; git diff --cached ;;
       p)           echo rebase/push
                    [[ $(git merge-base HEAD master) != $(git rev-parse master) ]] && \
-                     git rebase -i master
+                     git rebase -i origin/master
                    gp ;;
 
       l)           echo log; glog ;;
