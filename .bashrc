@@ -273,9 +273,8 @@ gp() {
 alias gcd='cd $(git rev-parse --show-toplevel)'
 
 alias gdmm='git diff $(git merge-base master HEAD)..HEAD'
-alias gcof='git checkout $(git branch | fzf)'
-alias gaf='git add $(git-files)'
 alias ghist='git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"'
+alias gdeletemerged='git branch -r --merged origin/master | grep -v origin/master | sed "s/.*\///" | xargs git push -d origin'
 
 # primary git interface
 gg() {
