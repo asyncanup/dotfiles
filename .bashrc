@@ -418,12 +418,11 @@ alias bf='bazel fetch'
 alias bi='bazel info'
 
 alias jira='ypx jira'
-alias j='ypx jira'
-complete -F _complete_alias j
 alias ji='ypx jira issue'
 alias jj='ypx jira issue | grep In.Progress'
 
 alias tldr='ypx tldr'
+alias prettier='ypx prettier'
 
 alias sb='. ~/.bashrc'
 alias sbl='. ~/.bashrc.local'
