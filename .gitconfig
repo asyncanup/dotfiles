@@ -1,6 +1,7 @@
 [alias]
   s = status -s
   f = fetch
+  fap = fetch --all --prune
   cl = clone
   d = diff
   dc = diff --cached
