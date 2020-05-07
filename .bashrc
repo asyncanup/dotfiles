@@ -392,8 +392,10 @@ alias cl='clear'
 alias ge='grep -E'
 alias gv='grep -v'
 
-alias b='bazel'
-complete -F _complete_alias b
+alias gb='ypx @bazel/bazel:bazel --nohome_rc'
+alias gbb='ypx @bazel/bazel:bazel --nohome_rc build'
+alias gbr='ypx @bazel/bazel:bazel --nohome_rc run'
+alias gbq='ypx @bazel/bazel:bazel --nohome_rc query'
 
 function bbc() {
   bazel build $@ 2>&1 | bat -l bash --style grid --paging never
