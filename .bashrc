@@ -514,7 +514,7 @@ alias recplay='asciinema play -i 0.1'
 # yadm dotfiles manager
 yadm-git-files() {
   yadm -c color.status=always status --short |
-  fzf --height 90% -m --ansi --nth 2..,.. \
+  fzf --height 50% -m --ansi --nth 2..,.. \
     --preview '(yadm diff --color=always -- {-1} | sed 1,4d; bat --color always {-1})' \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
     --preview-window=right:70% |
