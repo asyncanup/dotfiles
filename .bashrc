@@ -511,7 +511,7 @@ function rec() {
     asciinema rec -i 1 "$REC_FILE"
   fi
 }
-alias recplay='asciinema play -i 0.1'
+alias recplay='asciinema play -i 0.01'
 
 # yadm dotfiles manager
 yadm-git-files() {
