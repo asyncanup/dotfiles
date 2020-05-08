@@ -573,24 +573,24 @@ alias fdid='fd --no-ignore --type d'
 alias diff='git diff --no-index'
 
 # watch files
-watchandrun() {
-  while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    bash -li -c "$@" 2>&1 | bat -l python --style grid --paging never
-  done
-}
 onfilechange() {
   while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    bash -li -c "${@:2}" 2>&1 | bat -l python --style grid --paging never
-  done
-}
-watchandrun-plain() {
-  while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    bash -li -c "$@" 2>&1
+    bash -li -c "$2" 2>&1 | bat -l python --style grid --paging never
   done
 }
 onfilechange-plain() {
   while inotifywait -e modify -e close_write $1 2>/dev/null; do
-    bash -li -c "${@:2}" 2>&1
+    bash -li -c "$2"
+  done
+}
+watchandrun() {
+  while inotifywait -e modify -e close_write $1 2>/dev/null; do
+    bash -li -c "$1 $2" 2>&1 | bat -l python --style grid --paging never
+  done
+}
+watchandrun-plain() {
+  while inotifywait -e modify -e close_write $1 2>/dev/null; do
+    bash -li -c "$1 $2"
   done
 }
 
