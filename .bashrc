@@ -46,6 +46,8 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # ---- custom ----
+# add base path
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
 # add custom scripts/dependencies to path
 export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
