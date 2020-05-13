@@ -99,7 +99,9 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 HISTSIZE=10000
 HISTFILESIZE=50000
 HISTCONTROL=ignoredups:erasedups
-PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+if [[ ! $PROMPT_COMMAND =~ "history -a" ]]; then
+  PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+fi
 
 # powerline shell
 update-ps1() {
@@ -107,7 +109,52 @@ update-ps1() {
 }
 
 if [[ $TERM != linux && ! $PROMPT_COMMAND =~ update-ps1 ]]; then
+  # update-ps1 should be the first command in PROMPT_COMMAND because it tries to
+  # capture exit code from the last user-run command
   PROMPT_COMMAND="update-ps1; $PROMPT_COMMAND"
+fi
+
+# time every command run in the shell:
+# remember the time when timer_start is first run, or since timer_stop was run
+timer_start() {
+  export __timer=${__timer:-$SECONDS}
+}
+
+# calculate time elapsed since the first time timer_start was run before this
+timer_stop() {
+  export __timer_show="$(($SECONDS - $__timer))s"
+}
+timer_unset() {
+  unset __timer
+}
+export __timer_show=""
+
+# add timer_stop to PROMPT_COMMAND only if it's not already there
+if [[ ! $PROMPT_COMMAND =~ timer_stop ]]; then
+  # stop timer needs to run before powerline updates PS1, so that the time value
+  # shows up in powerline prompt
+  #
+  # reset timer needs to happen at the end of PROMPT_COMMAND so that the very
+  # next user-run command starts the timer
+  PROMPT_COMMAND="timer_stop; $PROMPT_COMMAND; timer_unset;"
+fi
+
+# run timer_start before EVERYTHING that runs in bash
+trap 'timer_start' DEBUG
+
+# remember last command's exit code if it was an error
+# powerline uses it to show it in the prompt
+capture_exit_code() {
+  exit_code=$?
+  if [[ $exit_code != 0 ]]; then
+    export __exit_error_code="❌ $exit_code"
+  else
+    export __exit_error_code="✔️"
+  fi
+  unset exit_code
+}
+if [[ ! $PROMPT_COMMAND =~ capture_exit_code ]]; then
+  PROMPT_COMMAND="capture_exit_code; $PROMPT_COMMAND"
 fi
 
 # pyenv controls python when this line is commented
@@ -385,6 +432,7 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export PAGER="bat --paging always"
 export MANPAGER=most
+export TIMEFORMAT='real: %R, user: %U, sys: %S'
 
 shopt -s nocaseglob
 

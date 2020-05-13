@@ -1,6 +1,15 @@
 {
   "segments": [
-    "exit_code",
+    {
+      "type": "env",
+      "var": "__exit_error_code",
+      "fg_color": 2,
+      "bg_color": 24
+    },
+    {
+      "type": "env",
+      "var": "__timer_show"
+    },
     "newline",
     "time",
     "virtual_env",
