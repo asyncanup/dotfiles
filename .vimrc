@@ -196,7 +196,7 @@ let g:startify_lists = [
 let g:startify_custom_header = ''
 let g:startify_files_number = 20
 let g:startify_session_persistence = 1
-let g:startify_bookmarks = [ '~/.todo', '~/.status-updates' ]
+let g:startify_bookmarks = [ '~/.todo', '~/.status-updates', '~/scratch' ]
 
 " vim easymotion shortcuts
 xmap <leader>t <plug>(easymotion-t)
