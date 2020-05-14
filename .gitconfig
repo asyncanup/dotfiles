@@ -46,7 +46,7 @@
   rev = rev-parse
   cat = cat-file -p
   pl = pull --rebase
-  pom = pull origin master
+  plm = pull --rebase origin master
   type = cat-file -t
   m = merge --no-ff
   mf = merge --ff
