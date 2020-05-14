@@ -11,6 +11,7 @@
   sh = show
   cfs = diff --name-only --diff-filter=U
   co = checkout
+  com = checkout master
   cob = checkout -b
   a = add
   ap = add -p
