@@ -31,7 +31,9 @@
   ce = config user.email
   cp = cherry-pick
   p = push
-  pd = push -d origin
+  pf = push --force
+  pd = push -d
+  pdo = push -d origin
   b = branch
   bd = branch --delete
   bD = branch -D
@@ -51,11 +53,11 @@
   m = merge --no-ff
   mf = merge --ff
   rb = rebase
-  ri = rebase -i
-  rim = rebase -i master
+  rbi = rebase -i
+  rbim = rebase -i master
   rbm = rebase master
-  ra = rebase --abort
-  rc = rebase --continue
+  rba = rebase --abort
+  rbc = rebase --continue
 
 [core]
   excludesfile = ~/.gitignore
