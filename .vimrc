@@ -235,6 +235,10 @@ let g:LargeFile = 10
 " enhanced jumps
 let g:EnhancedJumps_no_mappings = 1
 
+" ultisnips
+let g:UltiSnipsExpandTrigger = '<c-t>'
+let g:UltiSnipsJumpForwardTrigger = '<c-x>'
+
 " ---- load plugins ----
 
 " load vim-plug
@@ -351,7 +355,7 @@ nnoremap <c-r> :YcmCompleter RefactorRename<space>
 
 " bash movement shortcuts in insert mode
 inoremap <c-e> <esc>A
-inoremap <c-x><c-x> <esc>I
+inoremap <c-a> <esc>I
 inoremap <a-b> <esc>lBi
 inoremap <a-f> <esc>lWi
 
@@ -505,7 +509,7 @@ nnoremap <leader>cs :s/\v([\[\(])/\1\r    /<cr>:s/\v([\]\)])/\r\1/<cr>k:s/\v\,\ 
 
 " mark just sections in the file
 function! ResetToSectionMarks()
-  normal m " comment to remove trailing space
+  normal m<space>
   vim /\v^...\-\-\-\ / %
   cdo normal m.
 endfunction
