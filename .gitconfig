@@ -58,6 +58,7 @@
   rbm = rebase master
   rba = rebase --abort
   rbc = rebase --continue
+  rbs = rebase --skip
 
 [core]
   excludesfile = ~/.gitignore
