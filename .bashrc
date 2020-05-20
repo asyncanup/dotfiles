@@ -441,20 +441,9 @@ alias rmf='rm -rf'
 alias cl='clear'
 alias ge='grep -E'
 alias gv='grep -v'
+alias path='echo $PATH | tr ":" "\n"'
 
-alias gb='ypx @bazel/bazel:bazel --nohome_rc'
-alias gbb='ypx @bazel/bazel:bazel --nohome_rc build'
-alias gbr='ypx @bazel/bazel:bazel --nohome_rc run'
-alias gbq='ypx @bazel/bazel:bazel --nohome_rc query'
-
-function bbc() {
-  bazel build $@ 2>&1 | bat -l bash --style grid --paging never
-}
-
-function bbp() {
-  bazel build $@ 2>&1 | bat -l python --style grid --paging never
-}
-
+# bazel shortcuts
 alias bb='bazel build'
 alias bbv='bazel build --verbose_failures --sandbox_debug'
 alias bbw='bazel build --workspace_status_command'
@@ -468,6 +457,19 @@ alias bqb='bazel query --output=build'
 alias bqr='bazel query --output=run'
 alias bf='bazel fetch'
 alias bi='bazel info'
+
+function bbc() {
+  bazel build $@ 2>&1 | bat -l bash --style grid --paging never
+}
+
+
+function bbp() {
+  bazel build $@ 2>&1 | bat -l python --style grid --paging never
+}
+alias gb='ypx @bazel/bazel:bazel --nohome_rc'
+alias gbb='ypx @bazel/bazel:bazel --nohome_rc build'
+alias gbr='ypx @bazel/bazel:bazel --nohome_rc run'
+alias gbq='ypx @bazel/bazel:bazel --nohome_rc query'
 
 alias jira='ypx jira'
 alias ji='ypx jira issue'
