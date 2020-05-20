@@ -303,7 +303,7 @@ git-remotes() {
 alias g='git'
 complete -F _complete_alias g
 
-function gcf() {
+gcf() {
   files="$(git-files)"
   if [[ $files != '' ]]; then
     git add $files
@@ -317,6 +317,15 @@ gdbr() {
 
 gp() {
   g p $@
+}
+
+grbc() {
+  git add $(git-files);
+  if [[ "$(git diff --cached)" == "" ]]; then
+    git rebase --skip
+  else
+    git rebase --continue
+  fi
 }
 
 alias gcd='cd $(git rev-parse --show-toplevel)'
@@ -359,19 +368,21 @@ gg() {
 
   H="${C_CYAN}"
   B="${C_BLUE}"
-  printf " ${H}b${B}ranch"         # branch
-  printf "  ${H}c${B}ommit"       # commit
-  printf "  diff ${H}m${B}aster  " # diff master
+  printf " ${H}b${B}ranch"          # branch
+  printf "  ${H}c${B}ommit"         # commit
+  printf "  diff ${H}m${B}aster  "  # diff master
   printf "  ${H}d${B}iff  "         # diff
-  printf "  ${H}s${B}tash"         # stash
-  printf "  rebase/${H}p${B}ush\n" # rebase/push
+  printf "  ${H}s${B}tash"          # stash
+  printf "  r${H}e${B}base  "       # rebase
+  printf "  ${H}p${B}ush\n"         # push with rebase
 
-  printf " ${H}l${B}og   "         # log
-  printf "  upd${H}a${B}te"       # update commit
-  printf "  ${H}u${B}pdate master" # update master
-  printf "  ${H}r${B}eset "        # reset
-  printf "  p${H}o${B}p  "        # staged
-  printf "  reset ${H}H${B}ard\n"  # reset hard
+  printf " ${H}l${B}og   "          # log
+  printf "  ${H}a${B}mend "         # amend commit
+  printf "  ${H}u${B}pdate master"  # update master
+  printf "  ${H}r${B}eset "         # reset
+  printf "  p${H}o${B}p  "          # staged
+  printf "  co${H}n${B}tinue"       # continue rebase
+  printf "  ${H}R${B}ESET\n"   # reset hard
 
   while true; do
     echo -en "\r$(tput el)${C_CYAN}${C_RESET} "
@@ -389,25 +400,26 @@ gg() {
       continue
     fi
 
+    c_head=$(git merge-base HEAD master)
+    c_master=$(git rev-parse master)
     case $pressed_key in
-      b)     echo branch; git checkout $(git-branches) ;;
-      c)     echo commit; git add $(git-files); git commit --verbose ;;
-      m)     echo diff master; git diff origin/master..HEAD ;;
-      d)     echo diff; git diff ;;
-      s)     echo stash; git stash ;;
-      p)     echo rebase/push
-             [[ $(git merge-base HEAD master) != $(git rev-parse master) ]] && \
-               git rebase -i origin/master
-             gp ;;
+      b)    echo branch; git checkout $(git-branches) ;;
+      c)    echo commit; git add $(git-files); git commit --verbose ;;
+      m)    echo diff master; git diff origin/master..HEAD ;;
+      d)    echo diff; git diff ;;
+      s)    echo stash; git stash ;;
+      e)    echo rebase; git rebase -i $(git-branches) ;;
+      p)    echo push; [[ $c_head != $c_master ]] && git rebase -i origin/master; gp ;;
 
-      l)     echo log; glog ;;
-      a)     echo update; git add $(git-files); git commit --amend --verbose ;;
-      u)     echo update master; git checkout master; git pull --rebase; git checkout - ;;
-      r)     echo reset; git reset ;;
-      o)     echo pop; git stash pop ;;
-      H)     echo reset hard; git reset --hard HEAD ;;
+      l)    echo log; glog ;;
+      a)    echo amend commit; git add $(git-files); git commit --amend --verbose ;;
+      u)    echo update master; git checkout master; git pull --rebase; git checkout - ;;
+      r)    echo reset soft; git reset ;;
+      o)    echo pop; git stash pop ;;
+      n)    echo rebase continue; grbc ;;
+      R)    echo reset hard; git reset --hard HEAD ;;
 
-      $';')  echo shell; read -e -p "$ " cmd; bash -lic "$cmd" ;;
+      $';') echo shell; read -e -p "$ " cmd; bash -lic "$cmd" ;;
 
       $KEY_ESCAPE|\
       q)     echo quit; return 0 ;;
