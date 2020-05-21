@@ -7,5 +7,8 @@
 # <c-j> to run a command with "time" prepended
 "\C-j": "\C-atime \C-m"
 
+# <c-h> (which is also ctrl-backspace to delete word)
+"\C-h": backward-kill-word
+
 set completion-ignore-case on
 

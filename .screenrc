@@ -54,7 +54,7 @@ bind n screen /usr/bin/nnn -c
 bind r eval 'source $HOME/.screenrc' 'echo ".screenrc reloaded!"'
 
 # switch to previous and next windows
-bindkey ^H prev
+bindkey ^G prev
 bindkey ^L next
 
 # switch to previous and next layouts
