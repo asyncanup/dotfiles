@@ -355,13 +355,14 @@ nnoremap <c-r> :YcmCompleter RefactorRename<space>
 
 " bash movement shortcuts in insert mode
 " `^ moves cursor to the position going out of insert mode
+" <c-u> already works
 inoremap <c-e> <esc>A
 inoremap <c-a> <esc>I
 inoremap <a-b> <esc>`^bi
 inoremap <a-f> <esc>`^wi
 inoremap <a-d> <esc>`^dwi
-" <c-u> already works
-inoremap <c-h> <esc>dT<space>xi
+" following does not go beyond the previous line
+inoremap <c-h> <esc>ldbi
 
 " go to previous and next cursor locations across buffers
 nnoremap - <c-o>
