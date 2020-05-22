@@ -5,5 +5,5 @@ import os
 with open(os.getenv('HOME') + '/.agenda', 'r') as todo_file:
   last_item = todo_file.readlines()[-1].strip()
 
-task_width = 30
-print(last_item[:task_width].ljust(task_width))
+task_width = 40
+print(last_item[:task_width].rjust(task_width))
