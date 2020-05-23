@@ -433,10 +433,10 @@ gg() {
 }
 
 bind '"\er": redraw-current-line'
-bind '"\C-g\C-f": "$(git-files)\e\C-e\er"'
-bind '"\C-g\C-r": "$(git-branches)\e\C-e\er"'
-bind '"\C-g\C-t": "$(git-tags)\e\C-e\er"'
-bind '"\C-g\C-h": "$(git-commit-hashes)\e\C-e\er"'
+bind '"\C-f\C-f": "$(git-files)\e\C-e\er"'
+bind '"\C-f\C-r": "$(git-branches)\e\C-e\er"'
+bind '"\C-f\C-t": "$(git-tags)\e\C-e\er"'
+bind '"\C-f\C-h": "$(git-commit-hashes)\e\C-e\er"'
 
 # ---- other aliases ----
 export EDITOR="nvim"
