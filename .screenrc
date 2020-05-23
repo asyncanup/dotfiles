@@ -54,12 +54,10 @@ bind n screen /usr/bin/nnn -c
 bind r eval 'source $HOME/.screenrc' 'echo ".screenrc reloaded!"'
 
 # switch to previous and next windows
-bindkey ^G prev
-bindkey ^L next
+bindkey ^[[1;3D prev # alt left
+bindkey ^[[1;3C next # alt right
 
-# switch to previous and next layouts
-bindkey ^[[1;3C eval 'layout prev' 'layout show' # Alt + left
-bindkey ^[[1;3D eval 'layout next' 'layout show' # Alt + right
+# switch to next layout
 bindkey ^B eval 'layout next' 'layout show'
 
 # horizontal panel split
