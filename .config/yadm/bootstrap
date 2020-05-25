@@ -8,8 +8,8 @@ now() {
 
 # ---- update ----
 now "updating system-level dependencies"
-sudo apt-get update
-sudo apt-get -y upgrade
+sudo apt update
+sudo apt -y upgrade
 
 cd ~
 

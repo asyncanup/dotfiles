@@ -50,6 +50,10 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 
+" show extra symbol at end of line
+" so that shortcuts can depend on <esc>l in insert mode
+set virtualedit=onemore
+
 " backups
 set backup
 set backupdir=~/.vim/backup/
