@@ -133,9 +133,16 @@ nnoremap <a-f> :BLines<cr>
 " search in project
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -g "!yarn.lock" -g "!package-lock.json" %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command.',alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up']}
+  let query_filtered = a:query
+  let file_filter = ''
+  let query_parts = split(a:query)
+  if index(query_parts, '-g') == 0
+    let query_filtered = join(query_parts[2:])
+    let file_filter = '-g "'.query_parts[1].'" '
+  endif
+  let initial_command = printf(command_fmt, file_filter.shellescape(query_filtered))
+  let reload_command = printf(command_fmt, file_filter.'{q}')
+  let spec = {'options': ['--query', query_filtered, '--bind', 'change:reload:'.reload_command.',alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up']}
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
@@ -313,8 +320,8 @@ map g_ <plug>EnhancedJumpsLocalNewer
 command! -bang -nargs=? -complete=dir GFiles
     \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
 nnoremap <c-p> :GFiles<cr>
-nnoremap <c-t> :call fzf#run({'source': 'fd', 'sink': 'e', 'window': '20new'})<cr>
-nnoremap <a-t> :call fzf#run({'source': 'fd . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <c-o> :History<cr>
 nnoremap <tab> :Buffers<cr>
 
@@ -461,7 +468,7 @@ nnoremap J ]`
 nnoremap K [`
 
 " use rg if available to search for text
-if executable('ag')
+if executable('rg')
   " Use rg via grep
   set grepprg=rg\ --vimgrep
 endif
