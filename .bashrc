@@ -560,6 +560,7 @@ export NNN_OPENER="bat --paging always"
 alias ni='npm init -y'
 alias nb='npm run build'
 alias ns='npm start'
+alias nt='npm test'
 alias nr='npm run'
 
 alias pv='python --version'
@@ -657,6 +658,10 @@ watchandrun-plain() {
     bash -li -c "$1 $2"
   done
 }
+
+# tar
+alias tvf='tar tvf'
+alias xvf='tar xvf'
 
 # ---- load local customization file ----
 [ -s "$HOME/.bashrc.local" ] && \. "$HOME/.bashrc.local"
