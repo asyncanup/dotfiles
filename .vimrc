@@ -167,6 +167,12 @@ nnoremap yr :YcmCompleter GoToReferences<cr>
 " try to fix issue
 nnoremap yx :YcmCompleter FixIt<cr>
 
+" restart type server
+nnoremap <leader>yr :YcmRestartServer<cr>
+
+" YouCompleteMe code formatter
+nnoremap <leader>yf :YcmCompleter Format<cr>
+
 " toggle linting
 nnoremap <a-e> :ALEToggle<cr>
 
@@ -373,7 +379,7 @@ inoremap <a-b> <esc>`^bi
 inoremap <a-f> <esc>`^wi
 inoremap <a-d> <esc>`^dwi
 " following does not go beyond the previous line
-inoremap <c-h> <esc>ldbi
+inoremap <c-h> <esc>l"_dbi
 
 " go to previous and next cursor locations across buffers
 nnoremap - <c-o>
