@@ -66,6 +66,12 @@ au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
 set undofile
 set undodir=~/.vim/undodir
 
+" set path where tabfind looks for file names
+set path=.,
+
+" switching to other buffers opens the relevant window if available
+set switchbuf=usetab,vsplit
+
 " set leader key
 let mapleader = ","
 
@@ -121,7 +127,6 @@ command! DeleteBuffers call fzf#run(fzf#wrap({
   \ 'sink*': { lines -> execute('bwipeout '.join(map(lines, {_, line -> split(line)[0]}))) },
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
-nnoremap <leader>bd :DeleteBuffers<cr>
 nnoremap <a-s-x> :DeleteBuffers<cr>
 
 " search in open buffers
@@ -145,10 +150,10 @@ function! RipgrepFzf(query, fullscreen)
   let spec = {'options': ['--query', query_filtered, '--bind', 'change:reload:'.reload_command.',alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up']}
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
-command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
+command! -nargs=* -bang RgCustom call RipgrepFzf(<q-args>, <bang>0)
 
-nnoremap <bslash> :Rg <c-r>=expand('<cword>')<cr><cr>
-vnoremap <bslash> y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
+nnoremap <bslash> :RgCustom <c-r>=expand('<cword>')<cr><cr>
+vnoremap <bslash> y<esc>:RgCustom <c-r>=escape(@",'\{(')<cr><cr>
 
 " git operations
 nnoremap gb :Gblame<cr>
@@ -329,7 +334,15 @@ nnoremap <c-p> :GFiles<cr>
 nnoremap <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <c-o> :History<cr>
-nnoremap <tab> :Buffers<cr>
+nnoremap <s-tab> :Buffers<cr>
+
+" find tab with file and switch to it, or open new tab with file
+command! SwitchToTab call fzf#run(fzf#wrap({
+  \ 'source': Bufs(),
+  \ 'sink*': { lines -> execute('drop '.split(split(join(lines), ' "')[1], '"')[0]) },
+  \ 'options': ''
+\ }))
+nnoremap <tab> :SwitchToTab<cr>
 
 " color scheme
 colorscheme PaperColor
@@ -439,6 +452,7 @@ nnoremap <leader>r :e<cr>
 
 " join lines
 nnoremap <leader>j J
+inoremap <a-j> <esc>kJgi
 
 " close window, quit
 nnoremap <c-q> :close<cr>
@@ -541,7 +555,7 @@ nnoremap <leader>mm :call ResetToSectionMarks()<cr>
 nnoremap <leader>gh yiW:e <c-r>=substitute(substitute(@", "github", "raw.githubusercontent", ""), "blob/", "", "")<cr><cr>
 
 " remove trailing whitespace
-nnoremap <leader>W :%s/\v\ +$//<cr>
+nnoremap <leader>W :%s/\v[\ \t]+$//<cr>
 
 " change multiple occurrences of selected text easily
 nnoremap c* *<c-o>cgn
