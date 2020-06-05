@@ -455,7 +455,14 @@ nnoremap <leader>j J
 inoremap <a-j> <esc>kJgi
 
 " close window, quit
-nnoremap <c-q> :close<cr>
+function! CloseWindow()
+  if winnr("$") == 1 && tabpagenr("$") > 1 && tabpagenr() > 1 && tabpagenr() < tabpagenr("$")
+    tabclose | tabprev
+  else
+    close
+  endif
+endfunction
+nnoremap <c-q> :call CloseWindow()<CR>
 nnoremap <c-a-q> :q!<cr>
 
 " close buffer
