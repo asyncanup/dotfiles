@@ -489,6 +489,7 @@ alias jj='ypx jira issue | grep In.Progress'
 alias tldr='ypx tldr'
 alias prettier='ypx prettier'
 alias http-server='ypx http-server'
+alias gtop='ypx gtop'
 
 alias sb='. ~/.bashrc'
 alias sbl='. ~/.bashrc.local'
