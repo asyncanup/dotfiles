@@ -174,7 +174,8 @@ if ! [ -e ~/.todo ] || ! [ -d ~/src ]; then
       ~/.bashrc.local
     mkdir -p \
       ~/src \
-      ~/.shell-recordings
+      ~/.shell-recordings \
+      ~/.fzf-history
 fi
 
 now "set system-wide gnome settings"
