@@ -37,6 +37,8 @@
   b = branch
   bd = branch --delete
   bD = branch -D
+  bmm = branch -a --merged master
+  bnm = branch -a --no-merged master
   l = log --pretty=format:\"%Cgreen%ad %Creset%s%Cgreen%d %Cblue- %an %Cgreen%h\" --graph --date=short
   lp = log -p
   r = reset
