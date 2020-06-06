@@ -126,7 +126,8 @@ function! Bufs()
   silent ls
   redir END
   let buf_list = split(substitute(ls_output, '"', '', 'g'), "\n")
-  let names_list = map(buf_list, { _, item -> substitute(item, 'line \d*$', '', '') })
+  let bufs_without_self = filter(buf_list, { _, item -> split(item)[0] != bufnr('') })
+  let names_list = map(bufs_without_self, { _, item -> substitute(item, 'line \d*$', '', '') })
   let sorted_by_last_opened = sort(names_list, "SortBufsByLastOpened")
   return sorted_by_last_opened
 endfunction
@@ -136,6 +137,14 @@ command! DeleteBuffers call fzf#run(fzf#wrap({
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 nnoremap <a-s-x> :DeleteBuffers<cr>
+
+" find tab with file and switch to it, or open new tab with file
+command! SwitchToTab call fzf#run(fzf#wrap({
+  \ 'source': Bufs(),
+  \ 'sink*': { lines -> execute('drop ' . matchstr(lines[0], '[^ ]* *$')) },
+  \ 'options': ''
+\ }))
+nnoremap <tab> :SwitchToTab<cr>
 
 " search in open buffers
 nnoremap <c-f> :Lines<cr>
@@ -343,14 +352,6 @@ nnoremap <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'w
 nnoremap <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <c-o> :History<cr>
 nnoremap <s-tab> :Buffers<cr>
-
-" find tab with file and switch to it, or open new tab with file
-command! SwitchToTab call fzf#run(fzf#wrap({
-  \ 'source': Bufs(),
-  \ 'sink*': { lines -> execute('drop ' . split(split(join(lines), ' "')[1], '"')[0]) },
-  \ 'options': ''
-\ }))
-nnoremap <tab> :SwitchToTab<cr>
 
 " fzf command history feature
 let g:fzf_history_dir = '~/.fzf-history'
