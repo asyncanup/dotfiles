@@ -116,11 +116,19 @@ if has('nvim') && !exists('g:fzf_layout')
 endif
 
 " allows deleting buffers en-masse
+function! SortBufsByLastOpened(b1, b2)
+  let t1 = get(g:fzf#vim#buffers, split(a:b1)[0], -1)
+  let t2 = get(g:fzf#vim#buffers, split(a:b2)[0], -1)
+  return t1 < t2
+endfunction
 function! Bufs()
-  redir => list
+  redir => ls_output
   silent ls
   redir END
-  return split(list, "\n")
+  let buf_list = split(ls_output, "\n")
+  let names_list = map(buf_list, { _, item -> substitute(item, 'line.*', '', '') })
+  let sorted_by_last_opened = sort(names_list, "SortBufsByLastOpened")
+  return sorted_by_last_opened
 endfunction
 command! DeleteBuffers call fzf#run(fzf#wrap({
   \ 'source': Bufs(),
@@ -339,10 +347,13 @@ nnoremap <s-tab> :Buffers<cr>
 " find tab with file and switch to it, or open new tab with file
 command! SwitchToTab call fzf#run(fzf#wrap({
   \ 'source': Bufs(),
-  \ 'sink*': { lines -> execute('drop '.split(split(join(lines), ' "')[1], '"')[0]) },
+  \ 'sink*': { lines -> execute('drop ' . split(split(join(lines), ' "')[1], '"')[0]) },
   \ 'options': ''
 \ }))
 nnoremap <tab> :SwitchToTab<cr>
+
+" fzf command history feature
+let g:fzf_history_dir = '~/.fzf-history'
 
 " color scheme
 colorscheme PaperColor
@@ -540,6 +551,10 @@ nnoremap <c-w>t :tabedit <c-r>=expand('%p')<cr><cr>
 " navigate tabs
 nnoremap <a-down> gt
 nnoremap <a-up> gT
+
+" move tabs left or right
+nnoremap <a-s-down> :tabm +1<cr>
+nnoremap <a-s-up> :tabm -1<cr>
 
 " toggle relative number
 nnoremap <leader>u :set invrelativenumber<cr>
