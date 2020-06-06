@@ -125,8 +125,8 @@ function! Bufs()
   redir => ls_output
   silent ls
   redir END
-  let buf_list = split(ls_output, "\n")
-  let names_list = map(buf_list, { _, item -> substitute(item, 'line.*', '', '') })
+  let buf_list = split(substitute(ls_output, '"', '', 'g'), "\n")
+  let names_list = map(buf_list, { _, item -> substitute(item, 'line \d*$', '', '') })
   let sorted_by_last_opened = sort(names_list, "SortBufsByLastOpened")
   return sorted_by_last_opened
 endfunction
