@@ -121,7 +121,7 @@ function! SortBufsByLastOpened(b1, b2)
   let t2 = get(g:fzf#vim#buffers, split(a:b2)[0], -1)
   return t1 < t2
 endfunction
-function! Bufs()
+function! BufsByLastOpened()
   redir => ls_output
   silent ls
   redir END
@@ -132,7 +132,7 @@ function! Bufs()
   return sorted_by_last_opened
 endfunction
 command! DeleteBuffers call fzf#run(fzf#wrap({
-  \ 'source': Bufs(),
+  \ 'source': BufsByLastOpened(),
   \ 'sink*': { lines -> execute('bwipeout '.join(map(lines, {_, line -> split(line)[0]}))) },
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
@@ -140,7 +140,7 @@ nnoremap <a-s-x> :DeleteBuffers<cr>
 
 " find tab with file and switch to it, or open new tab with file
 command! SwitchToTab call fzf#run(fzf#wrap({
-  \ 'source': Bufs(),
+  \ 'source': BufsByLastOpened(),
   \ 'sink*': { lines -> execute('drop ' . matchstr(lines[0], '[^ ]* *$')) },
   \ 'options': ''
 \ }))
