@@ -477,6 +477,23 @@ endfunction
 nnoremap <c-q> :call CloseWindow()<CR>
 nnoremap <c-a-q> :q!<cr>
 
+" show internal output of ex command in a new tab
+" from https://vim.fandom.com/wiki/Capture_ex_command_output
+function! CommandOutput(cmd)
+  redir => message
+  silent execute a:cmd
+  redir END
+  if empty(message)
+    echo "no ex output"
+  else
+    " use "new" instead of "tabnew" below if you prefer split windows instead of tabs
+    tabnew
+    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+    silent put=message
+  endif
+endfunction
+command! -nargs=+ -complete=command CommandOutput call CommandOutput(<q-args>)
+
 " close buffer
 nnoremap <c-x> :b #<cr>:bd #<cr>
 nnoremap <a-x> :bp<cr>:bd #<cr>
