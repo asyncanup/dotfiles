@@ -1,0 +1,18 @@
+snippet fg "Bazel filegroup" b
+filegroup(
+	name = "$1",
+	srcs = $0
+)
+endsnippet
+
+snippet ( "multi-line ()" i
+(
+	$0
+)
+endsnippet
+
+snippet [ "multi-line []" w
+[
+	$1
+]$0
+endsnippet
