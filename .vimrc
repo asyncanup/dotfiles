@@ -167,10 +167,10 @@ function! RipgrepFzf(query, fullscreen)
   let spec = {'options': ['--query', query_filtered, '--bind', 'change:reload:'.reload_command.',alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up']}
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
-command! -nargs=* -bang RgCustom call RipgrepFzf(<q-args>, <bang>0)
+command! -nargs=* -bang Ripgrep call RipgrepFzf(<q-args>, <bang>0)
 
-nnoremap <bslash> :RgCustom <c-r>=expand('<cword>')<cr><cr>
-vnoremap <bslash> y<esc>:RgCustom <c-r>=escape(@",'\{(')<cr><cr>
+nnoremap <bslash> :Rg <c-r>=expand('<cword>')<cr><cr>
+vnoremap <bslash> y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
 
 " git operations
 nnoremap gb :Gblame<cr>
