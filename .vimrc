@@ -82,14 +82,23 @@ let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
 let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
 let g:deoplete#enable_at_startup = 1
 
-" enable buffer list, with numbers
+" airline statusline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tagbar#enabled = 1
-
-" powerline fonts
 let g:airline_powerline_fonts = 1
 let g:airline_left_alt_sep = ''
+let g:airline#extensions#default#section_truncate_width = {
+    \ 'b': 90,
+    \ 'x': 90,
+    \ 'y': 100,
+    \ 'z': 90,
+    \ 'warning': 60,
+    \ 'error': 60,
+    \ }
+let g:airline#extensions#default#layout = [
+    \ [ 'a', 'b', 'c' ],
+    \ [ 'x', 'y', 'z', 'error', 'warning' ]
+    \ ]
 
 " js code formatter config
 let g:prettier#autoformat = 0
@@ -169,8 +178,9 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 command! -nargs=* -bang Ripgrep call RipgrepFzf(<q-args>, <bang>0)
 
-nnoremap <bslash> :Rg <c-r>=expand('<cword>')<cr><cr>
-vnoremap <bslash> y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
+nnoremap <bslash> :Rg<cr>
+nnoremap \| :Rg <c-r>=expand('<cword>')<cr><cr>
+vnoremap \| y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
 
 " git operations
 nnoremap gb :Gblame<cr>
@@ -217,9 +227,6 @@ xmap ic <plug>(signify-motion-inner-visual)
 omap ac <plug>(signify-motion-outer-pending)
 xmap ac <plug>(signify-motion-outer-visual)
 
-" mark colors
-highlight SignatureMarkText ctermfg=gray guifg=gray ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
-
 " stop rooter from changing directory automatically
 let g:rooter_manual_only = 1
 nnoremap <a-c> :Rooter<cr>
@@ -257,8 +264,8 @@ omap <leader>s <plug>(easymotion-bd-f2)
 nnoremap <leader>cn :CycleColorNext<cr>
 nnoremap <leader>cp :CycleColorPrev<cr>
 
-" show tag bar (file outline)
-nnoremap <a-s-t> :TagbarToggle<cr>
+" show Vista file outline
+nnoremap <a-s-t> :Vista!!<cr>
 
 " nnn file manager
 nnoremap <leader><tab> :NnnPicker '%:p:h'<cr>
@@ -277,6 +284,10 @@ let g:EnhancedJumps_no_mappings = 1
 " ultisnips
 let g:UltiSnipsExpandTrigger = '<c-t>'
 let g:UltiSnipsJumpForwardTrigger = '<c-x>'
+
+" ctrl-space
+set showtabline=0
+let g:CtrlSpaceDefaultMappingKey = '<c-space> '
 
 " ---- load plugins ----
 
@@ -307,9 +318,7 @@ Plug 'airblade/vim-rooter'
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
-Plug 'vim-scripts/CycleColor'
 Plug 'flazz/vim-colorschemes'
-Plug 'majutsushi/tagbar'
 Plug 'plasticboy/vim-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
@@ -317,6 +326,8 @@ Plug 'mcchrish/nnn.vim'
 Plug 'vim-scripts/LargeFile'
 Plug 'pgr0ss/vim-github-url'
 Plug 'nelstrom/vim-visual-star-search'
+Plug 'liuchengxu/vista.vim'
+Plug 'vim-ctrlspace/vim-ctrlspace'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
@@ -356,17 +367,23 @@ nnoremap <s-tab> :Buffers<cr>
 " fzf command history feature
 let g:fzf_history_dir = '~/.fzf-history'
 
+function! s:update_colors()
+  " mark colors
+  highlight SignatureMarkText ctermfg=gray guifg=gray ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
+
+  " signify colors (must be after color scheme)
+  highlight SignifySignAdd    ctermfg=magenta guifg=#00ff00 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
+  highlight SignifySignDelete ctermfg=blue    guifg=#ff0000 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
+  highlight SignifySignChange ctermfg=green   guifg=#ffff00 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
+
+  " line number color (overrides colorscheme)
+  highlight CursorLineNr ctermfg=blue
+endfunction
+autocmd User AirlineAfterTheme call s:update_colors()
+
 " color scheme
 colorscheme PaperColor
 set bg=dark
-
-" signify colors (must be after color scheme)
-highlight SignifySignAdd    ctermfg=magenta guifg=#00ff00 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
-highlight SignifySignDelete ctermfg=blue    guifg=#ff0000 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
-highlight SignifySignChange ctermfg=green   guifg=#ffff00 cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
-
-" line number color (overrides colorscheme)
-highlight CursorLineNr ctermfg=blue
 
 " ---- editor commands ----
 " included here so that plugins can't overwrite bindings
@@ -376,8 +393,8 @@ nnoremap <up> <c-w>k
 nnoremap <down> <c-w>j
 nnoremap <left> <c-w>h
 nnoremap <right> <c-w>l
-nnoremap <s-up> <c-w>k
-nnoremap <s-down> <c-w>j
+nnoremap <s-up> <c-w>k<c-w>1000+
+nnoremap <s-down> <c-w>j<c-w>1000+
 nnoremap <s-left> <c-w>h
 nnoremap <s-right> <c-w>l
 inoremap <s-up> <esc><c-w>k
@@ -403,8 +420,9 @@ inoremap <c-a> <esc>I
 inoremap <a-b> <esc>`^bi
 inoremap <a-f> <esc>`^wi
 inoremap <a-d> <esc>`^dwi
-" following does not go beyond the previous line
+" backspace: does not go beyond the previous line
 inoremap <c-h> <esc>l"_dbi
+cnoremap <c-h> <c-w>
 
 " go to previous and next cursor locations across buffers
 nnoremap - <c-o>
