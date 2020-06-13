@@ -84,7 +84,11 @@ let g:deoplete#enable_at_startup = 1
 
 " airline statusline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#ctrlspace_show_tab_nr = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffers_label = 'b'
+let g:airline#extensions#tabline#tabs_label = 't'
+let airline#extensions#tabline#current_first = 1
 let g:airline_powerline_fonts = 1
 let g:airline_left_alt_sep = ''
 let g:airline#extensions#default#section_truncate_width = {
@@ -96,8 +100,8 @@ let g:airline#extensions#default#section_truncate_width = {
     \ 'error': 60,
     \ }
 let g:airline#extensions#default#layout = [
-    \ [ 'a', 'b', 'c' ],
-    \ [ 'x', 'y', 'z', 'error', 'warning' ]
+    \ [ 'a', 'c' ],
+    \ [ 'b', 'x', 'y', 'z', 'error', 'warning' ]
     \ ]
 
 " js code formatter config
@@ -185,13 +189,8 @@ vnoremap \| y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
 " git operations
 nnoremap gb :Gblame<cr>
 
-" show file list
-let g:NERDTreeWinPos = "right"
-nnoremap <leader>nt :NERDTreeFind<cr>zz50<c-w>|
-
 " go to definition
-nnoremap <space> :YcmCompleter GoTo<cr>
-nnoremap <enter> :YcmCompleter GoToReferences<cr>
+nnoremap <enter> :YcmCompleter GoTo<cr>
 
 " go to references
 nnoremap yr :YcmCompleter GoToReferences<cr>
@@ -285,9 +284,11 @@ let g:EnhancedJumps_no_mappings = 1
 let g:UltiSnipsExpandTrigger = '<c-t>'
 let g:UltiSnipsJumpForwardTrigger = '<c-x>'
 
-" ctrl-space
-set showtabline=0
-let g:CtrlSpaceDefaultMappingKey = '<c-space> '
+" ctrl-space window, tab, workspace management
+let g:CtrlSpaceDefaultMappingKey = '<space> '
+let g:CtrlSpaceLoadLastWorkspaceOnStart = 1
+let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
+let g:CtrlSpaceSaveWorkspaceOnExit = 1
 
 " ---- load plugins ----
 
@@ -311,7 +312,6 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdtree'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
@@ -363,6 +363,17 @@ nnoremap <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'w
 nnoremap <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <c-o> :History<cr>
 nnoremap <s-tab> :Buffers<cr>
+
+" move to tab number
+nnoremap <a-1> 1gt
+nnoremap <a-2> 2gt
+nnoremap <a-3> 3gt
+nnoremap <a-4> 4gt
+nnoremap <a-5> 5gt
+nnoremap <a-6> 6gt
+nnoremap <a-7> 7gt
+nnoremap <a-8> 8gt
+nnoremap <a-9> 9gt
 
 " fzf command history feature
 let g:fzf_history_dir = '~/.fzf-history'
@@ -484,16 +495,33 @@ nnoremap <leader>r :e<cr>
 nnoremap <leader>j J
 inoremap <a-j> <esc>kJgi
 
-" close window, quit
+" close window, not tab
 function! CloseWindow()
-  if winnr("$") == 1 && tabpagenr("$") > 1 && tabpagenr() > 1 && tabpagenr() < tabpagenr("$")
-    tabclose | tabprev
-  else
+  if winnr("$") != 1
     close
+  else
+    echo "Last window in tab"
   endif
 endfunction
-nnoremap <c-q> :call CloseWindow()<CR>
+nnoremap <c-q> :call CloseWindow()<cr>
+
+" close tab, all windows
+function! CloseTab()
+  if tabpagenr("$") == 1
+    echo "Last tab in vim"
+  elseif tabpagenr() > 1 && tabpagenr() < tabpagenr("$")
+    tabclose | tabprev
+  else
+    tabclose
+  endif
+endfunction
+nnoremap <a-q> :call CloseTab()<cr>
+
+" quit dirty window/tab
 nnoremap <c-a-q> :q!<cr>
+
+" quit vim, if not dirty
+nnoremap <a-s-q> :qall<cr>
 
 " show internal output of ex command in a new tab
 " from https://vim.fandom.com/wiki/Capture_ex_command_output
@@ -549,9 +577,6 @@ endif
 
 " change current directory to current file's parent
 nnoremap <c-c> :cd %:p:h<cr>
-
-" save session and close
-nnoremap <a-q> :SClose<cr>
 
 " highlight cursor line
 set cursorline
