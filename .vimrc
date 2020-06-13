@@ -289,6 +289,7 @@ let g:CtrlSpaceDefaultMappingKey = '<space> '
 let g:CtrlSpaceLoadLastWorkspaceOnStart = 1
 let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
 let g:CtrlSpaceSaveWorkspaceOnExit = 1
+nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
 
 " ---- load plugins ----
 
@@ -363,6 +364,9 @@ nnoremap <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'w
 nnoremap <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <c-o> :History<cr>
 nnoremap <s-tab> :Buffers<cr>
+
+" command history
+nnoremap <a-:> :History:<cr>
 
 " move to tab number
 nnoremap <a-1> 1gt
