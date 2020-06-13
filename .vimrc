@@ -101,8 +101,9 @@ let g:airline#extensions#default#section_truncate_width = {
     \ }
 let g:airline#extensions#default#layout = [
     \ [ 'a', 'c' ],
-    \ [ 'b', 'x', 'y', 'z', 'error', 'warning' ]
+    \ [ 'b', 'z', 'error', 'warning' ]
     \ ]
+let g:airline#extensions#branch#displayed_head_limit = 18
 
 " js code formatter config
 let g:prettier#autoformat = 0
