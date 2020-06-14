@@ -328,8 +328,21 @@ grbc() {
   fi
 }
 
-alias gcd='cd $(git rev-parse --show-toplevel)'
+gmerge_to_master() (
+  set -ex
+  br=$(git rev-parse --abbrev-ref HEAD)
+  if [[ "$br" == "master" ]]; then
+    echo "Already on master"
+  fi
+  git checkout master
+  git pull --rebase
+  git merge $br
+  git push
+  git branch --delete $br
+  git push -d origin $br
+)
 
+alias gcd='cd $(git rev-parse --show-toplevel)'
 alias gdmm='git diff $(git merge-base master HEAD)..HEAD'
 alias ghist='git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"'
 alias gdeletemerged='git branch -r --merged origin/master | grep -v origin/master | sed "s/.*\///" | xargs git push -d origin'
@@ -369,20 +382,22 @@ gg() {
   H="${C_CYAN}"
   B="${C_BLUE}"
   printf " ${H}b${B}ranch"          # branch
-  printf "  ${H}c${B}ommit"         # commit
-  printf "  diff ${H}m${B}aster  "  # diff master
-  printf "  ${H}d${B}iff  "         # diff
-  printf "  ${H}s${B}tash"          # stash
+  printf "  ${H}l${B}og"            # log
+  printf "  ${H}d${B}iff"           # diff
+  printf "  ${H}c${B}ommit"         # new commit
+  printf "  ${H}D${B}iff o/master"  # diff origin/master
   printf "  r${H}e${B}base  "       # rebase
-  printf "  ${H}p${B}ush\n"         # push with rebase
+  printf "  ${H}f${B}etch"          # fetch
+  printf "  ${H}p${B}ush\n"         # rebase & push
 
-  printf " ${H}l${B}og   "          # log
-  printf "  ${H}a${B}mend "         # amend commit
+  printf " ${H}s${B}tash "          # stash
+  printf "  p${H}o${B}p"            # stash pop
+  printf "  ${H}a${B}dd "           # add
+  printf "  a${H}m${B}end "         # amend commit
   printf "  ${H}u${B}pdate master"  # update master
-  printf "  ${H}r${B}eset "         # reset
-  printf "  p${H}o${B}p  "          # staged
   printf "  co${H}n${B}tinue"       # continue rebase
-  printf "  ${H}R${B}ESET\n"   # reset hard
+  printf "  ${H}r${B}eset"          # reset
+  printf "  ${H}R${B}ESET\n"        # reset hard
 
   while true; do
     echo -en "\r$(tput el)${C_CYAN}${C_RESET} "
@@ -404,22 +419,25 @@ gg() {
     c_master=$(git rev-parse master)
     case $pressed_key in
       b)    echo branch; git checkout $(git-branches) ;;
-      c)    echo commit; git add $(git-files); git commit --verbose ;;
-      m)    echo diff master; git diff origin/master..HEAD ;;
+      l)    echo log; glog ;;
       d)    echo diff; git diff ;;
-      s)    echo stash; git stash ;;
+      c)    echo commit; git add $(git-files); git commit --verbose ;;
+      D)    echo diff master; git diff origin/master..HEAD ;;
       e)    echo rebase; git rebase -i $(git-branches) ;;
+      f)    echo fetch; git fetch ;;
       p)    echo push; [[ $c_head != $c_master ]] && git rebase -i origin/master; gp ;;
 
-      l)    echo log; glog ;;
-      a)    echo amend commit; git add $(git-files); git commit --amend --verbose ;;
-      u)    echo update master; git checkout master; git pull --rebase; git checkout - ;;
-      r)    echo reset soft; git reset ;;
+      s)    echo stash; git stash ;;
       o)    echo pop; git stash pop ;;
+      a)    echo add; git add $(git-files) ;;
+      m)    echo amend commit; git add $(git-files); git commit --amend --verbose ;;
+      u)    echo update master; git checkout master; git pull --rebase; git checkout - ;;
       n)    echo rebase continue; grbc ;;
+      r)    echo reset soft; git reset ;;
       R)    echo reset hard; git reset --hard HEAD ;;
 
       $';') echo shell; read -e -p "$ " cmd; bash -lic "$cmd" ;;
+      g)    read -e -p "git " cmd; [[ "$cmd" != "" ]] && bash -lic "git $cmd" ;;
 
       $KEY_ESCAPE|\
       q)     echo quit; return 0 ;;
