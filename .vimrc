@@ -163,7 +163,8 @@ nnoremap <tab> :SwitchToTab<cr>
 nnoremap <c-f> :Lines<cr>
 
 " search in current buffer
-nnoremap <a-f> :BLines<cr>
+nnoremap ? :BLines<cr>
+nnoremap <leader>/ ?
 
 " search in project
 function! RipgrepFzf(query, fullscreen)
@@ -570,8 +571,8 @@ nnoremap <a-p>i :w<cr>:source ~/.vimrc<cr>:PlugInstall<cr>
 nnoremap <a-p>c :w<cr>:source ~/.vimrc<cr>:PlugClean<cr>
 
 " marks
-nnoremap J ]`
-nnoremap K [`
+nnoremap J ]`zz
+nnoremap K [`zz
 
 " use rg if available to search for text
 if executable('rg')
@@ -662,6 +663,8 @@ nnoremap gp `[v`]
 
 nnoremap <leader>t4 :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<cr>
 nnoremap <leader>t2 :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<cr>
+
+nnoremap & <c-w>1000+
 
 " ---- terminal commands ----
 if has ("nvim")
