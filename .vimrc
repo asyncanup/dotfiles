@@ -103,7 +103,7 @@ let g:airline#extensions#default#layout = [
     \ [ 'a', 'c' ],
     \ [ 'b', 'z', 'error', 'warning' ]
     \ ]
-let g:airline#extensions#branch#displayed_head_limit = 18
+let g:airline#extensions#branch#displayed_head_limit = 20
 
 " js code formatter config
 let g:prettier#autoformat = 0
@@ -472,8 +472,8 @@ endwhile
 nnoremap <esc> :noh<cr>:<bs>
 
 " switch to next buffer
-nnoremap L :bn<cr>
-nnoremap H :bp<cr>
+nnoremap L :CtrlSpaceGoDown<cr>
+nnoremap H :CtrlSpaceGoUp<cr>
 
 " reload vimrc
 nnoremap <a-r> :source ~/.vimrc<cr>
