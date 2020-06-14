@@ -16,6 +16,7 @@ set nocompatible
 
 " reload files on change in file system
 set autoread
+autocmd FocusGained,BufEnter * :silent! checktime
 
 " allow case insensitive searches by default
 set ignorecase
