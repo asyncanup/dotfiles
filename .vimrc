@@ -164,7 +164,7 @@ nnoremap <c-f> :Lines<cr>
 
 " search in current buffer
 nnoremap ? :BLines<cr>
-nnoremap <leader>/ ?
+nnoremap <a-/> ?
 
 " search in project
 function! RipgrepFzf(query, fullscreen)
@@ -231,19 +231,6 @@ xmap ac <plug>(signify-motion-outer-visual)
 let g:rooter_manual_only = 1
 nnoremap <a-c> :Rooter<cr>
 
-" startify lists
-let g:startify_lists = [
-      \ { 'type': 'sessions',  'header': ['   Sessions']       },
-      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-      \ { 'type': 'commands',  'header': ['   Commands']       },
-      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-      \ ]
-
-let g:startify_custom_header = ''
-let g:startify_files_number = 20
-let g:startify_session_persistence = 1
-let g:startify_bookmarks = [ '~/.todo', '~/.status-updates', '~/scratch' ]
-
 " vim easymotion shortcuts
 xmap <leader>t <plug>(easymotion-t)
 omap <leader>t <plug>(easymotion-t)
@@ -287,7 +274,6 @@ let g:UltiSnipsJumpForwardTrigger = '<c-x>'
 
 " ctrl-space window, tab, workspace management
 let g:CtrlSpaceDefaultMappingKey = '<space> '
-let g:CtrlSpaceLoadLastWorkspaceOnStart = 1
 let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
 let g:CtrlSpaceSaveWorkspaceOnExit = 1
 nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
@@ -317,7 +303,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
-Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
 Plug 'flazz/vim-colorschemes'
