@@ -45,7 +45,7 @@ set nojoinspaces
 " default text width
 set textwidth=80
 
-" expand tab
+" expand tabs to spaces
 set expandtab
 set shiftwidth=4
 set tabstop=4
