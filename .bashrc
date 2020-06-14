@@ -526,7 +526,7 @@ alias ..='cd ..'
 # FZF fuzzy finder settings
 export FZF_DEFAULT_COMMAND='rg --hidden'
 export FZF_DEFAULT_OPTS='--no-info --height 50% --reverse'
-export FZF_CTRL_T_COMMAND='rg --files'
+export FZF_CTRL_T_COMMAND='rg --files >/dev/null'
 export FZF_CTRL_T_OPTS='--preview "bat --style=numbers,header --color=always {}" --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up"'
 complete -F _fzf_dir_completion -o default -o bashdefault tree
 
