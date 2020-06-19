@@ -73,6 +73,12 @@ set path=.,
 " switching to other buffers opens the relevant window if available
 set switchbuf=usetab,vsplit
 
+" vim screen update time is relevant for signify (git)
+set updatetime=100
+
+" highlight cursor line
+set cursorline
+
 " set leader key
 let mapleader = ","
 
@@ -110,18 +116,18 @@ let g:airline#extensions#branch#displayed_head_limit = 20
 let g:prettier#autoformat = 0
 let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v10.17.0/bin/prettier"
 let g:prettier#config#tab_width = 4
-nnoremap <leader>p :PrettierAsync<cr>
+nnoremap <silent> <leader>p :PrettierAsync<cr>
 " autocmd BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " python code formatter config
 " autocmd BufWritePre *.py YAPF
 
 " fullscreen zen writing mode
-nnoremap <a-g> :Goyo 100<cr>
+nnoremap <silent> <a-g> :Goyo 100<cr>
 
 " commit finder
-nnoremap gm :BCommits<cr>
-nnoremap gl :Commits<cr>
+nnoremap <silent> gm :BCommits<cr>
+nnoremap <silent> gl :Commits<cr>
 
 " cleaner look for FZF, removes the redundant statusline that says TERMINAL
 if has('nvim') && !exists('g:fzf_layout')
@@ -164,13 +170,13 @@ nnoremap <tab> :DropToBufferWindow<cr>
 
 " drop to last buffer in its window
 command! DropToLastBufferWindow execute('drop ' . matchstr(BufsByLastOpened()[0],'[^ ]* *$'))
-nnoremap <c-^> :DropToLastBufferWindow<cr>
+nnoremap <silent> <c-^> :DropToLastBufferWindow<cr>
 
 " search in open buffers
-nnoremap <c-f> :Lines<cr>
+nnoremap <silent> <c-f> :Lines<cr>
 
 " search in current buffer
-nnoremap ? :BLines<cr>
+nnoremap <silent> ? :BLines<cr>
 nnoremap <a-/> ?
 
 " search in project
@@ -190,9 +196,9 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 command! -nargs=* -bang Ripgrep call RipgrepFzf(<q-args>, <bang>0)
 
-nnoremap <bslash> :Rg<cr>
-nnoremap \| :Rg <c-r>=expand('<cword>')<cr><cr>
-vnoremap \| y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
+nnoremap <silent> <bslash> :Rg<cr>
+nnoremap <silent> \| :Rg <c-r>=expand('<cword>')<cr><cr>
+vnoremap <silent> \| y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
 
 " git operations
 nnoremap gb :Gblame<cr>
@@ -220,13 +226,10 @@ nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gc :Gcommit -v<cr>
 
-" vim screen update time is relevant for signify (git)
-set updatetime=100
-
 " git hunk jumping
 nmap <a-l> <plug>(signify-next-hunk)
 nmap <a-h> <plug>(signify-prev-hunk)
-nnoremap <a-;> :SignifyHunkDiff<cr>
+nnoremap <silent> <a-;> :SignifyHunkDiff<cr>
 nnoremap <a-d> :SignifyDiff<cr>
 nnoremap <a-u> :SignifyHunkUndo<cr>
 omap ic <plug>(signify-motion-inner-pending)
@@ -262,7 +265,7 @@ nnoremap <leader>cp :CycleColorPrev<cr>
 nnoremap <a-s-t> :Vista!!<cr>
 
 " nnn file manager
-nnoremap <leader><tab> :NnnPicker '%:p:h'<cr>
+nnoremap <silent> <leader><tab> :NnnPicker '%:p:h'<cr>
 let g:nnn#layout = { 'down': '~35%' }
 let g:nnn#action = {
       \ '<c-t>': 'tab split',
@@ -352,14 +355,14 @@ map g_ <plug>EnhancedJumpsLocalNewer
 " file finder
 command! -bang -nargs=? -complete=dir GFiles
     \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-nnoremap <c-p> :GFiles<cr>
-nnoremap <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'window': '20new'})<cr>
-nnoremap <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
-nnoremap <c-o> :History<cr>
-nnoremap <s-tab> :Buffers<cr>
+nnoremap <silent> <c-p> :GFiles<cr>
+nnoremap <silent> <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <silent> <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <silent> <c-o> :History<cr>
+nnoremap <silent> <s-tab> :Buffers<cr>
 
 " command history
-nnoremap <a-:> :History:<cr>
+nnoremap <silent> <a-:> :History:<cr>
 
 " move to tab number
 nnoremap <a-1> 1gt
@@ -401,10 +404,12 @@ nnoremap <up> <c-w>k
 nnoremap <down> <c-w>j
 nnoremap <left> <c-w>h
 nnoremap <right> <c-w>l
-nnoremap <s-up> <c-w>k<c-w>1000+
-nnoremap <s-down> <c-w>j<c-w>1000+
-nnoremap <s-left> <c-w>h
-nnoremap <s-right> <c-w>l
+
+nnoremap <s-up> <c-w>k<c-w>_
+nnoremap <s-down> <c-w>j<c-w>_
+nnoremap <silent> <s-left> <c-w>=<c-w>h:execute "resize " . (winwidth(0) * 2)<cr>
+nnoremap <silent> <s-right> <c-w>=<c-w>l:execute "resize " . (winwidth(0) * 2)<cr>
+
 inoremap <s-up> <esc><c-w>k
 inoremap <s-down> <esc><c-w>j
 inoremap <s-left> <esc><c-w>h
@@ -445,13 +450,13 @@ nnoremap ; :
 vnoremap ; :
 
 " quickfix shortcuts
-nnoremap <a-j> :cnext<cr>
-nnoremap <a-k> :cprev<cr>
+nnoremap <silent> <a-j> :cnext<cr>
+nnoremap <silent> <a-k> :cprev<cr>
 nnoremap <a-o> :copen<cr>
 
 " location list shortcuts
-nnoremap <a-s-j> :lnext<cr>
-nnoremap <a-s-k> :lprev<cr>
+nnoremap <silent> <a-s-j> :lnext<cr>
+nnoremap <silent> <a-s-k> :lprev<cr>
 nnoremap <a-s-o> :lopen<cr>
 
 " shortcut to save files
@@ -467,7 +472,7 @@ nnoremap U <c-r>
 " navigate to numbered buffer with 2o, 3o, etc
 let c = 1
 while c <= 99
-  execute "nnoremap " . c . "o :" . c . "b\<cr>"
+  execute "nnoremap <silent> " . c . "o :" . c . "b\<cr>"
   let c += 1
 endwhile
 
@@ -475,8 +480,8 @@ endwhile
 nnoremap <esc> :noh<cr>:<bs>
 
 " switch to next buffer
-nnoremap L :CtrlSpaceGoDown<cr>
-nnoremap H :CtrlSpaceGoUp<cr>
+nnoremap <silent> L :CtrlSpaceGoDown<cr>
+nnoremap <silent> H :CtrlSpaceGoUp<cr>
 
 " reload vimrc
 nnoremap <a-r> :source ~/.vimrc<cr>
@@ -538,14 +543,14 @@ endfunction
 command! -nargs=+ -complete=command CommandOutput call CommandOutput(<q-args>)
 
 " close buffer
-nnoremap <c-x> :b #<cr>:bd #<cr>
-nnoremap <a-x> :bp<cr>:bd #<cr>
+nnoremap <silent> <c-x> :b #<cr>:bd #<cr>
+nnoremap <silent> <a-x> :bp<cr>:bd #<cr>
 
 " regular clipboard
 nnoremap <c-v> "+p
 nnoremap <c-y> 0"+y$:echo 'Copied: '.@+<cr>
 nnoremap <a-y> gg"+yG``
-inoremap <c-v> <esc>:set paste<cr>"+p:set nopaste<cr>a
+inoremap <silent> <c-v> <esc>:set paste<cr>"+p:set nopaste<cr>a
 vnoremap <c-y> "+y
 vnoremap <c-x> "+d
 vnoremap <c-v> d"+P
@@ -554,7 +559,7 @@ vnoremap <c-v> d"+P
 nnoremap <c-e> :e <c-r>=expand("%:p:h") . "/" <cr>
 
 " paste and nopaste
-nnoremap <a-p>p :set invpaste<cr>
+nnoremap <silent> <a-p>p :set invpaste<cr>
 
 " install newly added plugins
 nnoremap <a-p>i :w<cr>:source ~/.vimrc<cr>:PlugInstall<cr>
@@ -575,28 +580,25 @@ endif
 " change current directory to current file's parent
 nnoremap <c-c> :cd %:p:h<cr>
 
-" highlight cursor line
-set cursorline
-
 " make g; and g, go forward and backward for character searches
 nnoremap g; ;
 nnoremap g, ,
 
 " move the line up or down
-nnoremap <c-j> :m .+1<cr>
-nnoremap <c-k> :m .-2<cr>
-inoremap <c-j> <esc>:m .+1<cr>gi
-inoremap <c-k> <esc>:m .-2<cr>gi
-vnoremap <c-j> :m '>+1<cr>gv
-vnoremap <c-k> :m '<-2<cr>gv
+nnoremap <silent> <c-j> :m .+1<cr>
+nnoremap <silent> <c-k> :m .-2<cr>
+inoremap <silent> <c-j> <esc>:m .+1<cr>gi
+inoremap <silent> <c-k> <esc>:m .-2<cr>gi
+vnoremap <silent> <c-j> :m '>+1<cr>gv
+vnoremap <silent> <c-k> :m '<-2<cr>gv
 
 " move the line up or down by a number
 let c = 1
 while c <= 20
-  execute "nnoremap " . c . "<c-k> :m .-" . (c+1) . "<cr>"
-  execute "nnoremap " . c . "<c-j> :m .+" . c . "<cr>"
-  execute "vnoremap " . c . "<c-j> :m '>+" . c . "<cr>gv"
-  execute "vnoremap " . c . "<c-k> :m '<-" . (c+1) . "<cr>gv"
+  execute "nnoremap <silent> " . c . "<c-k> :m .-" . (c+1) . "<cr>"
+  execute "nnoremap <silent> " . c . "<c-j> :m .+" . c . "<cr>"
+  execute "vnoremap <silent> " . c . "<c-j> :m '>+" . c . "<cr>gv"
+  execute "vnoremap <silent> " . c . "<c-k> :m '<-" . (c+1) . "<cr>gv"
   let c += 1
 endwhile
 
@@ -611,8 +613,8 @@ nnoremap <a-down> gt
 nnoremap <a-up> gT
 
 " move tabs left or right
-nnoremap <a-s-down> :tabm +1<cr>
-nnoremap <a-s-up> :tabm -1<cr>
+nnoremap <silent> <a-s-down> :tabmove +1<cr>
+nnoremap <silent> <a-s-up> :tabmove -1<cr>
 
 " toggle relative number
 nnoremap <leader>u :set invrelativenumber<cr>
@@ -621,7 +623,7 @@ nnoremap <leader>u :set invrelativenumber<cr>
 nnoremap ^ <c-^>
 
 " make block contents go to their own line, splitting by comma
-nnoremap <leader>cs :s/\v([\[\(])/\1\r    /<cr>:s/\v([\]\)])/\r\1/<cr>k:s/\v\,\ ?/,\r    /g<cr>j0V%j
+nnoremap <silent> <leader>cs :s/\v([\[\(])/\1\r    /<cr>:s/\v([\]\)])/\r\1/<cr>k:s/\v\,\ ?/,\r    /g<cr>j0V%j
 
 " mark just sections in the file
 function! ResetToSectionMarks()
@@ -635,19 +637,19 @@ nnoremap <leader>mm :call ResetToSectionMarks()<cr>
 nnoremap <leader>gh yiW:e <c-r>=substitute(substitute(@", "github", "raw.githubusercontent", ""), "blob/", "", "")<cr><cr>
 
 " remove trailing whitespace
-nnoremap <leader>W :%s/\v[\ \t]+$//<cr>
+nnoremap <silent> <leader>W :%s/\v[\ \t]+$//<cr>
 
 " change multiple occurrences of selected text easily
 nnoremap c* *<c-o>cgn
 nnoremap c# #<C-o>cgn
 
 " conflict navigation and selection
-" ]x moves to next conflic, [x to previous
+" ]x moves to next conflict, [x to previous
 " ]> keeps remote copy, [< keeps yours
-nnoremap ]x /\v^\={7}$<cr>:noh<cr>zz
-nnoremap [x /\v^\={7}$<cr>:noh<cr>zz
-nnoremap ]< $?\v^\={7}\ <cr>d/\v^\>{7}\ <cr>dd?\v^\<{7}\ <cr>dd<c-o>zz
-nnoremap ]> ?\v^\<{7}\ <cr>d/\v^\={7}$<cr>dd/\v^\>{7}\ <cr>dd<c-o>zz
+nnoremap <silent> ]x /\v^\={7}$<cr>:noh<cr>zz
+nnoremap <silent> [x /\v^\={7}$<cr>:noh<cr>zz
+nnoremap <silent> ]< $?\v^\={7}\ <cr>d/\v^\>{7}\ <cr>dd?\v^\<{7}\ <cr>dd<c-o>zz
+nnoremap <silent> ]> ?\v^\<{7}\ <cr>d/\v^\={7}$<cr>dd/\v^\>{7}\ <cr>dd<c-o>zz
 
 " select just pasted (or just copied, or just edited) block
 " (gv already selects last visually selected block)
@@ -656,7 +658,9 @@ nnoremap gp `[v`]
 nnoremap <leader>t4 :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<cr>
 nnoremap <leader>t2 :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<cr>
 
-nnoremap & <c-w>1000+
+" easy peasy window sizing. maximize buffer size
+nnoremap + <c-w>1000+<c-w>1000>
+nnoremap = <c-w>=
 
 " ---- terminal commands ----
 if has ("nvim")
