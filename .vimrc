@@ -146,6 +146,7 @@ function! BufsByLastOpened()
   let sorted_by_last_opened = sort(names_list, "SortBufsByLastOpened")
   return sorted_by_last_opened
 endfunction
+
 command! DeleteBuffers call fzf#run(fzf#wrap({
   \ 'source': BufsByLastOpened(),
   \ 'sink*': { lines -> execute('bwipeout '.join(map(lines, {_, line -> split(line)[0]}))) },
@@ -154,12 +155,16 @@ command! DeleteBuffers call fzf#run(fzf#wrap({
 nnoremap <a-s-x> :DeleteBuffers<cr>
 
 " find tab with file and switch to it, or open new tab with file
-command! SwitchToTab call fzf#run(fzf#wrap({
+command! DropToBufferWindow call fzf#run(fzf#wrap({
   \ 'source': BufsByLastOpened(),
-  \ 'sink*': { lines -> execute('drop ' . matchstr(lines[0], '[^ ]* *$')) },
+  \ 'sink*': { lines -> execute('drop ' . matchstr(lines[0], '[^ ]* *$') . ' | resize 1000') },
   \ 'options': ''
 \ }))
-nnoremap <tab> :SwitchToTab<cr>
+nnoremap <tab> :DropToBufferWindow<cr>
+
+" drop to last buffer in its window
+command! DropToLastBufferWindow execute('drop ' . matchstr(BufsByLastOpened()[0],'[^ ]* *$'))
+nnoremap <a-6> :DropToLastBufferWindow<cr>
 
 " search in open buffers
 nnoremap <c-f> :Lines<cr>
@@ -479,6 +484,9 @@ nnoremap H :CtrlSpaceGoUp<cr>
 " reload vimrc
 nnoremap <a-r> :source ~/.vimrc<cr>
 inoremap <a-r> <esc>:source ~/.vimrc<cr>
+" reload only the visually selected text
+nnoremap <a-s-r> yy:<c-r>"<cr>
+vnoremap <a-r> y:<c-r>"<cr>
 
 " to reload a file from file system
 nnoremap <leader>r :e<cr>
