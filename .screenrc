@@ -10,7 +10,6 @@ altscreen on
 escape ^Aa
 
 # easier other (alternate window) switching
-bindkey ^^ other
 bindkey ^N other
 
 # easier copy mode

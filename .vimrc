@@ -164,7 +164,7 @@ nnoremap <tab> :DropToBufferWindow<cr>
 
 " drop to last buffer in its window
 command! DropToLastBufferWindow execute('drop ' . matchstr(BufsByLastOpened()[0],'[^ ]* *$'))
-nnoremap <a-6> :DropToLastBufferWindow<cr>
+nnoremap <c-^> :DropToLastBufferWindow<cr>
 
 " search in open buffers
 nnoremap <c-f> :Lines<cr>
@@ -463,9 +463,6 @@ vnoremap <c-s> <esc>:w<cr>
 
 " easier redo
 nnoremap U <c-r>
-
-" navigate to last used buffer
-nnoremap <c-6> :b#<cr>
 
 " navigate to numbered buffer with 2o, 3o, etc
 let c = 1
