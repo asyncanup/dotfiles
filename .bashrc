@@ -338,6 +338,8 @@ gmerge_to_master() (
   git push -d origin $br
 )
 
+alias gdeletemerged='git branch -r --merged origin/master | grep -v origin/master | sed "s/.*\///" | xargs git push -d origin'
+
 # primary git interface
 gg() {
   if ! git status >/dev/null 2>&1; then
