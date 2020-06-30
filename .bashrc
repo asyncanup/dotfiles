@@ -311,10 +311,6 @@ gcf() {
   fi
 }
 
-gdbr() {
-  git diff $1..HEAD
-}
-
 gp() {
   g p $@
 }
@@ -341,11 +337,6 @@ gmerge_to_master() (
   git branch --delete $br
   git push -d origin $br
 )
-
-alias gcd='cd $(git rev-parse --show-toplevel)'
-alias gdmm='git diff $(git merge-base master HEAD)..HEAD'
-alias ghist='git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"'
-alias gdeletemerged='git branch -r --merged origin/master | grep -v origin/master | sed "s/.*\///" | xargs git push -d origin'
 
 # primary git interface
 gg() {

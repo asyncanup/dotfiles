@@ -3,11 +3,14 @@
   f = fetch
   fap = fetch --all --prune
   cl = clone
+  cd = !cd $(git rev-parse --show-toplevel)
   d = diff
+  db = !git diff $1..HEAD
   dc = diff --cached
   di = diff --no-index
   dm = diff master..HEAD
   dms = diff master..HEAD --stat
+  dmm = !git diff $(git merge-base master HEAD)..HEAD
   sh = show
   cfs = diff --name-only --diff-filter=U
   co = checkout
@@ -20,6 +23,8 @@
   stp = stash pop
   sts = stash show -p
   stss = stash show -p --stat
+  std = stash drop
+  stdi = !git stash drop stash@{$1}
   stc = stash clear
   apl = apply
   c = commit --verbose
@@ -41,6 +46,7 @@
   bnm = branch -a --no-merged master
   l = log --pretty=format:\"%Cgreen%ad %Creset%s%Cgreen%d %Cblue- %an %Cgreen%h\" --graph --date=short
   lp = log -p
+  hist = !git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"
   r = reset
   rs = reset --soft
   rh = reset --hard
