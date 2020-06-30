@@ -176,8 +176,7 @@ nnoremap <silent> <c-^> :DropToLastBufferWindow<cr>
 nnoremap <silent> <c-f> :Lines<cr>
 
 " search in current buffer
-nnoremap <silent> ? :BLines<cr>
-nnoremap <a-/> ?
+nnoremap <silent> <a-/> :BLines<cr>
 
 " search in project
 function! RipgrepFzf(query, fullscreen)
@@ -198,7 +197,10 @@ command! -nargs=* -bang Ripgrep call RipgrepFzf(<q-args>, <bang>0)
 
 nnoremap <silent> <bslash> :Rg<cr>
 nnoremap <silent> \| :Rg <c-r>=expand('<cword>')<cr><cr>
-vnoremap <silent> \| y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
+vnoremap <silent> <bslash> y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
+
+" search for personal notes
+nnoremap <silent> gn :Rg :note:<cr>
 
 " git operations
 nnoremap gb :Gblame<cr>
@@ -262,7 +264,7 @@ nnoremap <leader>cn :CycleColorNext<cr>
 nnoremap <leader>cp :CycleColorPrev<cr>
 
 " show Vista file outline
-nnoremap <a-s-t> :Vista!!<cr>
+nnoremap <a-s-t> :Vista!!<cr><c-w>15>
 
 " nnn file manager
 nnoremap <silent> <leader><tab> :NnnPicker '%:p:h'<cr>
@@ -407,8 +409,8 @@ nnoremap <right> <c-w>l
 
 nnoremap <s-up> <c-w>k<c-w>_
 nnoremap <s-down> <c-w>j<c-w>_
-nnoremap <silent> <s-left> <c-w>=<c-w>h:execute "resize " . (winwidth(0) * 2)<cr>
-nnoremap <silent> <s-right> <c-w>=<c-w>l:execute "resize " . (winwidth(0) * 2)<cr>
+nnoremap <silent> <s-left> <c-w>=<c-w>h
+nnoremap <silent> <s-right> <c-w>=<c-w>l
 
 inoremap <s-up> <esc><c-w>k
 inoremap <s-down> <esc><c-w>j
@@ -429,9 +431,13 @@ nnoremap <c-r> :YcmCompleter RefactorRename<space>
 " `^ moves cursor to the position going out of insert mode
 " <c-u> already works
 inoremap <c-e> <esc>A
+cnoremap <c-e> <end>
 inoremap <c-a> <esc>I
+cnoremap <c-a> <home>
 inoremap <a-b> <esc>`^bi
+cnoremap <a-b> <s-left>
 inoremap <a-f> <esc>`^wi
+cnoremap <a-f> <s-right>
 inoremap <a-d> <esc>`^dwi
 " backspace: does not go beyond the previous line
 inoremap <c-h> <esc>l"_dbi
@@ -505,7 +511,7 @@ function! CloseWindow()
     echo "Last window in tab"
   endif
 endfunction
-nnoremap <c-q> :call CloseWindow()<cr>
+nnoremap <silent> <c-q> :call CloseWindow()<cr>
 
 " close tab, all windows
 function! CloseTab()
@@ -517,7 +523,7 @@ function! CloseTab()
     tabclose
   endif
 endfunction
-nnoremap <a-q> :call CloseTab()<cr>
+nnoremap <silent> <a-q> :call CloseTab()<cr>
 
 " quit dirty window/tab
 nnoremap <c-a-q> :q!<cr>
@@ -647,9 +653,15 @@ nnoremap c# #<C-o>cgn
 " ]x moves to next conflict, [x to previous
 " ]> keeps remote copy, [< keeps yours
 nnoremap <silent> ]x /\v^\={7}$<cr>:noh<cr>zz
-nnoremap <silent> [x /\v^\={7}$<cr>:noh<cr>zz
+nnoremap <silent> [x ?\v^\={7}$<cr>:noh<cr>zz
 nnoremap <silent> ]< $?\v^\={7}\ <cr>d/\v^\>{7}\ <cr>dd?\v^\<{7}\ <cr>dd<c-o>zz
 nnoremap <silent> ]> ?\v^\<{7}\ <cr>d/\v^\={7}$<cr>dd/\v^\>{7}\ <cr>dd<c-o>zz
+
+" diff blocks as vim text objects
+nnoremap <silent> ]d /\v^diff<cr>:noh<cr>zz
+nnoremap <silent> [d ?\v^diff<cr>:noh<cr>zz
+nnoremap <silent> did $?\v^diff<cr>d/\v^diff<cr>:noh<cr>zz
+nnoremap <silent> dad $?\v^diff<cr>d/\v^diff<cr>:noh<cr>zz
 
 " select just pasted (or just copied, or just edited) block
 " (gv already selects last visually selected block)
@@ -661,6 +673,9 @@ nnoremap <leader>t2 :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<cr>
 " easy peasy window sizing. maximize buffer size
 nnoremap + <c-w>1000+<c-w>1000>
 nnoremap = <c-w>=
+
+" save and close file (like git commit messages
+inoremap <c-x> <esc>:x<cr>
 
 " ---- terminal commands ----
 if has ("nvim")
