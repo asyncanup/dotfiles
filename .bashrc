@@ -249,6 +249,16 @@ glog() {
 FZF-EOF" --preview-window=right:60%
 }
 
+git-ls-files() {
+  is-in-git-repo || return
+  git ls-files |
+  fzf --height 90% -m --ansi --nth 2..,.. \
+    --preview 'bat --style=numbers,header --color=always {}' \
+    --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
+    --preview-window=right:70% |
+  cut -c4- | sed 's/.* -> //'
+}
+
 git-files() {
   is-in-git-repo || return
   git -c color.status=always status --short |
@@ -520,7 +530,10 @@ alias ..='cd ..'
 export FZF_DEFAULT_COMMAND='rg --hidden'
 export FZF_DEFAULT_OPTS='--no-info --height 50% --reverse'
 export FZF_CTRL_T_COMMAND='rg --files 2>/dev/null'
-export FZF_CTRL_T_OPTS='--preview "bat --style=numbers,header --color=always {}" --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up"'
+export FZF_CTRL_T_OPTS='
+  --preview "bat --style=numbers,header --color=always {}"
+  --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up"
+  --preview-window=right:70%'
 complete -F _fzf_dir_completion -o default -o bashdefault tree
 
 alias d='docker'
@@ -634,6 +647,7 @@ list-dirs() {
   fzf --height 50% --multi --ansi
 }
 bind '"\C-f\C-d": "$(list-dirs)\e\C-e\er"'
+bind '"\C-p": "$(git-ls-files)\e\C-e\er"'
 
 list-all-dirs() {
   fd -I ${1:-.} -t d |
