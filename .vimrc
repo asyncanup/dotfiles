@@ -617,6 +617,8 @@ nnoremap <c-w>t :tabedit <c-r>=expand('%p')<cr><cr>
 " navigate tabs
 nnoremap <a-down> gt
 nnoremap <a-up> gT
+inoremap <a-down> <esc>gt
+inoremap <a-up> <esc>gT
 
 " move tabs left or right
 nnoremap <silent> <a-s-down> :tabmove +1<cr>
