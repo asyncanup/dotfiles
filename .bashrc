@@ -525,6 +525,9 @@ alias aptremove='sudo apt-get remove'
 alias aptupdate='sudo apt-get update'
 
 alias ..='cd ..'
+function - {
+  cd -
+}
 
 # FZF fuzzy finder settings
 export FZF_DEFAULT_COMMAND='rg --hidden'
