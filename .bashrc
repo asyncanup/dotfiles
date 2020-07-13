@@ -348,7 +348,15 @@ gmerge_to_master() (
   git push -d origin $br
 )
 
-alias gdeletemerged='git branch -r --merged origin/master | grep -v origin/master | sed "s/.*\///" | xargs git push -d origin'
+function gdeletemerged() {
+  branches_to_delete=$(git branch -r --merged origin/master | grep -v origin/master | sed "s/.*\///")
+  for branch_name in $branches_to_delete
+  do
+    git branch -d $branch_name
+    rm .git/refs/remotes/origin/$branch_name
+    git push -d origin $branch_name
+  done
+}
 
 # primary git interface
 gg() {
