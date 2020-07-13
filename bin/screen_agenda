@@ -6,10 +6,6 @@ import shutil
 with open(os.getenv('HOME') + '/.agenda', 'r') as todo_file:
   last_item = todo_file.readlines()[-1].strip()
 
-<<<<<<< HEAD
-task_width = 30
-=======
 columns = shutil.get_terminal_size().columns
 task_width = round(columns / 3)
->>>>>>> [bin] use terminal width to calculate width for screen task and agenda
 print(last_item[:task_width].rjust(task_width))
