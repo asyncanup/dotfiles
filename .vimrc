@@ -220,9 +220,6 @@ nnoremap <leader>yr :YcmRestartServer<cr>
 " YouCompleteMe code formatter
 nnoremap <leader>yf :YcmCompleter Format<cr>
 
-" toggle linting
-nnoremap <a-e> :ALEToggle<cr>
-
 " git commands
 nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gs :Gstatus<cr>
@@ -409,13 +406,28 @@ nnoremap <right> <c-w>l
 
 nnoremap <s-up> <c-w>k<c-w>_
 nnoremap <s-down> <c-w>j<c-w>_
-nnoremap <silent> <s-left> <c-w>=<c-w>h
-nnoremap <silent> <s-right> <c-w>=<c-w>l
+nnoremap <s-left> <c-w>=<c-w>h
+nnoremap <s-right> <c-w>=<c-w>l
 
-inoremap <s-up> <esc><c-w>k
-inoremap <s-down> <esc><c-w>j
+inoremap <s-up> <esc><c-w>k<c-w>_
+inoremap <s-down> <esc><c-w>j<c-w>_
 inoremap <s-left> <esc><c-w>h
 inoremap <s-right> <esc><c-w>l
+
+let c = 1
+while c <= 10
+  execute "nnoremap " . c . "<s-up> " . c . "<c-w>k<c-w>_"
+  execute "nnoremap " . c . "<s-down> " . c . "<c-w>j<c-w>_"
+  execute "nnoremap " . c . "<s-left> " . c . "<c-w>=<c-w>h"
+  execute "nnoremap " . c . "<s-right> " . c . "<c-w>=<c-w>l"
+
+  execute "inoremap " . c . "<s-up> " . c . "<esc><c-w>k<c-w>_"
+  execute "inoremap " . c . "<s-down> " . c . "<esc><c-w>j<c-w>_"
+  execute "inoremap " . c . "<s-left> " . c . "<esc><c-w>h"
+  execute "inoremap " . c . "<s-right> " . c . "<esc><c-w>l"
+
+  let c += 1
+endwhile
 
 " when searching locally, reposition found location to center of screen
 nnoremap n n
@@ -562,7 +574,9 @@ vnoremap <c-x> "+d
 vnoremap <c-v> d"+P
 
 " open files from the same directory
-nnoremap <c-e> :e <c-r>=expand("%:p:h") . "/" <cr>
+nnoremap <c-e> :edit <c-r>=expand("%:p:h") . "/" <cr>
+nnoremap <a-e> :split <c-r>=expand("%:p:h") . "/" <cr>
+nnoremap <a-s-e> :tabedit <c-r>=expand("%:p:h") . "/" <cr>
 
 " paste and nopaste
 nnoremap <silent> <a-p>p :set invpaste<cr>
@@ -673,8 +687,9 @@ nnoremap <leader>t4 :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<cr>
 nnoremap <leader>t2 :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<cr>
 
 " easy peasy window sizing. maximize buffer size
-nnoremap + <c-w>1000+<c-w>1000>
 nnoremap = <c-w>=
+nnoremap <a-=> <c-w>1000+<c-w>1000>
+nnoremap + :set eadirection=hor equalalways noequalalways<cr><c-w>_
 
 " save and close file (like git commit messages
 inoremap <c-x> <esc>:x<cr>
@@ -700,7 +715,7 @@ if has ("nvim")
   endfunction
   nnoremap `s :call TermHorizontalSplit()<cr>
   nnoremap `v :call TermVerticalSplit()<cr>
-  nnoremap `t :terminal<cr>
+  nnoremap `t :tabe<cr>:terminal<cr>
 
   " escaping from terminal
   tnoremap <leader><esc> <c-\><c-n>
@@ -712,10 +727,12 @@ if has ("nvim")
   tnoremap <c-q> <c-\><c-n>:b #<cr>
 
   " navigation away from terminal windows
-  tnoremap <s-up> <c-\><c-n><c-w>k
-  tnoremap <s-down> <c-\><c-n><c-w>j
+  tnoremap <s-up> <c-\><c-n><c-w>k<c-w>_
+  tnoremap <s-down> <c-\><c-n><c-w>j<c-w>_
   tnoremap <s-left> <c-\><c-n><c-w>h
   tnoremap <s-right> <c-\><c-n><c-w>l
+  tnoremap <a-up> <c-\><c-n>gT
+  tnoremap <a-down> <c-\><c-n>gt
 
   autocmd BufEnter term://* normal a
 endif
