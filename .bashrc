@@ -357,6 +357,7 @@ function gdeletemerged() {
     git push -d origin $branch_name
   done
 }
+alias gcd='cd $(git rev-parse --show-toplevel)'
 
 # primary git interface
 gg() {
