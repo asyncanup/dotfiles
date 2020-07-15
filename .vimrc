@@ -679,6 +679,9 @@ nnoremap = <c-w>=
 " save and close file (like git commit messages
 inoremap <c-x> <esc>:x<cr>
 
+" delete visual selection to black hole buffer, instead of replacing copy buffer
+vnoremap D "_d
+
 " ---- terminal commands ----
 if has ("nvim")
 
