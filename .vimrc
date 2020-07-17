@@ -209,7 +209,7 @@ nnoremap gb :Gblame<cr>
 nnoremap <enter> :YcmCompleter GoTo<cr>
 
 " go to references
-nnoremap yr :YcmCompleter GoToReferences<cr>
+nnoremap <silent> yr :YcmCompleter GoToReferences<cr>:cnext<cr>:cprev<cr>
 
 " try to fix issue
 nnoremap yx :YcmCompleter FixIt<cr>
@@ -355,8 +355,8 @@ map g_ <plug>EnhancedJumpsLocalNewer
 command! -bang -nargs=? -complete=dir GFiles
     \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
 nnoremap <silent> <c-p> :GFiles<cr>
-nnoremap <silent> <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'window': '20new'})<cr>
-nnoremap <silent> <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <silent> <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'window': '20new'})<cr>
+nnoremap <silent> <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <silent> <c-o> :History<cr>
 nnoremap <silent> <s-tab> :Buffers<cr>
 
@@ -373,6 +373,15 @@ nnoremap <a-6> 6gt
 nnoremap <a-7> 7gt
 nnoremap <a-8> 8gt
 nnoremap <a-9> 9gt
+tnoremap <a-1> <c-\><c-n>1gt
+tnoremap <a-2> <c-\><c-n>2gt
+tnoremap <a-3> <c-\><c-n>3gt
+tnoremap <a-4> <c-\><c-n>4gt
+tnoremap <a-5> <c-\><c-n>5gt
+tnoremap <a-6> <c-\><c-n>6gt
+tnoremap <a-7> <c-\><c-n>7gt
+tnoremap <a-8> <c-\><c-n>8gt
+tnoremap <a-9> <c-\><c-n>9gt
 
 " fzf command history feature
 let g:fzf_history_dir = '~/.fzf-history'
@@ -397,6 +406,9 @@ set bg=dark
 
 " ---- editor commands ----
 " included here so that plugins can't overwrite bindings
+
+" open a new empty tab
+nnoremap <leader>tt :tabe<cr>
 
 " navigate panels (windows)
 nnoremap <up> <c-w>k
@@ -486,13 +498,6 @@ vnoremap <c-s> <esc>:w<cr>
 
 " easier redo
 nnoremap U <c-r>
-
-" navigate to numbered buffer with 2o, 3o, etc
-let c = 1
-while c <= 99
-  execute "nnoremap <silent> " . c . "o :" . c . "b\<cr>"
-  let c += 1
-endwhile
 
 " unset last search highlight
 nnoremap <esc> :noh<cr>:<bs>
@@ -637,6 +642,8 @@ inoremap <a-up> <esc>gT
 " move tabs left or right
 nnoremap <silent> <a-s-down> :tabmove +1<cr>
 nnoremap <silent> <a-s-up> :tabmove -1<cr>
+tnoremap <silent> <a-s-down> <c-\><c-n>:tabmove +1<cr>
+tnoremap <silent> <a-s-up> <c-\><c-n>:tabmove -1<cr>
 
 " toggle relative number
 nnoremap <leader>u :set invrelativenumber<cr>
@@ -649,7 +656,7 @@ nnoremap <silent> <leader>cs :s/\v([\[\(])/\1\r    /<cr>:s/\v([\]\)])/\r\1/<cr>k
 
 " mark just sections in the file
 function! ResetToSectionMarks()
-  normal m<space>
+  normal m " (just avoiding trailing space by adding a comment)
   vim /\v^...\-\-\-\ / %
   cdo normal m.
 endfunction
@@ -713,18 +720,22 @@ if has ("nvim")
   function! TermVerticalSplit()
     exec winwidth(0)/2."vsplit" | terminal
   endfunction
+  nnoremap `` :terminal<cr>
   nnoremap `s :call TermHorizontalSplit()<cr>
   nnoremap `v :call TermVerticalSplit()<cr>
   nnoremap `t :tabe<cr>:terminal<cr>
+  tnoremap `s <c-\><c-n>:call TermHorizontalSplit()<cr>
+  tnoremap `v <c-\><c-n>:call TermVerticalSplit()<cr>
+  tnoremap `t <c-\><c-n>:tabe<cr>:terminal<cr>
 
   " escaping from terminal
   tnoremap <leader><esc> <c-\><c-n>
 
+  " scroll up from terminal
+  tnoremap <c-u> <c-\><c-n><c-u>
+
   " copy output from last command
   tnoremap <c-y> <c-\><c-n>?<cr>0kk$vnj0"+y:noh<cr>:let @+ = '$'.@+<cr>a
-
-  " faster exit from terminal and close window
-  tnoremap <c-q> <c-\><c-n>:b #<cr>
 
   " navigation away from terminal windows
   tnoremap <s-up> <c-\><c-n><c-w>k<c-w>_
