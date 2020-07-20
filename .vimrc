@@ -84,11 +84,6 @@ let mapleader = ","
 
 " ---- plugin settings ----
 
-" deoblete init
-let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
-let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
-let g:deoplete#enable_at_startup = 1
-
 " airline statusline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#ctrlspace_show_tab_nr = 1
@@ -339,10 +334,6 @@ else
   Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
 endif
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-endif
-
 call plug#end()
 
 " ---- settings that require plugins loaded ----
@@ -480,8 +471,8 @@ nnoremap ; :
 vnoremap ; :
 
 " quickfix shortcuts
-nnoremap <silent> <a-j> :cnext<cr>
-nnoremap <silent> <a-k> :cprev<cr>
+nnoremap <silent> <a-j> :cnext<cr><c-w>_
+nnoremap <silent> <a-k> :cprev<cr><c-w>_
 nnoremap <a-o> :copen<cr>
 
 " location list shortcuts
