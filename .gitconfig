@@ -66,6 +66,10 @@
   rba = rebase --abort
   rbc = rebase --continue
   rbs = rebase --skip
+  bs = bisect
+  bss = bisect start
+  bsg = bisect good
+  bsb = bisect bad
 
 [core]
   excludesfile = ~/.gitignore
