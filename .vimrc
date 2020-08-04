@@ -161,11 +161,11 @@ command! DropToBufferWindow call fzf#run(fzf#wrap({
   \ 'sink*': { lines -> execute('drop ' . matchstr(lines[0], '[^ ]* *$') . ' | resize 1000') },
   \ 'options': ''
 \ }))
-nnoremap <tab> :DropToBufferWindow<cr>
+nnoremap <s-tab> :DropToBufferWindow<cr>
 
 " drop to last buffer in its window
 command! DropToLastBufferWindow execute('drop ' . matchstr(BufsByLastOpened()[0],'[^ ]* *$'))
-nnoremap <silent> <c-^> :DropToLastBufferWindow<cr>
+nnoremap <silent> <c-^> :DropToLastBufferWindow<cr><c-w>_
 
 " search in open buffers
 nnoremap <silent> <c-f> :Lines<cr>
@@ -201,7 +201,7 @@ nnoremap <silent> gn :Rg :note:<cr>
 nnoremap gb :Gblame<cr>
 
 " go to definition
-nnoremap <enter> :YcmCompleter GoTo<cr>
+nnoremap <enter> :YcmCompleter GoTo<cr>zt
 
 " go to references
 nnoremap <silent> yr :YcmCompleter GoToReferences<cr>:cnext<cr>:cprev<cr>
@@ -349,7 +349,7 @@ nnoremap <silent> <c-p> :GFiles<cr>
 nnoremap <silent> <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <silent> <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <silent> <c-o> :History<cr>
-nnoremap <silent> <s-tab> :Buffers<cr>
+nnoremap <silent> <tab> :Buffers<cr>
 
 " command history
 nnoremap <silent> <a-:> :History:<cr>
@@ -397,6 +397,9 @@ set bg=dark
 
 " ---- editor commands ----
 " included here so that plugins can't overwrite bindings
+
+" move to first character of line
+nnoremap g0 g^
 
 " open a new empty tab
 nnoremap <leader>tt :tabe<cr>
