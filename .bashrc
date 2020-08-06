@@ -483,6 +483,12 @@ alias cl='clear'
 alias ge='grep -E'
 alias gv='grep -v'
 alias path='echo $PATH | tr ":" "\n"'
+alias k9='kill -9'
+bind '"\C-k": "$(_fzf_complete_kill)\e\C-e\er"'
+
+kill-port() {
+  fuser -k $1/tcp
+}
 
 # bazel shortcuts
 alias bb='bazel build'
@@ -507,6 +513,8 @@ function bbc() {
 function bbp() {
   bazel build $@ 2>&1 | bat -l python --style grid --paging never
 }
+
+alias ibazel="ypx @bazel/ibazel:ibazel"
 alias gb='ypx @bazel/bazel:bazel --nohome_rc'
 alias gbb='ypx @bazel/bazel:bazel --nohome_rc build'
 alias gbr='ypx @bazel/bazel:bazel --nohome_rc run'
