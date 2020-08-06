@@ -427,12 +427,6 @@ while c <= 10
   execute "nnoremap " . c . "<s-down> " . c . "<c-w>j<c-w>_"
   execute "nnoremap " . c . "<s-left> " . c . "<c-w>=<c-w>h"
   execute "nnoremap " . c . "<s-right> " . c . "<c-w>=<c-w>l"
-
-  execute "inoremap " . c . "<s-up> " . c . "<esc><c-w>k<c-w>_"
-  execute "inoremap " . c . "<s-down> " . c . "<esc><c-w>j<c-w>_"
-  execute "inoremap " . c . "<s-left> " . c . "<esc><c-w>h"
-  execute "inoremap " . c . "<s-right> " . c . "<esc><c-w>l"
-
   let c += 1
 endwhile
 
