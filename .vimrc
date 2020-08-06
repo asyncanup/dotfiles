@@ -319,6 +319,7 @@ Plug 'pgr0ss/vim-github-url'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'liuchengxu/vista.vim'
 Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'numirias/semshi'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
