@@ -35,9 +35,9 @@
   ce = config user.email
   cp = cherry-pick
   p = push
+  pt = push --tags
   pf = push --force
-  pd = push -d
-  pdo = push -d origin
+  pd = push -d origin
   b = branch
   bd = branch --delete
   bD = branch -D
