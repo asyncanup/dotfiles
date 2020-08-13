@@ -484,7 +484,7 @@ alias ge='grep -E'
 alias gv='grep -v'
 alias path='echo $PATH | tr ":" "\n"'
 alias k9='kill -9'
-bind '"\C-k": "$(_fzf_complete_kill)\e\C-e\er"'
+alias wcl='wc -l'
 
 kill-port() {
   fuser -k $1/tcp
@@ -556,7 +556,7 @@ export FZF_CTRL_T_OPTS='
   --preview-window=right:70%'
 complete -F _fzf_dir_completion -o default -o bashdefault tree
 
-alias d='docker'
+alias dd='docker'
 alias db='docker build .'
 alias dps='docker ps'
 alias di='docker images'

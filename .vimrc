@@ -114,6 +114,31 @@ let g:prettier#config#tab_width = 4
 nnoremap <silent> <leader>p :PrettierAsync<cr>
 " autocmd BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
+" YouComplete me config
+let g:ycm_always_populate_location_list = 1
+let g:ycm_open_loclist_on_ycm_diags = 0
+
+" populate location list with errors
+nnoremap <leader>e :YcmDiags<cr>:close<cr>:lnext<cr>:lprev<cr><c-w>_zz
+
+" rename a variable
+nnoremap <c-r> :YcmCompleter RefactorRename<space>
+
+" go to definition
+nnoremap <enter> :YcmCompleter GoTo<cr>zt
+
+" go to references
+nnoremap <silent> yr :YcmCompleter GoToReferences<cr>:cnext<cr>:cprev<cr>
+
+" try to fix issue
+nnoremap yx :YcmCompleter FixIt<cr>
+
+" restart type server
+nnoremap <leader>yr :YcmRestartServer<cr>
+
+" format code
+nnoremap <leader>yf :YcmCompleter Format<cr>
+
 " python code formatter config
 " autocmd BufWritePre *.py YAPF
 
@@ -200,21 +225,6 @@ nnoremap <silent> gn :Rg :note:<cr>
 " git operations
 nnoremap gb :Gblame<cr>
 
-" go to definition
-nnoremap <enter> :YcmCompleter GoTo<cr>zt
-
-" go to references
-nnoremap <silent> yr :YcmCompleter GoToReferences<cr>:cnext<cr>:cprev<cr>
-
-" try to fix issue
-nnoremap yx :YcmCompleter FixIt<cr>
-
-" restart type server
-nnoremap <leader>yr :YcmRestartServer<cr>
-
-" YouCompleteMe code formatter
-nnoremap <leader>yf :YcmCompleter Format<cr>
-
 " git commands
 nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gs :Gstatus<cr>
@@ -269,9 +279,6 @@ let g:nnn#action = {
 " disable vim features on large files
 let g:LargeFile = 10
 
-" enhanced jumps
-let g:EnhancedJumps_no_mappings = 1
-
 " ultisnips
 let g:UltiSnipsExpandTrigger = '<c-t>'
 let g:UltiSnipsJumpForwardTrigger = '<c-x>'
@@ -320,6 +327,7 @@ Plug 'nelstrom/vim-visual-star-search'
 Plug 'liuchengxu/vista.vim'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'numirias/semshi'
+Plug 'grailbio/bazel-compilation-database'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
@@ -338,10 +346,6 @@ endif
 call plug#end()
 
 " ---- settings that require plugins loaded ----
-
-" go to previous and next cursor locations in same buffer
-map g- <plug>EnhancedJumpsLocalOlder
-map g_ <plug>EnhancedJumpsLocalNewer
 
 " file finder
 command! -bang -nargs=? -complete=dir GFiles
@@ -437,9 +441,6 @@ nnoremap N N
 " enter a line above in insert mode
 inoremap <c-o> <esc>O
 
-" crudely rename a variable
-nnoremap <c-r> :YcmCompleter RefactorRename<space>
-
 " bash movement shortcuts in insert mode
 " `^ moves cursor to the position going out of insert mode
 " <c-u> already works
@@ -474,8 +475,8 @@ nnoremap <silent> <a-k> :cprev<cr><c-w>_
 nnoremap <a-o> :copen<cr>
 
 " location list shortcuts
-nnoremap <silent> <a-s-j> :lnext<cr>
-nnoremap <silent> <a-s-k> :lprev<cr>
+nnoremap <silent> <a-s-j> :lnext<cr>zz
+nnoremap <silent> <a-s-k> :lprev<cr>zz
 nnoremap <a-s-o> :lopen<cr>
 
 " shortcut to save files
@@ -507,6 +508,7 @@ nnoremap <leader>r :e<cr>
 
 " join lines
 nnoremap <leader>j J
+nnoremap <a-j> kJ
 inoremap <a-j> <esc>kJgi
 
 " close window, not tab
