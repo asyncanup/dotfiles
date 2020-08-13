@@ -38,6 +38,9 @@
   pt = push --tags
   pf = push --force
   pd = push -d origin
+  t = tag
+  td = tag -d
+  tdo = push --delete origin
   b = branch
   bd = branch --delete
   bD = branch -D
