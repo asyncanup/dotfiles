@@ -73,6 +73,7 @@
   bss = bisect start
   bsg = bisect good
   bsb = bisect bad
+  bsr = bisect reset
 
 [core]
   excludesfile = ~/.gitignore
