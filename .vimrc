@@ -711,7 +711,7 @@ if has ("nvim")
   function! TermVerticalSplit()
     exec winwidth(0)/2."vsplit" | terminal
   endfunction
-  nnoremap `` :terminal<cr>
+  nnoremap `` :tabe<cr>:terminal<cr>
   nnoremap `s :call TermHorizontalSplit()<cr>
   nnoremap `v :call TermVerticalSplit()<cr>
   nnoremap `t :tabe<cr>:terminal<cr>
