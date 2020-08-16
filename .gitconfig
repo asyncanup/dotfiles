@@ -37,7 +37,7 @@
   p = push
   pt = push --tags
   pf = push --force
-  pd = push -d origin
+  pdo = push -d origin
   t = tag
   td = tag -d
   tdo = push --delete origin
