@@ -42,6 +42,7 @@
   td = tag -d
   tdo = push --delete origin
   b = branch
+  ba = branch -a
   bd = branch --delete
   bD = branch -D
   bmm = branch -a --merged master
