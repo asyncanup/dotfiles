@@ -143,7 +143,22 @@ nnoremap <leader>yf :YcmCompleter Format<cr>
 " autocmd BufWritePre *.py YAPF
 
 " fullscreen zen writing mode
-nnoremap <silent> <a-g> :Goyo 100<cr>
+function! SetWritingMode()
+    Goyo 100
+    set tw=0
+    set linebreak
+    nnoremap j gj
+    nnoremap k gk
+    nnoremap 0 g0
+    nnoremap $ g$
+    nnoremap A g$i
+    nnoremap D dg$
+    nnoremap C cg$
+    nnoremap d0 dg0
+    nnoremap d$ dg$
+endfunction
+command! -bang WritingMode call SetWritingMode()
+nnoremap <silent> <a-g> :WritingMode<cr>
 
 " commit finder
 nnoremap <silent> gm :BCommits<cr>
@@ -508,7 +523,6 @@ nnoremap <leader>r :e<cr>
 
 " join lines
 nnoremap <leader>j J
-nnoremap <a-j> kJ
 inoremap <a-j> <esc>kJgi
 
 " close window, not tab
