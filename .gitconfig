@@ -78,7 +78,24 @@
 
 [core]
   excludesfile = ~/.gitignore
+  pager = delta
+
+[diff]
+  colorMoved = default
+
+[delta]
+  line-numbers = true
+  side-by-side = true
+  navigate = true
+  syntax-theme = Monokai
+  plus-style = syntax "#003800"
+  minus-style = syntax "#3f0001"
+
+[interactive]
+    diffFilter = delta --color-only
+
 [push]
   default = current
+
 [merge]
   renamelimit = 3000
