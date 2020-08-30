@@ -151,11 +151,14 @@ function! SetWritingMode()
     nnoremap k gk
     nnoremap 0 g0
     nnoremap $ g$
+    nnoremap I g0i
     nnoremap A g$i
-    nnoremap D dg$
     nnoremap C cg$
+    nnoremap D dg$
     nnoremap d0 dg0
     nnoremap d$ dg$
+    nnoremap cc g0cg$
+    nnoremap dd g0dg$
 endfunction
 command! -bang WritingMode call SetWritingMode()
 nnoremap <silent> <a-g> :WritingMode<cr>
