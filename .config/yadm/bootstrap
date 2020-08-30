@@ -178,11 +178,13 @@ if ! [ -e ~/.todo ] || ! [ -d ~/src ]; then
       ~/.fzf-history
 fi
 
-now "set system-wide gnome settings"
+if command -v gsettings >/dev/null 2>&1; then
+    now "set system-wide gnome settings"
 # turn-off animations
-gsettings set org.gnome.desktop.interface enable-animations false
+    gsettings set org.gnome.desktop.interface enable-animations false
 # keyboard shortcut to kill X server, return to login screen if system hangs
-gsettings set org.gnome.desktop.input-sources xkb-options "['terminate:ctrl_alt_bksp']"
+    gsettings set org.gnome.desktop.input-sources xkb-options "['terminate:ctrl_alt_bksp']"
+fi
 
 sudo apt -y autoremove
 
