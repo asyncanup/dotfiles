@@ -164,11 +164,6 @@ if ! command -v nvim >/dev/null 2>&1; then
     nvim '+UpdateRemotePlugins' '+qall'
 fi
 
-if ! command -v hub >/dev/null 2>&1; then
-    now "installing hub (Github)"
-    sudo snap install hub --classic
-fi
-
 # ---- setup environment ----
 
 if ! [ -e ~/.todo ] || ! [ -d ~/src ]; then
