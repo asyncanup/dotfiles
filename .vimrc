@@ -158,7 +158,7 @@ function! SetWritingMode()
     nnoremap d0 dg0
     nnoremap d$ dg$
     nnoremap cc g0cg$
-    nnoremap dd g0dg$
+    nnoremap dd g0dg$a<bs><esc>j0
 endfunction
 command! -bang WritingMode call SetWritingMode()
 nnoremap <silent> <a-g> :WritingMode<cr>
@@ -306,6 +306,9 @@ let g:CtrlSpaceDefaultMappingKey = '<space> '
 let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
 let g:CtrlSpaceSaveWorkspaceOnExit = 1
 nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
+
+" vim-markdown
+let g:vim_markdown_folding_disabled = 1
 
 " ---- load plugins ----
 
