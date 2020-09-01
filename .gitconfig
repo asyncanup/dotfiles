@@ -2,7 +2,7 @@
   s = status -s
   f = fetch
   fap = fetch --all --prune
-  cl = clone
+  cl = clone --recursive
   d = diff
   db = !git diff $1..HEAD
   dc = diff --cached
@@ -75,6 +75,9 @@
   bsg = bisect good
   bsb = bisect bad
   bsr = bisect reset
+
+[status]
+  submoduleSummary = true
 
 [core]
   excludesfile = ~/.gitignore
