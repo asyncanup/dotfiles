@@ -438,8 +438,8 @@ nnoremap <right> <c-w>l
 
 nnoremap <s-up> <c-w>k<c-w>_
 nnoremap <s-down> <c-w>j<c-w>_
-nnoremap <s-left> <c-w>=<c-w>h
-nnoremap <s-right> <c-w>=<c-w>l
+nnoremap <s-left> <c-w>h<c-w>\|
+nnoremap <s-right> <c-w>l<c-w>\|
 
 inoremap <s-up> <esc><c-w>k<c-w>_
 inoremap <s-down> <esc><c-w>j<c-w>_
@@ -454,6 +454,10 @@ while c <= 10
   execute "nnoremap " . c . "<s-right> " . c . "<c-w>=<c-w>l"
   let c += 1
 endwhile
+
+" stack windows horizontally or vertically
+nnoremap <silent> <a-bslash> :windo wincmd L<cr>
+nnoremap <silent> <a-\|> :windo wincmd J<cr>
 
 " when searching locally, reposition found location to center of screen
 nnoremap n n
