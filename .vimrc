@@ -711,7 +711,7 @@ nnoremap <leader>t2 :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<cr>
 " easy peasy window sizing. maximize buffer size
 nnoremap = <c-w>=
 nnoremap <a-=> <c-w>1000+<c-w>1000>
-nnoremap + :set eadirection=hor equalalways noequalalways<cr><c-w>_
+nnoremap <silent> + :set eadirection=hor equalalways noequalalways<cr><c-w>_
 
 " save and close file (like git commit messages
 inoremap <c-x> <esc>:x<cr>
