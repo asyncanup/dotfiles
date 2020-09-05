@@ -75,6 +75,7 @@
   bsg = bisect good
   bsb = bisect bad
   bsr = bisect reset
+  sm = submodule
 
 [status]
   submoduleSummary = true
