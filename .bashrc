@@ -575,12 +575,11 @@ alias k='kill'
 complete -F _complete_alias k
 
 # todo tools
-alias t='echo "$(date +%H:%M)" >> ~/.todo'
+alias t-new='echo "$(date +%H:%M)" >> ~/.todo'
 alias t-newday="echo $'\n'$(date +%Y-%m-%d)$'\n' >> ~/.todo"
 alias t-edit='nvim ~/.todo'
 alias t-entry='echo >> ~/.todo'
 alias t-tail='tail ~/.todo'
-alias tt='t-tail'
 alias t-amend='LAST_TIME=$(tail -1 ~/.todo | sed -n '\''s/^\([0-9]*:[0-9]*\) .*/\1/p'\'') && [[ ! -z "$LAST_TIME" ]] && tmpfile=$(mktemp) && head -n -1 ~/.todo > $tmpfile && cat $tmpfile > ~/.todo && rm $tmpfile && echo "$LAST_TIME" >> ~/.todo'
 
 # nnn file manager
