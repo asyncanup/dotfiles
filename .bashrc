@@ -640,8 +640,8 @@ alias yc='yadm commit --verbose'
 alias yac='yadm add $(yadm-git-files); yadm commit --verbose'
 alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
-alias yp='yadm pull --rebase; yadm push'
-alias ypl='yadm pull --rebase'
+alias yp='yadm pull origin master --rebase; yadm push'
+alias ypl='yadm pull origin master --rebase'
 
 # searching and opening web links
 s() {
