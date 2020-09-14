@@ -21,7 +21,7 @@
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "map H previousTab\nmap L nextTab\nmap \\ passNextKey\nmap F LinkHints.activateModeToOpenInNewForegroundTab\nmap <c-g> LinkHints.activateModeWithQueue\nmap ; passNextKey normal\nmap R reload hard\nmap <tab> Vomnibar.activateTabSelection\nmap - goBack\nmap _ goForward\nmap <c-6> visitPreviousTab\n\nunmap J\nunmap K\nunmap t",
+  "keyMappings": "map H previousTab\nmap L nextTab\nmap \\ passNextKey\nmap F LinkHints.activateModeToOpenInNewForegroundTab\nmap <c-g> LinkHints.activateModeWithQueue\nmap ; passNextKey normal\nmap <tab> Vomnibar.activateTabSelection\nmap - goBack\nmap _ goForward\nmap <c-6> visitPreviousTab\n\nunmap J\nunmap K\nunmap t\nunmap T\nunmap U\nunmap R",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
