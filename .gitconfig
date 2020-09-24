@@ -56,6 +56,10 @@
   rsh = reset --soft HEAD^
   rhh = reset --hard HEAD
   rp = reset -p
+  re = remote
+  rea = remote add
+  reg = remote get-url
+  res = remote set-url
   rev = rev-parse
   cat = cat-file -p
   pl = pull --rebase
