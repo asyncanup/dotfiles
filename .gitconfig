@@ -86,7 +86,8 @@
 
 [core]
   excludesfile = ~/.gitignore
-  pager = delta
+  ; TODO: fix delta colors, then enable it again
+  ; pager = delta
 
 [diff]
   colorMoved = default
