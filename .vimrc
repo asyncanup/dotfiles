@@ -353,6 +353,7 @@ Plug 'liuchengxu/vista.vim'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'numirias/semshi'
 Plug 'grailbio/bazel-compilation-database'
+Plug 'zyedidia/literate.vim'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
