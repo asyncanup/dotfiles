@@ -728,10 +728,8 @@ endif
 if has ('nvim')
 
   " enter insert mode in terminal immediately
-  if has('nvim')
-    autocmd TermOpen * setlocal nonumber norelativenumber
-    autocmd TermOpen term://* startinsert
-  endif
+  autocmd TermOpen * setlocal nonumber norelativenumber
+  autocmd TermOpen term://* startinsert
 
   " open a terminal in split
   function! TermHorizontalSplit()
