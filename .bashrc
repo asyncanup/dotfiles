@@ -710,6 +710,10 @@ watchandrun-plain() {
   done
 }
 
+# make watch command always interpret colors and show differences between
+# successive updates
+alias watch='watch --color --differences'
+
 # tar
 alias tvf='tar tvf'
 alias xvf='tar xvf'
