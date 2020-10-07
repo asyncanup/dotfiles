@@ -661,6 +661,7 @@ export LYNX_LSS=$HOME/.config/lynx/lynx.lss
 
 # bat style
 export BAT_STYLE=grid,snip
+export BAT_THEME=base16
 
 # send to trash. alternative to `rm`.
 alias trash='$HOME/.pyenv/versions/3.7.0/bin/trash-put'
