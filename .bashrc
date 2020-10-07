@@ -45,6 +45,11 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+mkcd() {
+  mkdir -p $1
+  cd $1
+}
+
 # ---- custom ----
 # add base path
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
