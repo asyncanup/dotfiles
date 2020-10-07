@@ -719,8 +719,13 @@ inoremap <c-x> <esc>:x<cr>
 " delete visual selection to black hole buffer, instead of replacing copy buffer
 vnoremap D "_d
 
+" show search and replace actions in a split window
+if has('nvim')
+  set inccommand=split
+endif
+
 " ---- terminal commands ----
-if has ("nvim")
+if has ('nvim')
 
   " enter insert mode in terminal immediately
   if has('nvim')
