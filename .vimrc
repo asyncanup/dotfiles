@@ -109,7 +109,7 @@ let g:airline#extensions#branch#displayed_head_limit = 20
 
 " js code formatter config
 let g:prettier#autoformat = 0
-let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v10.17.0/bin/prettier"
+let g:prettier#exec_cmd_path = ""
 let g:prettier#config#tab_width = 4
 nnoremap <silent> <leader>p :PrettierAsync<cr>
 " autocmd BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
@@ -740,6 +740,7 @@ if has ('nvim')
   function! TermVerticalSplit()
     exec winwidth(0)/2."vsplit" | terminal
   endfunction
+
   nnoremap `` :tabe<cr>:terminal<cr>
   nnoremap `s :call TermHorizontalSplit()<cr>
   nnoremap `v :call TermVerticalSplit()<cr>
