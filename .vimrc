@@ -310,6 +310,10 @@ nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
 " vim-markdown
 let g:vim_markdown_folding_disabled = 1
 
+" git commands via fugitive
+nnoremap gs :Gstatus<cr><c-w>L
+nnoremap gP :Gpush<cr>
+
 " ---- load plugins ----
 
 " load vim-plug
