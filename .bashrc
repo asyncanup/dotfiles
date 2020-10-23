@@ -51,10 +51,10 @@ mkcd() {
 }
 
 # ---- custom ----
-# add base path
+# add base PATH
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
-# add custom scripts/dependencies to path
+# add custom scripts/dependencies to PATH
 export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 
 # enable programmable completion features (you don't need to enable
@@ -87,6 +87,9 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PATH="$PATH:$HOME/.pyenv/bin"
 command -v pyenv > /dev/null && eval "$(pyenv init -)"
 command -v pyenv > /dev/null && eval "$(pyenv virtualenv-init -)"
+
+# pyenv controls python when this line is commented
+#export PATH="/usr/bin:/usr/local/bin:$PATH"
 
 # rbenv
 export PATH="$PATH:$HOME/.rbenv/bin"
@@ -161,9 +164,6 @@ capture_exit_code() {
 if [[ ! $PROMPT_COMMAND =~ capture_exit_code ]]; then
   PROMPT_COMMAND="capture_exit_code; $PROMPT_COMMAND"
 fi
-
-# pyenv controls python when this line is commented
-#export PATH="/usr/bin:/usr/local/bin:$PATH"
 
 # ---- colors ----
 C_BLACK='\e[0;30m'
