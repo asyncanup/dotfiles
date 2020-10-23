@@ -545,10 +545,6 @@ alias sebl='nvim ~/.bashrc.local && . ~/.bashrc'
 alias c='xclip -selection clipboard'
 alias v='xclip -selection cliboard -o'
 
-alias apt='sudo apt-get install'
-alias aptremove='sudo apt-get remove'
-alias aptupdate='sudo apt-get update'
-
 alias ..='cd ..'
 function - {
   cd -
