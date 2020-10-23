@@ -100,6 +100,9 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/src
 export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 
+# add locally installed node_modules binaries from a project to PATH
+export PATH="$PATH:./node_modules/.bin"
+
 # dotnet
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
