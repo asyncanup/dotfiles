@@ -758,7 +758,7 @@ if has ('nvim')
   tnoremap <leader><esc> <c-\><c-n>
 
   " scroll up from terminal
-  tnoremap <c-u> <c-\><c-n><c-u>
+  tnoremap <a-s-u> <c-\><c-n><c-u>
 
   " copy output from last command
   tnoremap <c-y> <c-\><c-n>?<cr>0kk$vnj0"+y:noh<cr>:let @+ = '$'.@+<cr>a
