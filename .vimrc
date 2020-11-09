@@ -509,11 +509,13 @@ nnoremap <silent> <a-s-j> :lnext<cr>zz
 nnoremap <silent> <a-s-k> :lprev<cr>zz
 nnoremap <a-s-o> :lopen<cr>
 
-" shortcut to save files
+" shortcuts to save files
 nnoremap <c-s> :w<cr>
 nnoremap <a-s> :wa<cr>
 nnoremap <a-s-s> :w!<cr>
+
 inoremap <c-s> <esc>:w<cr>
+inoremap <a-s-s> <esc>:w!<cr>
 vnoremap <c-s> <esc>:w<cr>
 
 " easier redo
