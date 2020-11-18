@@ -82,6 +82,9 @@
   sm = submodule
   h = help
 
+[commit]
+  verbose = true
+
 [status]
   submoduleSummary = true
 
