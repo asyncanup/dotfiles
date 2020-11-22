@@ -80,6 +80,7 @@
   bsb = bisect bad
   bsr = bisect reset
   sm = submodule
+  h = help
 
 [status]
   submoduleSummary = true
