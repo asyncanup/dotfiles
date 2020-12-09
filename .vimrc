@@ -313,6 +313,8 @@ let g:vim_markdown_folding_disabled = 1
 " git commands via fugitive
 nnoremap gs :Gstatus<cr><c-w>L
 nnoremap gP :Gpush<cr>
+nnoremap gM :Gvsplit master:%<cr>
+nnoremap gO :Gvsplit @:%<cr>
 
 " ---- load plugins ----
 
