@@ -17,7 +17,7 @@
   cob = checkout -b
   a = add
   ap = add -p
-  st = stash save -u
+  st = stash push -u -m ; -m requires a name for the stash
   stl = stash list
   stp = stash pop
   sts = stash show -p
@@ -81,6 +81,10 @@
   bsr = bisect reset
   sm = submodule
   h = help
+
+[branch]
+    autosetupmerge = always
+    autosetuprebase = always
 
 [commit]
   verbose = true
