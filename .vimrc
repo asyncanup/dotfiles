@@ -752,9 +752,9 @@ function! MarkdownLevel()
   if getline(v:lnum) =~ '^###### .*$'
     return ">6"
   endif
-  return "=" 
+  return "="
 endfunction
-au BufEnter *.md setlocal foldexpr=MarkdownLevel()  
+au BufEnter *.md setlocal foldexpr=MarkdownLevel()
 au BufEnter *.md setlocal foldmethod=expr
 
 " ---- terminal commands ----
