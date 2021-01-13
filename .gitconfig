@@ -34,6 +34,9 @@
   cu = config user.name
   ce = config user.email
   cp = cherry-pick
+  cpc = cherry-pick --continue
+  cpq = cherry-pick --quit
+  cpa = cherry-pick --abort
   p = push
   pt = push --tags
   pf = push --force
@@ -45,6 +48,7 @@
   ba = branch -a
   bd = branch --delete
   bD = branch -D
+  bu = branch -u ; set upstream
   bmm = branch -a --merged master
   bnm = branch -a --no-merged master
   l = log --pretty=format:\"%Cgreen%ad %Creset%s%Cgreen%d %Cblue- %an %Cgreen%h\" --graph --date=short
