@@ -71,7 +71,7 @@ set undodir=~/.vim/undodir
 set path=.,
 
 " switching to other buffers opens the relevant window if available
-set switchbuf=usetab,vsplit
+set switchbuf=usetab,newtab
 
 " vim screen update time is relevant for signify (git)
 set updatetime=100
