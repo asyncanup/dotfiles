@@ -86,6 +86,9 @@
   sm = submodule
   h = help
 
+[include]
+    path = .gitconfig.local
+
 [branch]
     autosetupmerge = always
     autosetuprebase = always
