@@ -479,6 +479,7 @@ bind '"\C-f\C-h": "$(git-commit-hashes)\e\C-e\er"'
 # ---- other aliases ----
 export EDITOR="nvim"
 export VISUAL="nvim"
+export DELTA_PAGER="bat"
 export PAGER="bat --paging always"
 export MANPAGER=most
 export TIMEFORMAT='real: %R, user: %U, sys: %S'
