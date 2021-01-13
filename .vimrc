@@ -604,8 +604,8 @@ vnoremap <c-v> d"+P
 
 " open files from the same directory
 nnoremap <c-e> :edit <c-r>=expand("%:p:h") . "/" <cr>
-nnoremap <a-e> :split <c-r>=expand("%:p:h") . "/" <cr>
-nnoremap <a-s-e> :vsplit <c-r>=expand("%:p:h") . "/" <cr>
+nnoremap <a-e> :vsplit <c-r>=expand("%:p:h") . "/" <cr>
+nnoremap <a-s-e> :split <c-r>=expand("%:p:h") . "/" <cr>
 
 " paste and nopaste
 nnoremap <silent> <a-p>p :set invpaste<cr>
