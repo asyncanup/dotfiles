@@ -475,6 +475,7 @@ bind '"\C-f\C-f": "$(git-files)\e\C-e\er"'
 bind '"\C-f\C-r": "$(git-branches)\e\C-e\er"'
 bind '"\C-f\C-t": "$(git-tags)\e\C-e\er"'
 bind '"\C-f\C-h": "$(git-commit-hashes)\e\C-e\er"'
+bind 'Space: magic-space'
 
 # ---- other aliases ----
 export EDITOR="nvim"
