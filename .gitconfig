@@ -103,7 +103,6 @@
 
 [core]
   excludesfile = ~/.gitignore
-  pager = delta
 
 [diff]
   colorMoved = default
