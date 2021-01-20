@@ -12,6 +12,7 @@
   dmm = !git diff $(git merge-base master HEAD)..HEAD
   sh = show
   cfs = diff --name-only --diff-filter=U
+  cfd = clean -f -d
   co = checkout
   com = checkout master
   cob = checkout -b
