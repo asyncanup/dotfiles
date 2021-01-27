@@ -279,7 +279,7 @@ git-files() {
 
 git-branches() {
   is-in-git-repo || return
-  git branch -a --color=always | grep -v '/HEAD\s' | sort |
+  git branch --color=always | grep -v '/HEAD\s' | sort |
   fzf --height 50% --ansi --multi --tac \
     --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1) | head -'$LINES \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
