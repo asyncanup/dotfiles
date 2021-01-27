@@ -597,6 +597,7 @@ nnoremap <silent> <a-x> :bp<cr>:bd #<cr>
 nnoremap <c-v> "+p
 nnoremap <c-y> 0"+y$:echo 'Copied: '.@+<cr>
 nnoremap <a-y> gg"+yG``
+nnoremap <a-s-y> "+yiW:echo 'Copied: '.@+<cr>
 inoremap <silent> <c-v> <esc>:set paste<cr>"+p:set nopaste<cr>a
 vnoremap <c-y> "+y
 vnoremap <c-x> "+d
