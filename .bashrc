@@ -321,6 +321,10 @@ git-remotes() {
 alias g='git'
 complete -F _complete_alias g
 
+gco() {
+  git checkout $(git-branches)
+}
+
 gcf() {
   files="$(git-files)"
   if [[ $files != '' ]]; then
@@ -438,7 +442,7 @@ gg() {
     c_head=$(git merge-base HEAD master)
     c_master=$(git rev-parse master)
     case $pressed_key in
-      b)    echo branch; git checkout $(git-branches) ;;
+      b)    echo branch; gco ;;
       l)    echo log; glog ;;
       d)    echo diff; git diff ;;
       c)    echo commit; git add $(git-files); git commit --verbose ;;
