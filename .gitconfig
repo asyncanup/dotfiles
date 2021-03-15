@@ -123,3 +123,6 @@
 
 [merge]
   renamelimit = 3000
+[user]
+	name = Anup
+	email = pixelsallover@gmail.com
