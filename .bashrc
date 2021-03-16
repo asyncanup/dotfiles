@@ -543,7 +543,7 @@ alias tldr='ypx tldr'
 alias prettier='ypx prettier'
 alias http-server='ypx http-server'
 alias gtop='ypx gtop'
-# alias nb='ypx nb.sh:nb'
+alias readable='ypx readability-cli:readable'
 
 alias sb='. ~/.bashrc'
 alias sbl='. ~/.bashrc.local'
@@ -615,7 +615,7 @@ export NNN_CONTEXT_COLORS='4123'
 export NNN_OPENER="bat --paging always"
 
 alias ni='npm init -y'
-# alias nb='npm run build'
+alias nb='npm run build'
 alias ns='npm start'
 alias nt='npm test'
 alias nr='npm run'
