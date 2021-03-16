@@ -487,6 +487,7 @@ export VISUAL="nvim"
 export DELTA_PAGER="bat"
 export PAGER="bat --paging always"
 export MANPAGER=most
+export BROWSER=lynx
 export TIMEFORMAT='real: %R, user: %U, sys: %S'
 
 shopt -s nocaseglob
