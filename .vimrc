@@ -353,7 +353,6 @@ Plug 'pgr0ss/vim-github-url'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'liuchengxu/vista.vim'
 Plug 'vim-ctrlspace/vim-ctrlspace'
-Plug 'numirias/semshi'
 Plug 'grailbio/bazel-compilation-database'
 Plug 'zyedidia/literate.vim'
 " ---- place to add new plugins ----
