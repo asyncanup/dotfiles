@@ -69,7 +69,7 @@ install-from-pip() {
 # ---- install stuff
 
 install-by-same-name \
-    git wget curl lynx screen python3 tldr xclip tree asciinema xsel cmake most entr
+    git tig wget curl lynx screen python3 tldr xclip tree asciinema xsel cmake most entr nmap
 
 install-by-binary-name \
     pip3 python3-pip \
@@ -81,7 +81,8 @@ install-from-url \
     bat https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb \
     rg https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb \
     fd https://github.com/sharkdp/fd/releases/download/v7.4.0/fd-musl_7.4.0_amd64.deb \
-    nnn https://github.com/jarun/nnn/releases/download/v3.1/nnn_3.1-1_ubuntu18.04.amd64.deb
+    nnn https://github.com/jarun/nnn/releases/download/v3.1/nnn_3.1-1_ubuntu18.04.amd64.deb \
+    pandoc https://github.com/jgm/pandoc/releases/download/2.12/pandoc-2.12-1-amd64.deb
 
 install-from-pip \
     powerline-shell
