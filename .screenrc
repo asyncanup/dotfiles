@@ -111,9 +111,8 @@ bind l eval 'layout new split' 'split -v' 'next' 'focus right' 'screen -t rc' 'n
 # ---- status line ----
 
 # current agenda and currently active task
-# (recommended to add to .screenrc.local)
-backtick 1 1 1 screen_agenda
-backtick 2 1 1 screen_task
+backtick 1 1 1 $HOME/bin/screen_agenda
+backtick 2 1 1 $HOME/bin/screen_task
 
 # the following two lines give a two-line status, with the current window highlighted
 hardstatus alwayslastline

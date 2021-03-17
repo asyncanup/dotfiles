@@ -89,11 +89,11 @@
   h = help
 
 [include]
-    path = .gitconfig.local
+  path = .gitconfig.local
 
 [branch]
-    autosetupmerge = always
-    autosetuprebase = always
+  autosetupmerge = always
+  autosetuprebase = always
 
 [commit]
   verbose = true
@@ -116,7 +116,7 @@
   minus-style = syntax "#3f0001"
 
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
 
 [push]
   default = current
@@ -124,5 +124,5 @@
 [merge]
   renamelimit = 3000
 [user]
-	name = Anup
-	email = pixelsallover@gmail.com
+  name = Anup
+  email = pixelsallover@gmail.com
