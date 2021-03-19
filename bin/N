@@ -16614,8 +16614,10 @@ ${NB_SERVER_PROTOCOL}://${NB_SERVER_HOST}${NB_SERVER_PORT}/--original/${_item_pa
                 --message-body "${_message_body:-}"
             )"
 
-            _browse_respond_with 302                \
-              "${NB_SERVER_PROTOCOL}://${NB_SERVER_HOST}${NB_SERVER_PORT}/${_new_selector}${_response_url_params:-}"
+            local _new_selector_response=
+            _new_selector_response="${_new_selector}${_response_url_params:-}"
+            _browse_respond_with 200 \
+"Added note <a href='${NB_SERVER_PROTOCOL}://${NB_SERVER_HOST}${NB_SERVER_PORT}/$_new_selector_response'>$_new_selector_response</a>"
 
             return 0
             ;;
@@ -16664,8 +16666,8 @@ ${NB_SERVER_PROTOCOL}://${NB_SERVER_HOST}${NB_SERVER_PORT}/--original/${_item_pa
                 _browse_item_delete                     \
                   "${_render_function_options[@]:-}"  &>/dev/null
 
-                _browse_respond_with 302                \
-"${NB_SERVER_PROTOCOL}://${NB_SERVER_HOST}${NB_SERVER_PORT}/${_container_id_selector}${_response_url_params:-}"
+                _browse_respond_with 200                \
+"Deleted note. <a href='${NB_SERVER_PROTOCOL}://${NB_SERVER_HOST}${NB_SERVER_PORT}/${_container_id_selector}${_response_url_params:-}'>HOME</a>"
                 ;;
             esac
 
