@@ -481,6 +481,19 @@ bind '"\C-f\C-t": "$(git-tags)\e\C-e\er"'
 bind '"\C-f\C-h": "$(git-commit-hashes)\e\C-e\er"'
 bind 'Space: magic-space'
 
+# --- "nb" note selector
+
+N-notes-list() {
+  N list -t note --no-color | grep '\[\d*\]' |  sed -r 's/\[//' | sed -r 's/\]//' |
+  fzf --height 50% --tac \
+    --preview "N show -p {1} | head -n 200 | bat -l md" \
+    --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
+    --preview-window=right:70% |
+  cut -d$' ' -f1
+}
+
+bind '"\C-f;": "$(N-notes-list)\e\C-e\er"'
+
 # ---- other aliases ----
 export EDITOR="nvim"
 export VISUAL="nvim"
