@@ -32,6 +32,7 @@
   cam = commit -a -m
   ca = commit --verbose -a
   cc = commit --verbose --amend
+  ccr = commit --verbose --amend --reset-author
   cu = config user.name
   ce = config user.email
   cp = cherry-pick
