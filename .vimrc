@@ -512,18 +512,24 @@ nnoremap <a-s-o> :lopen<cr>
 
 " shortcuts to save files
 nnoremap <c-s> :w<cr>
-nnoremap <a-s> :wa<cr>
-nnoremap <a-s-s> :w!<cr>
-
 inoremap <c-s> <esc>:w<cr>
-inoremap <a-s-s> <esc>:w!<cr>
 vnoremap <c-s> <esc>:w<cr>
+
+nnoremap <a-s-s> :w!<cr>
+inoremap <a-s-s> <esc>:w!<cr>
+vnoremap <a-s-s> <esc>:w!<cr>
+
+nnoremap <a-s> :wa<cr>
+inoremap <a-s> <esc>:wa<cr>
+vnoremap <a-s> <esc>:wa<cr>
 
 " easier redo
 nnoremap U <c-r>
 
 " unset last search highlight
 nnoremap <esc> :noh<cr>:<bs>
+inoremap <c-j> <esc>
+cnoremap <c-j> <esc>
 
 " switch to next buffer
 nnoremap <silent> L :CtrlSpaceGoDown<cr>
@@ -636,8 +642,6 @@ nnoremap g, ,
 " move the line up or down
 nnoremap <silent> <c-j> :m .+1<cr>
 nnoremap <silent> <c-k> :m .-2<cr>
-inoremap <silent> <c-j> <esc>:m .+1<cr>gi
-inoremap <silent> <c-k> <esc>:m .-2<cr>gi
 vnoremap <silent> <c-j> :m '>+1<cr>gv
 vnoremap <silent> <c-k> :m '<-2<cr>gv
 
