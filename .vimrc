@@ -351,6 +351,7 @@ Plug 'liuchengxu/vista.vim'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'grailbio/bazel-compilation-database'
 Plug 'zyedidia/literate.vim'
+Plug 'gabrielelana/vim-markdown'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
@@ -729,6 +730,7 @@ if has('nvim')
   set inccommand=split
 endif
 
+" markdown folding rules
 function! MarkdownLevel()
   if getline(v:lnum) =~ '^# .*$'
     return ">1"
@@ -753,6 +755,10 @@ endfunction
 au BufEnter *.md setlocal foldexpr=MarkdownLevel()
 au BufEnter *.md setlocal foldmethod=expr
 au FileType markdown setlocal nofoldenable
+
+" markdown navigation
+au FileType markdown nnoremap <silent> f<tab> :BLines<cr>^#<space>
+au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"<space>
 
 " ---- terminal commands ----
 if has ('nvim')
