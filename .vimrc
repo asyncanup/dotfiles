@@ -769,6 +769,9 @@ au FileType markdown nnoremap <silent> f<tab> :BLines<cr>^#<space>
 " vim navigation with f<tab>
 au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"<space>
 
+" turn off markdown spell check
+au FileType markdown setlocal nospell
+
 " ---- terminal commands ----
 if has ('nvim')
 
