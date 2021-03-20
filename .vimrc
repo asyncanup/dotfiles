@@ -45,6 +45,9 @@ set nojoinspaces
 " default text width
 set textwidth=80
 
+" enable mouse scroll
+set mouse=a
+
 " expand tabs to spaces
 set expandtab
 set shiftwidth=4
