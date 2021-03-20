@@ -307,9 +307,6 @@ let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
 let g:CtrlSpaceSaveWorkspaceOnExit = 1
 nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
 
-" vim-markdown
-let g:vim_markdown_folding_disabled = 1
-
 " git commands via fugitive
 nnoremap gs :Gstatus<cr><c-w>L
 nnoremap gP :Gpush<cr>
@@ -344,7 +341,6 @@ Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
 Plug 'flazz/vim-colorschemes'
-Plug 'plasticboy/vim-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
 Plug 'mcchrish/nnn.vim'
