@@ -755,12 +755,14 @@ function! MarkdownLevel()
   endif
   return "="
 endfunction
-au BufEnter *.md setlocal foldexpr=MarkdownLevel()
-au BufEnter *.md setlocal foldmethod=expr
+au FileType markdown setlocal foldexpr=MarkdownLevel()
+au FileType markdown setlocal foldmethod=expr
 au FileType markdown setlocal nofoldenable
 
-" markdown navigation
+" markdown navigation with f<tab>
 au FileType markdown nnoremap <silent> f<tab> :BLines<cr>^#<space>
+
+" vim navigation with f<tab>
 au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"<space>
 
 " ---- terminal commands ----
