@@ -495,12 +495,12 @@ N-notes-list() {
 bind '"\C-f;": "$(N-notes-list)\e\C-e\er"'
 
 # ---- other aliases ----
-export EDITOR="nvim"
-export VISUAL="nvim"
-export DELTA_PAGER="bat"
-export PAGER="bat --paging always"
-export MANPAGER=most
-export BROWSER=lynx
+export EDITOR='nvim'
+export VISUAL='nvim'
+export DELTA_PAGER='bat'
+export PAGER='less'
+export MANPAGER='most'
+export BROWSER='lynx'
 export TIMEFORMAT='real: %R, user: %U, sys: %S'
 
 shopt -s nocaseglob
