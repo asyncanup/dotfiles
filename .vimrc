@@ -752,6 +752,7 @@ function! MarkdownLevel()
 endfunction
 au BufEnter *.md setlocal foldexpr=MarkdownLevel()
 au BufEnter *.md setlocal foldmethod=expr
+au FileType markdown setlocal nofoldenable
 
 " ---- terminal commands ----
 if has ('nvim')
