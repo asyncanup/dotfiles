@@ -763,11 +763,12 @@ au FileType markdown setlocal foldexpr=MarkdownLevel()
 au FileType markdown setlocal foldmethod=expr
 au FileType markdown setlocal nofoldenable
 
-" markdown navigation with f<tab>
+" navigation with f<tab>
 au FileType markdown nnoremap <silent> f<tab> :BLines<cr>^#<space>
-
-" vim navigation with f<tab>
 au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"<space>
+au FileType literate nnoremap <silent> f<tab> :BLines<cr>^#<space>
+au FileType literate nnoremap <silent> g<tab> :BLines<cr>'@s<space>
+au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\<space>
 
 " turn off markdown spell check
 au FileType markdown setlocal nospell
