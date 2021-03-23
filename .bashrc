@@ -483,16 +483,26 @@ bind 'Space: magic-space'
 
 # --- "nb" note selector
 
-N-notes-list() {
+N-note-list() {
   N list -t note --no-color | grep '\[\d*\]' |  sed -r 's/\[//' | sed -r 's/\]//' |
-  fzf --height 70% --tac \
+  fzf --height 70% \
     --preview "N show -p {1} | head -n 200 | bat -l md" \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
     --preview-window=right:60% |
   cut -d$' ' -f1
 }
 
-bind '"\C-f;": "$(N-notes-list)\e\C-e\er"'
+N-bookmark-list() {
+  N list -t bookmark --no-color | grep '\[\d*\]' |  sed -r 's/\[//' | sed -r 's/\]//' |
+  fzf --height 70% \
+    --preview "N show -p {1} | head -n 200 | bat -l md" \
+    --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
+    --preview-window=right:60% |
+  cut -d$' ' -f1
+}
+
+bind '"\C-g\C-g": "$(N-note-list)\e\C-e\er"'
+bind '"\C-g\C-f": "$(N-bookmark-list)\e\C-e\er"'
 
 # ---- other aliases ----
 export EDITOR='nvim'
