@@ -160,7 +160,7 @@ if ! command -v nvim >/dev/null 2>&1; then
     nvim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
 
     cd ~/.vim/bundle/YouCompleteMe
-    ./install.py --all
+    ./install.py --clangd-completer --ts-completer --cs-completer
 
     nvim '+UpdateRemotePlugins' '+qall'
 fi
