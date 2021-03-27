@@ -484,7 +484,9 @@ bind 'Space: magic-space'
 # --- "nb" note selector
 
 N-note-list() {
-  N list -t note --no-color | grep '\[\d*\]' |  sed -r 's/\[//' | sed -r 's/\]//' |
+  N list -t note --no-color |
+    grep -E '^\[[0-9]+\]'  |
+    sed -r 's/^\[(.*)\]\ (.*)$/\1 \2/' |
   fzf --height 70% \
     --preview "N show -p {1} | head -n 200 | bat -l md" \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
@@ -493,7 +495,9 @@ N-note-list() {
 }
 
 N-bookmark-list() {
-  N list -t bookmark --no-color | grep '\[\d*\]' |  sed -r 's/\[//' | sed -r 's/\]//' |
+  N list -t note --no-color |
+    grep -E '^\[[0-9]+\]'  |
+    sed -r 's/^\[(.*)\]\ (.*)$/\1 \2/' |
   fzf --height 70% \
     --preview "N show -p {1} | head -n 200 | bat -l md" \
     --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up" \
