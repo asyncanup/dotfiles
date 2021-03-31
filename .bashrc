@@ -71,6 +71,11 @@ fi
 # fzf bash completion and key bindings
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+# fzf tab completion
+[ -f ~/bin/fzf-bash-completion.sh ] && source ~/bin/fzf-bash-completion.sh
+bind -x '"\t": fzf_bash_completion'
+_fzf_bash_completion_loading_msg() { echo "${PS1@P}${READLINE_LINE}" | tail -n1; }
+
 # z directory auto jump
 [ -f ~/.z.bash ] && source ~/.z.bash
 
@@ -754,7 +759,7 @@ alias tvf='tar tvf'
 alias xvf='tar xvf'
 
 # ---- load local customization file ----
-[ -s "$HOME/.bashrc.local" ] && \. "$HOME/.bashrc.local"
+[ -s "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
 
 # ---- end ----
 
