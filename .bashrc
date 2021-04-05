@@ -75,6 +75,7 @@ fi
 [ -f ~/bin/fzf-bash-completion.sh ] && source ~/bin/fzf-bash-completion.sh
 bind -x '"\t": fzf_bash_completion'
 _fzf_bash_completion_loading_msg() { echo "${PS1@P}${READLINE_LINE}" | tail -n1; }
+FZF_COMPLETION_OPTS='-m'
 
 # z directory auto jump
 [ -f ~/.z.bash ] && source ~/.z.bash
