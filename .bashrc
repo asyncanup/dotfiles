@@ -106,6 +106,9 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/src
 export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 
+# rust
+export PATH="$PATH:$HOME/.cargo/bin"
+
 # add locally installed node_modules binaries from a project to PATH
 export PATH="$PATH:./node_modules/.bin"
 
