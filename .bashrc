@@ -254,6 +254,11 @@ RE_FILENAME="$RE_NAME\.$RE_EXT"
 
 # ---- git shortcuts ----
 
+# git bash completion
+[ -f ~/.bash_completions/git_bash_completion ] && \
+  source ~/.bash_completions/git_bash_completion
+
+# helpful functions, for defining keyboard shortcuts and otherwise
 is-in-git-repo() {
   git rev-parse HEAD > /dev/null 2>&1
 }
