@@ -1,4 +1,8 @@
-FZF_DIR="$HOME/.fzf"
+if [ "$(uname)" == "Darwin" ]; then
+  FZF_DIR="/usr/local/opt/fzf"
+else
+  FZF_DIR="$HOME/.fzf"
+fi
 
 # Setup fzf
 # ---------
