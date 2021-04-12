@@ -77,9 +77,12 @@ fi
 
 # fzf tab completion
 [ -f ~/bin/fzf-bash-completion.sh ] && source ~/bin/fzf-bash-completion.sh
-bind -x '"\t": fzf_bash_completion'
 _fzf_bash_completion_loading_msg() { echo "${PS1@P}${READLINE_LINE}" | tail -n1; }
 FZF_COMPLETION_OPTS='-m'
+
+if [ "$(uname)" != "Darwin" ]; then
+  bind -x '"\t": fzf_bash_completion'
+fi
 
 # z directory auto jump
 [ -f ~/.z.bash ] && source ~/.z.bash
@@ -95,9 +98,11 @@ export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin"
 # pyenv
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PATH="$PATH:$HOME/.pyenv/bin"
+
 if [ "$(uname)" == "Darwin" ]; then
   export PYTHON_CONFIGURE_OPTS="--enable-framework"
 fi
+
 command -v pyenv > /dev/null && eval "$(pyenv init -)"
 command -v pyenv > /dev/null && eval "$(pyenv virtualenv-init -)"
 
