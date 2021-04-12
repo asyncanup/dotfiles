@@ -677,7 +677,7 @@ tnoremap <silent> <a-s-up> <c-\><c-n>:tabmove -1<cr>
 " toggle relative number
 nnoremap <leader>u :set invrelativenumber<cr>
 
-" make ^ navigate to alternate buffer, instead of c-^
+" make ^ navigate to alternate buffer
 nnoremap ^ <c-^>
 
 " make block contents go to their own line, splitting by comma
@@ -726,6 +726,9 @@ nnoremap <leader>t2 :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<cr>
 nnoremap = <c-w>=
 nnoremap <a-=> <c-w>1000+<c-w>1000>
 nnoremap <silent> + :set eadirection=hor equalalways noequalalways<cr><c-w>_
+
+" format paragraph of text to fit into 80 lines (or whatever textwidth)
+nnoremap + gqap
 
 " save and close file (like git commit messages
 inoremap <c-x> <esc>:x<cr>
