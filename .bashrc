@@ -687,6 +687,7 @@ yadm-git-files() {
 
 alias ya='yadm add'
 alias yco='yadm checkout'
+alias ysh='yadm show'
 alias yd='yadm diff'
 alias yds='yadm diff --stat'
 alias yl='yadm list'
