@@ -68,6 +68,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# ability to do bash completion on aliases
+[ -f ~/.bash_completions/alias_bash_completion ] && \
+  source ~/.bash_completions/alias_bash_completion
+
 # fzf bash completion and key bindings
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
