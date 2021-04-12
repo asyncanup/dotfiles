@@ -487,6 +487,7 @@ inoremap <a-d> <esc>`^dwi
 " backspace: does not go beyond the previous line
 inoremap <c-h> <esc>l"_dbi
 cnoremap <c-h> <c-w>
+inoremap <c-k> <esc>lDi
 
 " go to previous and next cursor locations across buffers
 nnoremap - <c-o>
