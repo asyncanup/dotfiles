@@ -95,6 +95,9 @@ export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin"
 # pyenv
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PATH="$PATH:$HOME/.pyenv/bin"
+if [ "$(uname)" == "Darwin" ]; then
+  export PYTHON_CONFIGURE_OPTS="--enable-framework"
+fi
 command -v pyenv > /dev/null && eval "$(pyenv init -)"
 command -v pyenv > /dev/null && eval "$(pyenv virtualenv-init -)"
 
@@ -337,7 +340,9 @@ git-remotes() {
 
 # base shortcuts
 alias g='git'
-complete -F _complete_alias g
+if [ "$(uname)" != "Darwin" ]; then
+  complete -F _complete_alias g
+fi
 
 gco() {
   git checkout $(git-branches)
@@ -611,16 +616,25 @@ export FZF_CTRL_T_OPTS='
   --preview "bat --style=numbers,header --color=always {}"
   --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up"
   --preview-window=right:70%'
-complete -F _fzf_dir_completion -o default -o bashdefault tree
+
+if [ "$(uname)" != "Darwin" ]; then
+  complete -F _fzf_dir_completion -o default -o bashdefault tree
+fi
 
 alias dd='docker'
 alias db='docker build .'
 alias dps='docker ps'
 alias di='docker images'
-complete -F _complete_alias d
+
+if [ "$(uname)" != "Darwin" ]; then
+  complete -F _complete_alias d
+fi
 
 alias e='nvim'
-complete -F _complete_alias e
+
+if [ "$(uname)" != "Darwin" ]; then
+  complete -F _complete_alias e
+fi
 
 alias nvim-format='xargs nvim -n "+set nomore" "+bufdo YcmCompleter Format"'
 
@@ -629,7 +643,10 @@ alias kk='kill -9'
 alias jl='jobs -l'
 alias killjobs="kill -9 $(jobs -p)"
 alias k='kill'
-complete -F _complete_alias k
+
+if [ "$(uname)" != "Darwin" ]; then
+  complete -F _complete_alias k
+fi
 
 # todo tools
 alias t-new='echo "$(date +%H:%M)" >> ~/.todo'
@@ -696,7 +713,9 @@ alias ysh='yadm show'
 alias yd='yadm diff'
 alias yds='yadm diff --stat'
 alias yl='yadm list'
+alias yr='yadm reset'
 alias yc='yadm commit --verbose'
+alias ycc='yadm commit --amend --verbose'
 alias yac='yadm add $(yadm-git-files); yadm commit --verbose'
 alias yca='yadm commit -a --verbose'
 alias ys='yadm status'
