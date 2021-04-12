@@ -707,6 +707,7 @@ yadm-git-files() {
   cut -c4- | sed 's/.* -> //'
 }
 
+alias yy='yadm'
 alias ya='yadm add'
 alias yco='yadm checkout'
 alias ysh='yadm show'
