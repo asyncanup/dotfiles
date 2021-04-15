@@ -224,7 +224,9 @@ fi
 # remember the time when timer_start is first run, or since timer_stop was run
 timer_start() {
   export __timer=${__timer:-$SECONDS}
-  export __start_date=$(date +'%m/%d %H:%M:%S')
+  if [[ $__start_date == "" ]]; then
+    export __start_date="$(date +'%m/%d %H:%M:%S')"
+  fi
 }
 
 # calculate time elapsed since the first time timer_start was run before this
@@ -233,6 +235,7 @@ timer_stop() {
 }
 timer_unset() {
   unset __timer
+  unset __start_date
 }
 export __timer_show=""
 
@@ -426,11 +429,13 @@ gg() {
     return 1
   fi
 
-  time="$(date +%H:%M:%S)"
-  branch="$(git rev-parse --abbrev-ref HEAD)"
-  commit_hash="$(git rev-parse --short HEAD)"
-  dir="$(pwd | sed s,$HOME,~,)"
+  local time="$(date +%H:%M:%S)"
+  local branch="$(git rev-parse --abbrev-ref HEAD)"
+  local commit_hash="$(git rev-parse --short HEAD)"
+  local dir="$(pwd | sed s,$HOME,~,)"
 
+  local branch_bg
+  local branch_fg
   # when in the middle of a rebase, or other multi-step operations
   if [[ "$branch" == "HEAD" ]]; then
     branch_bg="$BG_ORANGE"
@@ -451,8 +456,8 @@ gg() {
   git status -s
   echo
 
-  H="${C_CYAN}"
-  B="${C_BLUE}"
+  local H="${C_CYAN}"
+  local B="${C_BLUE}"
   printf " ${H}b${B}ranch"          # branch
   printf "  ${H}l${B}og"            # log
   printf "  ${H}d${B}iff"           # diff
@@ -475,20 +480,20 @@ gg() {
     echo -en "\r$(tput el)${C_CYAN}${C_RESET} "
 
     read -s -n1
-    K1="$REPLY"
+    local K1="$REPLY"
     read -s -n1 -t 0.2
-    K2="$REPLY"
+    local K2="$REPLY"
     read -s -n2 -t 0.001
-    K3="$REPLY"
-    pressed_key="$K1$K2$K3"
+    local K3="$REPLY"
+    local pressed_key="$K1$K2$K3"
     if [[ "$pressed_key" =~ [a-z][a-z] ]]; then
       echo -n 'use semicolon (;) for typing long commands'
       read -s -e -t 2
       continue
     fi
 
-    c_head=$(git merge-base HEAD master)
-    c_master=$(git rev-parse master)
+    local c_head=$(git merge-base HEAD master)
+    local c_master=$(git rev-parse master)
     case $pressed_key in
       b)    echo branch; gco ;;
       l)    echo log; glog ;;
