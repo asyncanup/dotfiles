@@ -204,6 +204,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 HISTSIZE=10000
 HISTFILESIZE=50000
 HISTCONTROL=ignoredups:erasedups
+HISTTIMEFORMAT="%Y-%m-%d · "
 if [[ ! $PROMPT_COMMAND =~ "history -a" ]]; then
   PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 fi
@@ -223,6 +224,7 @@ fi
 # remember the time when timer_start is first run, or since timer_stop was run
 timer_start() {
   export __timer=${__timer:-$SECONDS}
+  export __start_date=$(date +'%m/%d %H:%M')
 }
 
 # calculate time elapsed since the first time timer_start was run before this
@@ -564,7 +566,6 @@ export PAGER='less'
 export MANPAGER='most'
 export BROWSER='lynx'
 export TIMEFORMAT='real: %R, user: %U, sys: %S'
-export HISTTIMEFORMAT="%Y-%m-%d · "
 
 shopt -s nocaseglob
 

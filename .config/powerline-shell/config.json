@@ -8,17 +8,19 @@
     },
     {
       "type": "env",
+      "var": "__start_date"
+    },
+    {
+      "type": "env",
       "var": "__timer_show"
     },
+    "git",
     "newline",
-    "time",
     "virtual_env",
     "ssh",
-    "git",
     "cwd",
     "git_stash",
-    "jobs",
-    "newline"
+    "jobs"
   ],
   "cwd": {
     "mode": "plain"
