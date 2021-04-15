@@ -25,8 +25,5 @@
   "cwd": {
     "mode": "plain"
   },
-  "time": {
-    "format": "%m/%d %H:%M"
-  },
   "theme": "~/.powerline-styles/default-mod.py"
 }

@@ -224,7 +224,7 @@ fi
 # remember the time when timer_start is first run, or since timer_stop was run
 timer_start() {
   export __timer=${__timer:-$SECONDS}
-  export __start_date=$(date +'%m/%d %H:%M')
+  export __start_date=$(date +'%m/%d %H:%M:%S')
 }
 
 # calculate time elapsed since the first time timer_start was run before this
@@ -267,18 +267,16 @@ fi
 # when you need the current elapsed time in front of shell output log
 ts() {
   local PAD=$(printf '%*s' "$COLUMNS")
-  local START=$(date +%s)
-  local DATE=$(date -d @$START +"%Y-%m-%d %T")
-  printf '%*.*s' 0 $(( COLUMNS - ${#DATE} - 2 )) "$PAD"
-  printf "${C_DARKGRAY}${DATE}${C_RESET}\n"
-  # TODO: for color codes, but messes up pad lengths, and maybe colors don't
-  # come for error outputs
-  # script -q /dev/null -c "$@" 2>&1 | while IFS= read -r line; do
+  local START=$SECONDS
   "$@" 2>&1 | while IFS= read -r line; do
-    local DIFF=$(( $(date +%s) - $(date -d @$START +%s) ))
+    local DIFF=$(( $SECONDS - $START ))
+    START=$SECONDS
     printf "$line"
-    printf '%*.*s' 0 $(( COLUMNS - (${#line} % COLUMNS) - ${#DIFF} - 3 )) "$PAD"
-    printf "${C_DARKGRAY}${DIFF}s${C_RESET}\n"
+    if [[ $DIFF != 0 ]]; then
+      printf '%*.*s' 0 $(( COLUMNS - (${#line} % COLUMNS) - ${#DIFF} - 3 )) "$PAD"
+      printf "${C_DARKGRAY}${DIFF}s${C_RESET}"
+    fi
+    printf "\n"
   done
 }
 
