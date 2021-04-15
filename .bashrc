@@ -271,7 +271,7 @@ fi
 ts() {
   local PAD=$(printf '%*s' "$COLUMNS")
   local START=$SECONDS
-  bash -ic "$@" 2>&1 | while IFS= read -r line; do
+  "$@" 2>&1 | while IFS= read -r line; do
     local DIFF=$(( $SECONDS - $START ))
     START=$SECONDS
     printf '%s' "$line"
