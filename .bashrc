@@ -50,7 +50,80 @@ mkcd() {
   cd $1
 }
 
+# ---- colors ----
+C_BLACK='\e[0;30m'
+C_DARKGRAY='\e[1;30m'
+C_RED='\e[0;31m'
+C_LIGHTRED='\e[1;31m'
+C_GREEN='\e[0;32m'
+C_LIGHTGREEN='\e[1;32m'
+C_ORANGE='\e[0;33m'
+C_YELLOW='\e[1;33m'
+C_BLUE='\e[0;34m'
+C_LIGHTBLUE='\e[1;34m'
+C_PURPLE='\e[0;35m'
+C_LIGHTPURPLE='\e[1;35m'
+C_CYAN='\e[0;36m'
+C_LIGHTCYAN='\e[1;36m'
+C_LIGHTGRAY='\e[0;37m'
+C_WHITE='\e[1;37m'
+C_RESET='\e[0m'
+
+BG_BLUE='\e[48;5;24m'
+BG_DARKGRAY='\e[48;5;237m'
+BG_GRAY='\e[48;5;238m'
+BG_GREEN='\e[48;5;22m'
+BG_ORANGE='\e[48;5;130m'
+FG_BLUE='\e[38;5;24m'
+FG_DARKGRAY='\e[38;5;237m'
+FG_GRAY='\e[38;5;238m'
+FG_GREEN='\e[38;5;22m'
+FG_LIGHTGRAY='\e[38;5;250m'
+FG_ORANGE='\e[38;5;130m'
+FG_WHITE='\e[38;5;15m'
+
+cecho() {
+  color=\$${1:-RESET}
+  echo -ne "$(eval echo ${color})"
+  cat
+  echo -ne "${RESET}"
+}
+
+# ---- keys ----
+capture-keypress() {
+  read -s -n1
+  K1="$REPLY"
+  read -s -n2 -t 0.001
+  K2="$REPLY"
+  read -s -n1 -t 0.001
+  K3="$REPLY"
+  echo "$K1$K2$K3"
+}
+
+KEY_INSERT=$'\x1b\x5b\x32\x7e'
+KEY_DELETE=$'\x1b\x5b\x33\x7e'
+KEY_HOME=$'\x1b\x4f\x48'
+KEY_END=$'\x1b\x4f\x46'
+KEY_PAGEUP=$'\x1b\x5b\x35\x7e'
+KEY_PAGEDOWN=$'\x1b\x5b\x36\x7e'
+KEY_UP=$'\x1b\x5b\x41'
+KEY_DOWN=$'\x1b\x5b\x42'
+KEY_RIGHT=$'\x1b\x5b\x43'
+KEY_LEFT=$'\x1b\x5b\x44'
+KEY_TAB=$'\x09'
+KEY_ENTER=$'\x0a'
+KEY_ESCAPE=$'\x1b'
+KEY_SPACE=$'\x20'
+
+# ---- common regular expressions ----
+
+RE_EXT='[a-z][a-z][a-z]?[a-z]?'
+RE_NAME='[^\/]+'
+RE_FILENAME="$RE_NAME\.$RE_EXT"
+
+
 # ---- custom ----
+
 # add base PATH
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
@@ -189,76 +262,23 @@ if [[ ! $PROMPT_COMMAND =~ capture_exit_code ]]; then
   PROMPT_COMMAND="capture_exit_code; $PROMPT_COMMAND"
 fi
 
-# ---- colors ----
-C_BLACK='\e[0;30m'
-C_DARKGRAY='\e[1;30m'
-C_RED='\e[0;31m'
-C_LIGHTRED='\e[1;31m'
-C_GREEN='\e[0;32m'
-C_LIGHTGREEN='\e[1;32m'
-C_ORANGE='\e[0;33m'
-C_YELLOW='\e[1;33m'
-C_BLUE='\e[0;34m'
-C_LIGHTBLUE='\e[1;34m'
-C_PURPLE='\e[0;35m'
-C_LIGHTPURPLE='\e[1;35m'
-C_CYAN='\e[0;36m'
-C_LIGHTCYAN='\e[1;36m'
-C_LIGHTGRAY='\e[0;37m'
-C_WHITE='\e[1;37m'
-C_RESET='\e[0m'
-
-BG_BLUE='\e[48;5;24m'
-BG_DARKGRAY='\e[48;5;237m'
-BG_GRAY='\e[48;5;238m'
-BG_GREEN='\e[48;5;22m'
-BG_ORANGE='\e[48;5;130m'
-FG_BLUE='\e[38;5;24m'
-FG_DARKGRAY='\e[38;5;237m'
-FG_GRAY='\e[38;5;238m'
-FG_GREEN='\e[38;5;22m'
-FG_LIGHTGRAY='\e[38;5;250m'
-FG_ORANGE='\e[38;5;130m'
-FG_WHITE='\e[38;5;15m'
-
-cecho() {
-  color=\$${1:-RESET}
-  echo -ne "$(eval echo ${color})"
-  cat
-  echo -ne "${RESET}"
+# when you need the current elapsed time in front of shell output log
+ts() {
+  local PAD=$(printf '%*s' "$COLUMNS")
+  local START=$(date +%s)
+  local DATE=$(date -d @$START +"%Y-%m-%d %T")
+  printf '%*.*s' 0 $(( COLUMNS - ${#DATE} - 2 )) "$PAD"
+  printf "${C_DARKGRAY}${DATE}${C_RESET}\n"
+  # TODO: for color codes, but messes up pad lengths, and maybe colors don't
+  # come for error outputs
+  # script -q /dev/null -c "$@" 2>&1 | while IFS= read -r line; do
+  "$@" 2>&1 | while IFS= read -r line; do
+    local DIFF=$(( $(date +%s) - $(date -d @$START +%s) ))
+    printf "$line"
+    printf '%*.*s' 0 $(( COLUMNS - (${#line} % COLUMNS) - ${#DIFF} - 3 )) "$PAD"
+    printf "${C_DARKGRAY}${DIFF}s${C_RESET}\n"
+  done
 }
-
-# ---- keys ----
-capture-keypress() {
-  read -s -n1
-  K1="$REPLY"
-  read -s -n2 -t 0.001
-  K2="$REPLY"
-  read -s -n1 -t 0.001
-  K3="$REPLY"
-  echo "$K1$K2$K3"
-}
-
-KEY_INSERT=$'\x1b\x5b\x32\x7e'
-KEY_DELETE=$'\x1b\x5b\x33\x7e'
-KEY_HOME=$'\x1b\x4f\x48'
-KEY_END=$'\x1b\x4f\x46'
-KEY_PAGEUP=$'\x1b\x5b\x35\x7e'
-KEY_PAGEDOWN=$'\x1b\x5b\x36\x7e'
-KEY_UP=$'\x1b\x5b\x41'
-KEY_DOWN=$'\x1b\x5b\x42'
-KEY_RIGHT=$'\x1b\x5b\x43'
-KEY_LEFT=$'\x1b\x5b\x44'
-KEY_TAB=$'\x09'
-KEY_ENTER=$'\x0a'
-KEY_ESCAPE=$'\x1b'
-KEY_SPACE=$'\x20'
-
-# ---- common regular expressions ----
-
-RE_EXT='[a-z][a-z][a-z]?[a-z]?'
-RE_NAME='[^\/]+'
-RE_FILENAME="$RE_NAME\.$RE_EXT"
 
 # ---- git shortcuts ----
 
@@ -544,6 +564,7 @@ export PAGER='less'
 export MANPAGER='most'
 export BROWSER='lynx'
 export TIMEFORMAT='real: %R, user: %U, sys: %S'
+export HISTTIMEFORMAT="%Y-%m-%d · "
 
 shopt -s nocaseglob
 
