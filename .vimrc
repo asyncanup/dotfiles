@@ -170,8 +170,11 @@ nnoremap <silent> <a-g> :WritingMode<cr>
 nnoremap <silent> gm :BCommits<cr>
 nnoremap <silent> gl :Commits<cr>
 
+" fzf default window layout
+let g:fzf_layout = { 'down': '~40%' }
+
 " cleaner look for FZF, removes the redundant statusline that says TERMINAL
-if has('nvim') && !exists('g:fzf_layout')
+if has('nvim')
   autocmd! FileType fzf
   autocmd  FileType fzf set laststatus=0 noshowmode noruler
     \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
@@ -219,22 +222,13 @@ nnoremap <silent> <c-f> :Lines<cr>
 " search in current buffer
 nnoremap <silent> <a-/> :BLines<cr>
 
-" search in project
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -g "!yarn.lock" -g "!package-lock.json" %s || true'
-  let query_filtered = a:query
-  let file_filter = ''
-  let query_parts = split(a:query)
-  if index(query_parts, '-g') == 0
-    let query_filtered = join(query_parts[2:])
-    let file_filter = '-g "'.query_parts[1].'" '
-  endif
-  let initial_command = printf(command_fmt, file_filter.shellescape(query_filtered))
-  let reload_command = printf(command_fmt, file_filter.'{q}')
-  let spec = {'options': ['--query', query_filtered, '--bind', 'change:reload:'.reload_command.',alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up']}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-command! -nargs=* -bang Ripgrep call RipgrepFzf(<q-args>, <bang>0)
+" search in project, with rg cli arguments
+" https://github.com/junegunn/fzf.vim/issues/596#issuecomment-538830525
+" https://github.com/junegunn/fzf.vim/issues/837#issuecomment-615995881
+command! -bang -nargs=* PRg call fzf#vim#grep(
+  \ 'rg --column --line-number --no-heading --color=always --smart-case '.(<q-args>), 1,
+  \   {'dir': system('git -C '.expand('%:p:h').' rev-parse --show-toplevel 2> /dev/null')[:-2], 'options':['--layout=reverse-list']},
+  \   <bang>0)
 
 nnoremap <silent> <bslash> :Rg<cr>
 nnoremap <silent> \| :Rg <c-r>=expand('<cword>')<cr><cr>
