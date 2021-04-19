@@ -284,7 +284,6 @@ nnoremap <leader>cp :CycleColorPrev<cr>
 nnoremap <a-s-t> :Vista!!<cr><c-w>15>
 
 " nnn file manager
-nnoremap <silent> <leader><tab> :NnnPicker '%:p:h'<cr>
 let g:nnn#layout = { 'down': '~35%' }
 let g:nnn#action = {
       \ '<c-t>': 'tab split',
@@ -376,6 +375,7 @@ nnoremap <silent> <c-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs', 'sink'
 nnoremap <silent> <a-t> :call fzf#run({'source': 'fd -H --no-ignore-vcs . <c-r>=expand("%:h")<cr>', 'sink': 'e', 'window': '20new'})<cr>
 nnoremap <silent> <c-o> :History<cr>
 nnoremap <silent> <tab> :Buffers<cr>
+nnoremap <silent> <leader><tab> :Files %:p:h<cr>
 
 " command history
 nnoremap <silent> <a-:> :History:<cr>
