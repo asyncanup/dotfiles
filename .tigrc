@@ -2,8 +2,8 @@
 
 # Colors
 color cursor white black
-color title-focus black yellow
-color title-blur black white
+color title-focus black white
+color title-blur black default
 
 # Add all files
 bind status A @git add -A
