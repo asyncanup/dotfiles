@@ -1,5 +1,13 @@
 # tigrc
 
+# Colors
+color cursor white black
+color title-focus black yellow
+color title-blur black white
+
+# Add all files
+bind status A @git add -A
+
 # Intent to add, useful to add-patch a new file
 bind status N !@git add -N %(file)
 
@@ -34,7 +42,7 @@ bind stash A !?git stash apply %(stash)
 bind status S !?git stash save --keep-index %(prompt)
 
 # Delete a file
-bind status ! !@?rm %(file)
+bind status D !@?rm %(file)
 
 # Tag the selected commit
 bind main T !@git tag %(prompt) %(commit)
