@@ -639,7 +639,7 @@ function - {
 }
 
 # FZF fuzzy finder settings
-export FZF_DEFAULT_COMMAND='rg --hidden'
+export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
 export FZF_CTRL_T_COMMAND='rg --files 2>/dev/null'
 export FZF_CTRL_T_OPTS='
