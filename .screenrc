@@ -59,7 +59,7 @@ bindkey ^[[1;9D prev # option left
 bindkey ^[[1;9C next # option right
 
 # switch to next layout
-bindkey ^B eval 'layout next' 'layout show'
+bindkey ^B eval 'layout next'
 
 # horizontal panel split
 # and get rid of silly xoff freezing
@@ -95,6 +95,10 @@ bind -c rsz -k kl eval 'focus left'  'command -c rsz' # Left
 bind -c rsz -k kr eval 'focus right' 'command -c rsz' # Right
 bind -c rsz -k ku eval 'focus up'    'command -c rsz' # Up
 bind -c rsz -k kd eval 'focus down'  'command -c rsz' # Down
+
+# resize active window to max and back (to equal)
+bind o resize max
+bind = resize =
 
 # faster copy mode
 bind y copy
