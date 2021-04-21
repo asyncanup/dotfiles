@@ -58,6 +58,13 @@ bindkey ^[[1;3C next # alt right
 bindkey ^[[1;9D prev # option left
 bindkey ^[[1;9C next # option right
 
+# switch to windows by number
+bindkey ^[) select 0    # <a-s-0>
+bindkey ^[! select 1    # <a-s-1>
+bindkey ^[@ select 2    # <a-s-2>
+bindkey ^[\# select 3   # <a-s-3>
+bindkey ^[$ select 4    # <a-s-4>
+
 # switch to next layout
 bindkey ^B eval 'layout next'
 
