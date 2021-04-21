@@ -276,8 +276,10 @@ ts() {
     START=$SECONDS
     printf '%s' "$line"
     if [[ $DIFF != 0 ]]; then
+      printf "${C_DARKGRAY}"
       printf '%*.*s' 0 $(( COLUMNS - (${#line} % COLUMNS) - ${#DIFF} - 3 )) "$PAD"
-      printf "${C_DARKGRAY}${DIFF}s${C_RESET}"
+      printf "${DIFF}s"
+      printf "${C_RESET}"
     fi
     printf "\n"
   done
