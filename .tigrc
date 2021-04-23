@@ -48,7 +48,7 @@ bind status D !@?rm %(file)
 bind main T !@git tag %(prompt) %(commit)
 
 # Push local changes to origin
-bind status P !git push origin
+bind main P !git push origin
 
 # Open the commit on Github
 bind generic B @sh -c "xdg-open 'https://'$(git remote -v | grep -Eo 'github.com[:/][^.]+' | head -1 | tr : /)'/commit/%(commit)'"
