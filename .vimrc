@@ -45,8 +45,8 @@ set nojoinspaces
 " default text width
 set textwidth=80
 
-" enable mouse scroll
-set mouse=a
+" disable mouse scroll, otherwise vim in screen eats 1 <esc> press
+set mouse=
 
 " expand tabs to spaces
 set expandtab
@@ -85,7 +85,7 @@ set cursorline
 " set leader key
 let mapleader = ","
 
-"neovim python host prorams
+" neovim python host prorams
 let g:python3_host_prog="$HOME/.pyenv/versions/neovim3/bin/python"
 let g:python_host_prog="$HOME/.pyenv/versions/neovim2/bin/python"
 
