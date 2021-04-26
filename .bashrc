@@ -45,6 +45,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# make directory and change to it, at the same time
 mkcd() {
   mkdir -p $1
   cd $1
@@ -283,6 +284,11 @@ ts() {
     fi
     printf "\n"
   done
+}
+
+# ---- npm package versions for a given list of folder paths ----
+package-json-versions() {
+  xargs -I % bash -c 'echo $(jq .version %/package.json) %'
 }
 
 # ---- git shortcuts ----
@@ -575,7 +581,9 @@ export TIMEFORMAT='real: %R, user: %U, sys: %S'
 shopt -s nocaseglob
 
 alias less='less -K'
-alias rmf='rm -rf'
+alias rm='rm -v -I'
+alias rmf='rm -v -I -rf'
+alias mv='mv -v'
 alias cl='clear'
 alias ge='grep -E'
 alias gv='grep -v'
@@ -634,6 +642,8 @@ alias sebl='nvim ~/.bashrc.local && . ~/.bashrc'
 
 alias c='xclip -selection clipboard'
 alias v='xclip -selection cliboard -o'
+
+alias rga='rg -A5 -B5'
 
 alias ..='cd ..'
 function - {
