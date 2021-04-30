@@ -14,8 +14,11 @@ bind status N !@git add -N %(file)
 # Stage a single line
 bind stage 1 stage-update-line
 
-# Interactive rebase
-bind main B !git rebase -i %(commit)
+# Add a fixup commit for the currently highlighted commit in main view
+bind main + !git commit --fixup=%(commit)
+
+# Interactive rebase, showing fixup commits right after their base
+bind main <Ctrl-r> !git rebase --autosquash -i %(commit)
 
 # Revert
 bind main ! !git revert %(commit)
@@ -24,13 +27,13 @@ bind main ! !git revert %(commit)
 bind refs n !@git branch "%(prompt Enter branch name: )"
 
 # Add/edit notes for the current commit used during a review
-bind generic T !git notes edit %(commit)
+bind main T !git notes edit %(commit)
 
-# Add verbose flag to git-commit
-bind generic C !git commit -v
+# Commit from status view
+bind status C !git commit
 
 # Amend last commit
-bind generic + !git commit --amend
+bind status + !git commit --amend
 
 # Drop the selected stash
 bind stash D !?git stash drop %(stash)
@@ -39,13 +42,13 @@ bind stash D !?git stash drop %(stash)
 bind stash A !?git stash apply %(stash)
 
 # Stash the unstaged changes
-bind status S !?git stash save --keep-index %(prompt)
+bind status S !git stash save --keep-index "%(prompt Enter stash name: )"
 
 # Delete a file
 bind status D !@?rm %(file)
 
 # Tag the selected commit
-bind main T !@git tag %(prompt) %(commit)
+bind main T !git tag -a "%(prompt Enter tag name: )" %(commit)
 
 # Push local changes to origin
 bind main P !git push origin
@@ -60,4 +63,10 @@ bind status P !git add --patch %(file)
 bind generic 9 !@sh -c "git show -s --format=%s %(commit) | pbcopy" # Mac
 
 # Add selected file to .gitignore and open vim for additional changes
-bind status <Ctrl-r> !sh -c "echo %(file) >> .gitignore && vim .gitignore"
+bind status <Ctrl-i> !sh -c "echo %(file) >> .gitignore && $EDITOR .gitignore"
+
+# Checkout commit in main view
+bind main O !git checkout %(commit)
+
+# Checkout branch or ref in refs view
+bind refs O !git checkout %(branch)
