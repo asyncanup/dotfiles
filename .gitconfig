@@ -89,8 +89,8 @@
   sm = submodule
   h = help
 
-[include]
-  path = .gitconfig.local
+[advice]
+  detachedHead = false
 
 [branch]
   autosetupmerge = always
