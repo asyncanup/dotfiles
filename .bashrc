@@ -535,12 +535,12 @@ gg() {
   gg
 }
 
-bind '"\er": redraw-current-line'
+# git keyboard shortcuts
+
 bind '"\C-f\C-f": "$(git-files)\e\C-e\er"'
 bind '"\C-f\C-r": "$(git-branches)\e\C-e\er"'
 bind '"\C-f\C-t": "$(git-tags)\e\C-e\er"'
 bind '"\C-f\C-h": "$(git-commit-hashes)\e\C-e\er"'
-bind 'Space: magic-space'
 
 # --- "nb" note selector
 
@@ -569,6 +569,21 @@ N-bookmark-list() {
 bind '"\C-g\C-g": "$(N-note-list)\e\C-e\er"'
 bind '"\C-g\C-f": "$(N-bookmark-list)\e\C-e\er"'
 
+# ---- unix keyboard shortcuts ----
+
+# redraw shell prompt
+bind '"\er": redraw-current-line'
+
+# expand shell patterns with Space key
+bind 'Space: magic-space'
+
+# Alt-down goes back in the pushd dirs stack, alt-up goes forward
+bind '"\e[1;3B": "pushd +1 >/dev/null\r"'
+bind '"\e[1;3A": "pushd -0 >/dev/null\r"'
+
+# <c-j> to run a command with "ts" prepended, which prints timing information
+bind "\C-j": "\C-ats \C-m"
+
 # ---- other aliases ----
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -594,6 +609,14 @@ alias wcl='wc -l'
 kill-port() {
   fuser -k $1/tcp
 }
+
+# fuzzy cd
+zd() {
+  pushd $(z -e $1) >/dev/null
+}
+
+# show pushd directory stack
+alias dv='dirs -v'
 
 # bazel shortcuts
 alias bb='bazel build'
