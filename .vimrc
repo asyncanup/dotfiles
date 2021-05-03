@@ -293,6 +293,7 @@ let g:nnn#action = {
       \ '<c-t>': 'tab split',
       \ '<c-x>': 'split',
       \ '<c-v>': 'vsplit' }
+nnoremap <a-n> :NnnPicker %:p:h<cr>
 
 " disable vim features on large files
 let g:LargeFile = 10
@@ -770,7 +771,7 @@ au FileType markdown nnoremap <silent> f<tab> :BLines<cr>^#<space>
 au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"<space>
 au FileType literate nnoremap <silent> f<tab> :BLines<cr>^#<space>
 au FileType literate nnoremap <silent> g<tab> :BLines<cr>'@s<space>
-au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\<space>
+au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\<space><space>
 
 " turn off markdown spell check
 au FileType markdown setlocal nospell
