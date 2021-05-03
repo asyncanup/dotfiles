@@ -4,9 +4,6 @@
 # arrow down
 "\e[B": history-search-forward
 
-# <c-j> to run a command with "time" prepended
-"\C-j": "\C-ats \C-m"
-
 # <c-h> (which is also ctrl-backspace to delete word)
 "\C-h": backward-kill-word
 
