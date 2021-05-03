@@ -7,6 +7,7 @@ color title-blur black default
 
 # Add all files
 bind status A @git add -A
+bind stage A @git add -A
 
 # Intent to add, useful to add-patch a new file
 bind status N !@git add -N %(file)
@@ -31,6 +32,7 @@ bind main T !git notes edit %(commit)
 
 # Commit from status view
 bind status C !git commit
+bind stage C !git commit
 
 # Amend last commit
 bind status + !git commit --amend
