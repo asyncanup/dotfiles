@@ -689,7 +689,7 @@ nnoremap <silent> <leader>cs :s/\v([\[\(])/\1\r    /<cr>:s/\v([\]\)])/\r\1/<cr>k
 " mark just sections in the file
 function! ResetToSectionMarks()
   normal m " (just avoiding trailing space by adding a comment)
-  vim /\v^...\-\-\-\ / %
+  vim /\v^.?.?.?\-\-\-\ / %
   cdo normal m.
 endfunction
 nnoremap <leader>mm :call ResetToSectionMarks()<cr>
