@@ -578,8 +578,8 @@ bind '"\er": redraw-current-line'
 bind 'Space: magic-space'
 
 # Alt-down goes back in the pushd dirs stack, alt-up goes forward
-bind '"\e[1;3B": "pushd +1 >/dev/null\r"'
-bind '"\e[1;3A": "pushd -0 >/dev/null\r"'
+bind '"\e[1;3A": "pushd +1 >/dev/null\r"'
+bind '"\e[1;3B": "pushd -0 >/dev/null\r"'
 
 # <c-j> to run a command with "ts" prepended, which prints timing information
 bind "\C-j": "\C-ats \C-m"
