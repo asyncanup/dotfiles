@@ -598,6 +598,10 @@ command! -nargs=+ -complete=command CommandOutput call CommandOutput(<q-args>)
 nnoremap <silent> <c-x> :b #<cr>:bd #<cr>
 nnoremap <silent> <a-x> :bp<cr>:bd #<cr>
 
+" remap digraph key to <c-d>.
+" so that <c-k> can be similar bash default (delete till end of line)
+inoremap <c-d> <c-k>
+
 " regular clipboard
 nnoremap <c-v> "+p
 nnoremap <c-y> 0"+y$:echo 'Copied: '.@+<cr>
