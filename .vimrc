@@ -577,6 +577,9 @@ nnoremap <c-a-q> :q!<cr>
 " quit vim, if not dirty
 nnoremap <a-s-q> :qall<cr>
 
+" bring current line to middle
+nnoremap zm zz
+
 " show internal output of ex command in a new tab
 " from https://vim.fandom.com/wiki/Capture_ex_command_output
 function! CommandOutput(cmd)
