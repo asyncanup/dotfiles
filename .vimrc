@@ -432,6 +432,9 @@ set bg=dark
 " move to first character of line
 nnoremap g0 g^
 
+" make C not overwrite the copy register
+nnoremap C "_C
+
 " open a new empty tab
 nnoremap <leader>tt :tabe<cr>
 
@@ -775,10 +778,10 @@ au FileType markdown setlocal nofoldenable
 
 " navigation with f<tab>
 au FileType markdown nnoremap <silent> f<tab> :BLines<cr>^#<space>
-au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"<space>
-au FileType literate nnoremap <silent> f<tab> :BLines<cr>^#<space>
-au FileType literate nnoremap <silent> g<tab> :BLines<cr>'@s<space>
-au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\<space><space>
+au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"\ ---<space>
+au FileType literate nnoremap <silent> f<tab> :BLines<cr>'@s<space>
+au FileType literate nnoremap <silent> g<tab> :BLines<cr>^#<space>
+au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\ <space>
 
 " turn off markdown spell check
 au FileType markdown setlocal nospell
