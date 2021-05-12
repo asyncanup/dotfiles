@@ -512,6 +512,7 @@ nnoremap <a-o> :copen<cr>
 nnoremap <silent> <a-s-j> :lnext<cr>zz
 nnoremap <silent> <a-s-k> :lprev<cr>zz
 nnoremap <a-s-o> :lopen<cr>
+nnoremap <a-s-l> :ll<cr>
 
 " shortcuts to save files
 nnoremap <c-s> :w<cr>
