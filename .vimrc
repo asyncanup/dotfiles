@@ -438,6 +438,10 @@ nnoremap C "_C
 " open a new empty tab
 nnoremap <leader>tt :tabe<cr>
 
+" indent a markdown bullet point in input mode
+inoremap <a-]> <esc>0i<space><space><esc>A
+inoremap <a-[> <esc>g^i<bs><esc>A
+
 " navigate panels (windows)
 nnoremap <up> <c-w>k
 nnoremap <down> <c-w>j
@@ -582,7 +586,7 @@ nnoremap <c-a-q> :q!<cr>
 nnoremap <a-s-q> :qall<cr>
 
 " bring current line to middle
-nnoremap zm zz
+nnoremap zm 10jzz10k
 
 " show internal output of ex command in a new tab
 " from https://vim.fandom.com/wiki/Capture_ex_command_output
