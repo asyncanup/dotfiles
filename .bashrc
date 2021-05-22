@@ -304,7 +304,7 @@ is-in-git-repo() {
 
 glog() {
   is-in-git-repo || return
-  git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" $1 | \
+  git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" -1000 $1 | \
    fzf --height 75% --ansi --no-sort --reverse --tiebreak=index --preview \
    'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{9\}"); [ $# -eq 0 ] || git show --color=always $1 ; }; f {}' \
    --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up,ctrl-m:execute:
@@ -677,6 +677,7 @@ function - {
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
 export FZF_CTRL_T_COMMAND='rg --files 2>/dev/null'
+export FZF_ALT_C_COMMAND='fd --type d 2>/dev/null'
 export FZF_CTRL_T_OPTS='
   --preview "bat --style=numbers,header --color=always {}"
   --bind "alt-j:preview-down,alt-k:preview-up,alt-d:preview-page-down,alt-u:preview-page-up"
