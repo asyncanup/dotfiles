@@ -170,9 +170,8 @@ endfunction
 command! -bang WritingMode call SetWritingMode()
 nnoremap <silent> <a-g> :WritingMode<cr>
 
-" commit finder
+" show commit history for current file
 nnoremap <silent> gm :BCommits<cr>
-nnoremap <silent> gl :Commits<cr>
 
 " fzf default window layout
 let g:fzf_layout = { 'down': '~40%' }
@@ -353,6 +352,7 @@ Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'grailbio/bazel-compilation-database'
 Plug 'zyedidia/literate.vim'
 Plug 'gabrielelana/vim-markdown'
+Plug 'PeterRincker/vim-argumentative'
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
@@ -790,6 +790,10 @@ au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\ <space>
 
 " turn off markdown spell check
 au FileType markdown setlocal nospell
+
+" navigate in a comma-separated list
+nnoremap <silent> gl "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<cr><c-o>/\w\+\_W\+<cr><c-l>:noh<cr>
+nnoremap <silent> gh "_yiw?\w\+\_W\+\%#<cr>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<cr><c-o><c-l>:noh<cr>
 
 " ---- terminal commands ----
 if has ('nvim')
