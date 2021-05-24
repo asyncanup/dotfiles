@@ -43,8 +43,7 @@
   pt = push --tags
   pf = push --force
   pdo = push -d origin
-  t = tag
-  ta = tag -a
+  t = tag -a
   td = tag -d
   tdo = push --delete origin
   b = branch
@@ -121,6 +120,7 @@
 
 [push]
   default = current
+  followTags = true
 
 [merge]
   renamelimit = 3000
