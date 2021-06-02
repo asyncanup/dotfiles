@@ -299,7 +299,7 @@ let g:LargeFile = 10
 
 " ultisnips
 let g:UltiSnipsExpandTrigger = '<c-t>'
-let g:UltiSnipsJumpForwardTrigger = '<c-x>'
+let g:UltiSnipsJumpForwardTrigger = '<c-k>'
 
 " ctrl-space window, tab, workspace management
 let g:CtrlSpaceDefaultMappingKey = '<space> '
@@ -586,7 +586,7 @@ nnoremap <c-a-q> :q!<cr>
 nnoremap <a-s-q> :qall<cr>
 
 " bring current line to middle
-nnoremap zm 10jzz10k
+nnoremap zm ia<esc>a<bs><esc>7kztg;
 
 " show internal output of ex command in a new tab
 " from https://vim.fandom.com/wiki/Capture_ex_command_output
