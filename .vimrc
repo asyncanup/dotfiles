@@ -241,7 +241,7 @@ vnoremap <silent> <bslash> y<esc>:Rg <c-r>=escape(@",'\{(')<cr><cr>
 nnoremap <silent> gn :Rg :note:<cr>
 
 " git operations
-nnoremap gb :Gblame<cr>
+nnoremap gb :Git blame<cr>
 
 " git commands
 nnoremap <leader>gd :Gdiffsplit<cr>
