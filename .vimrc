@@ -174,7 +174,7 @@ nnoremap <silent> <a-g> :WritingMode<cr>
 nnoremap <silent> gm :BCommits<cr>
 
 " fzf default window layout
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'down': '~60%' }
 
 " cleaner look for FZF, removes the redundant statusline that says TERMINAL
 if has('nvim')
@@ -293,6 +293,12 @@ let g:nnn#action = {
       \ '<c-x>': 'split',
       \ '<c-v>': 'vsplit' }
 nnoremap <a-n> :NnnPicker %:p:h<cr>
+
+" fzf file selection
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 " disable vim features on large files
 let g:LargeFile = 10
