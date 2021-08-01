@@ -1,8 +1,4 @@
-if [ "$(uname)" == "Darwin" ]; then
-  FZF_DIR="/opt/homebrew/Cellar/fzf/0.25.1"
-else
-  FZF_DIR="$HOME/.fzf"
-fi
+FZF_DIR="$HOME/.fzf"
 
 # Setup fzf
 # ---------
