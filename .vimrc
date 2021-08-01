@@ -363,7 +363,8 @@ Plug 'PeterRincker/vim-argumentative'
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --ts-completer' }
+" Macbook M1 chip requires the --system-libclang flag
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --ts-completer --system-libclang' }
 Plug 'prettier/vim-prettier', { 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'yaml', 'html'] }
 Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 
