@@ -129,7 +129,10 @@ RE_FILENAME="$RE_NAME\.$RE_EXT"
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
 # add custom scripts/dependencies to PATH
-export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
+export PATH="$PATH:/opt/homebrew/bin:$HOME/bin:$HOME/.local/bin"
+
+# disable homebrew analytics collection
+export HOMEBREW_NO_ANALYTICS=1
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -145,6 +148,11 @@ fi
 # ability to do bash completion on aliases
 [ -f ~/.bash_completions/alias_bash_completion ] && \
   source ~/.bash_completions/alias_bash_completion
+
+# source bash completions for mac
+if [ "$(uname)" != "Darwin" ]; then
+  source /opt/homebrew/etc/bash_completion.d/*
+fi
 
 # fzf bash completion and key bindings
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -581,6 +589,11 @@ bind 'Space: magic-space'
 bind '"\e[1;3A": "pushd +1 >/dev/null\r"'
 bind '"\e[1;3B": "pushd -0 >/dev/null\r"'
 
+if [ "$(uname)" != "Darwin" ]; then
+  bind '"\e[1;9A": "pushd +1 >/dev/null\r"'
+  bind '"\e[1;9B": "pushd -0 >/dev/null\r"'
+fi
+
 # <c-j> to run a command with "ts" prepended, which prints timing information
 bind "\C-j": "\C-ats \C-m"
 
@@ -598,6 +611,12 @@ shopt -s nocaseglob
 alias less='less -K'
 alias rm='rm -v -I'
 alias rmf='rm -v -I -rf'
+
+if [ "$(uname)" != "Darwin" ]; then
+  alias rm="rm -v"
+  alias rmf='rm -v -rf'
+fi
+
 alias mv='mv -v'
 alias cl='clear'
 alias ge='grep -E'
@@ -670,6 +689,11 @@ alias sebl='nvim ~/.bashrc.local && . ~/.bashrc'
 
 alias c='xclip -selection clipboard'
 alias v='xclip -selection cliboard -o'
+
+if [ "$(uname)" != "Darwin" ]; then
+  alias c="pbcopy"
+  alias v="pbpaste"
+fi
 
 alias rga='rg -A5 -B5'
 
