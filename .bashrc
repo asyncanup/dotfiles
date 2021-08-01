@@ -615,6 +615,11 @@ zd() {
   pushd $(z -e $1) >/dev/null
 }
 
+# pushd-based cd
+pd() {
+  pushd $1 >/dev/null
+}
+
 # show pushd directory stack
 alias dv='dirs -v'
 
