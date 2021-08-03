@@ -128,8 +128,8 @@ RE_FILENAME="$RE_NAME\.$RE_EXT"
 # add base PATH
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
-# add custom scripts/dependencies to PATH
-export PATH="$PATH:/opt/homebrew/bin:$HOME/bin:$HOME/.local/bin"
+# add custom scripts/dependencies to PATH, homebrew first, then locally installed things, then system
+export PATH="/opt/homebrew/bin:$HOME/bin:$HOME/.local/bin:$PATH"
 
 # disable homebrew analytics collection
 export HOMEBREW_NO_ANALYTICS=1
@@ -150,7 +150,7 @@ fi
   source ~/.bash_completions/alias_bash_completion
 
 # source bash completions for mac
-if [ "$(uname)" != "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
   source /opt/homebrew/etc/bash_completion.d/*
 fi
 
@@ -589,7 +589,7 @@ bind 'Space: magic-space'
 bind '"\e[1;3A": "pushd +1 >/dev/null\r"'
 bind '"\e[1;3B": "pushd -0 >/dev/null\r"'
 
-if [ "$(uname)" != "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
   bind '"\e[1;9A": "pushd +1 >/dev/null\r"'
   bind '"\e[1;9B": "pushd -0 >/dev/null\r"'
 fi
@@ -612,7 +612,7 @@ alias less='less -K'
 alias rm='rm -v -I'
 alias rmf='rm -v -I -rf'
 
-if [ "$(uname)" != "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
   alias rm="rm -v"
   alias rmf='rm -v -rf'
 fi
@@ -690,7 +690,7 @@ alias sebl='nvim ~/.bashrc.local && . ~/.bashrc'
 alias c='xclip -selection clipboard'
 alias v='xclip -selection cliboard -o'
 
-if [ "$(uname)" != "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
   alias c="pbcopy"
   alias v="pbpaste"
 fi
@@ -824,6 +824,13 @@ s() {
   lynx https://duckduckgo.com/?q="$*"
 }
 alias l="lynx"
+
+# literate programming
+if [ "$(uname)" == "Darwin" ]; then
+  lit() {
+    ~/bin/mac-lit "$@"
+  }
+fi
 
 # lynx config location
 export LYNX_CFG=$HOME/.config/lynx/lynx.cfg
