@@ -106,6 +106,7 @@
 
 [diff]
   colorMoved = default
+  submodule = log
 
 [delta]
   line-numbers = true
@@ -130,3 +131,6 @@
 
 [include]
   path = ~/.gitconfig.local
+
+[init]
+  defaultBranch = main
