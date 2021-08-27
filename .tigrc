@@ -1,9 +1,26 @@
 # tigrc
 
 # Colors
-color cursor black white
+
+color diff-stat       95 default
+color date            172 default
+color "Merge: "       cyan default
+color graph-commit    red default
+color id              167 default
+color "author "       95 default
+color "Commit: "      default default
+color cursor          black white bold
+
+color palette-0       93 default
+color palette-1       95 default
+color palette-2       124 default
+color palette-7       90 default bold
+
+color delimiter       90 default
+color main-tracked    99 default bold
+
+color title-blur white default
 color title-focus black white
-color title-blur black default
 
 # Add all files
 bind status A @git add -A
