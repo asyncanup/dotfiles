@@ -2,3 +2,4 @@
 *.bish
 .bish.*
 .DS_Store
+.cs_workspaces
