@@ -802,6 +802,9 @@ au FileType markdown setlocal nospell
 nnoremap <silent> gl "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<cr><c-o>/\w\+\_W\+<cr><c-l>:noh<cr>
 nnoremap <silent> gh "_yiw?\w\+\_W\+\%#<cr>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<cr><c-o><c-l>:noh<cr>
 
+" increment next number
+nnoremap & <c-a>
+
 " ---- terminal commands ----
 if has ('nvim')
 
