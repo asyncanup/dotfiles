@@ -313,6 +313,13 @@ let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
 let g:CtrlSpaceSaveWorkspaceOnExit = 1
 nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
 
+" elm
+let g:ycm_semantic_triggers = {
+  \ 'elm' : ['.'],
+  \}
+
+nnoremap <leader>b :ElmMake<cr>
+
 " git commands via fugitive
 nnoremap gs :Gstatus<cr><c-w>L
 nnoremap gP :Gpush<cr>
@@ -356,9 +363,10 @@ Plug 'nelstrom/vim-visual-star-search'
 Plug 'liuchengxu/vista.vim'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'grailbio/bazel-compilation-database'
-Plug 'zyedidia/literate.vim'
 Plug 'gabrielelana/vim-markdown'
 Plug 'PeterRincker/vim-argumentative'
+Plug 'zyedidia/literate.vim', { 'for': 'lit' }
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 " ---- place to add new plugins ----
 
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }

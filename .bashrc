@@ -203,8 +203,15 @@ export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 # rust
 export PATH="$PATH:$HOME/.cargo/bin"
 
+# java
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
+# csharp
+export PATH="$PATH:/Library/Frameworks/Mono.framework/Versions/Current/bin"
+
 # add locally installed node_modules binaries from a project to PATH
-export PATH="$PATH:./node_modules/.bin"
+YPX_NODE_MODULES=(/tmp/ypx/*/node_modules/.bin)
+export PATH="$PATH:${YPX_NODE_MODULES[*]/%\//:}./node_modules/.bin"
 
 # dotnet
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -896,7 +903,7 @@ alias tvf='tar tvf'
 alias xvf='tar xvf'
 
 # ---- load local customization file ----
-[ -s "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
+[ -f "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
 
 # ---- end ----
 
