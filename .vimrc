@@ -367,14 +367,15 @@ Plug 'gabrielelana/vim-markdown'
 Plug 'PeterRincker/vim-argumentative'
 Plug 'zyedidia/literate.vim', { 'for': 'lit' }
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
-" ---- place to add new plugins ----
-
-Plug 'w0rp/ale', { 'on': 'ALEToggle' }
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Macbook M1 chip requires the --system-libclang flag
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --ts-completer --system-libclang' }
 Plug 'prettier/vim-prettier', { 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'yaml', 'html'] }
 Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
+Plug 'w0rp/ale', { 'on': 'ALEToggle' }
+Plug 'vimwiki/vimwiki'
+" ---- place to add new plugins ----
+
+" Macbook M1 chip requires the --system-libclang flag
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --ts-completer --system-libclang' }
 
 if has('nvim') || has('patch-8.0.902')
   Plug 'kshenoy/vim-signature'
