@@ -116,9 +116,6 @@
   plus-style = syntax "#003800"
   minus-style = syntax "#3f0001"
 
-[interactive]
-  diffFilter = delta --color-only
-
 [push]
   default = current
   followTags = true
