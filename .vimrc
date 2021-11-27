@@ -263,26 +263,6 @@ xmap ac <plug>(signify-motion-outer-visual)
 let g:rooter_manual_only = 1
 nnoremap <a-c> :Rooter<cr>
 
-" vim easymotion shortcuts
-xmap <leader>t <plug>(easymotion-t)
-omap <leader>t <plug>(easymotion-t)
-
-nmap <leader>f <plug>(easymotion-overwin-f)
-xmap <leader>f <plug>(easymotion-bd-f)
-omap <leader>f <plug>(easymotion-bd-f)
-
-nmap <leader>l <plug>(easymotion-overwin-line)
-xmap <leader>l <plug>(easymotion-bd-jk)
-omap <leader>l <plug>(easymotion-bd-jk)
-
-nmap <leader>s <plug>(easymotion-overwin-f2)
-xmap <leader>s <plug>(easymotion-bd-f2)
-omap <leader>s <plug>(easymotion-bd-f2)
-
-" cycle through color schemes
-nnoremap <leader>cn :CycleColorNext<cr>
-nnoremap <leader>cp :CycleColorPrev<cr>
-
 " show Vista file outline
 nnoremap <a-s-t> :Vista!!<cr><c-w>15>
 
@@ -352,7 +332,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-commentary'
-Plug 'easymotion/vim-easymotion'
 Plug 'flazz/vim-colorschemes'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
@@ -822,6 +801,18 @@ nnoremap <silent> gh "_yiw?\w\+\_W\+\%#<cr>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\
 
 " increment next number
 nnoremap & <c-a>
+
+" match and highlight keywords differently
+nnoremap <silent> <leader>c1 :windo 1match Todo /\<<c-r><c-w>\>/<cr>
+nnoremap <silent> <leader>c2 :windo 2match Debug /\<<c-r><c-w>\>/<cr>
+nnoremap <silent> <leader>c3 :windo call matchadd("Constant", "<c-r><c-w>")<cr>
+nnoremap <silent> <leader>c4 :windo call matchadd("CursorLineNr", "<c-r><c-w>")<cr>
+nnoremap <silent> <leader>c5 :windo call matchadd("Macro", "<c-r><c-w>")<cr>
+nnoremap <leader>C :windo call clearmatches()<cr>
+
+" bind scroll across open windows in a tab
+nnoremap <leader>sb :windo set scrollbind<cr>
+nnoremap <leader>S :windo set noscrollbind<cr>
 
 " ---- terminal commands ----
 if has ('nvim')
