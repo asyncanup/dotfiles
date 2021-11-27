@@ -371,6 +371,7 @@ Plug 'prettier/vim-prettier', { 'for': ['javascript', 'typescript', 'css', 'json
 Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 Plug 'w0rp/ale', { 'on': 'ALEToggle' }
 Plug 'vimwiki/vimwiki'
+Plug 'dominikduda/vim_current_word'
 " ---- place to add new plugins ----
 
 " Macbook M1 chip requires the --system-libclang flag
@@ -435,6 +436,11 @@ function! s:update_colors()
 
   " line number color (overrides colorscheme)
   highlight CursorLineNr ctermfg=blue
+
+  " vim-current-word highlight color
+  highlight CurrentWord ctermbg=237
+  highlight CurrentWordTwins ctermbg=237
+
 endfunction
 autocmd User AirlineAfterTheme call s:update_colors()
 
