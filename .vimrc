@@ -608,7 +608,7 @@ nnoremap <c-a-q> :q!<cr>
 nnoremap <a-s-q> :qall<cr>
 
 " bring current line to middle
-nnoremap zm ia<esc>a<bs><esc>7kztg;
+nnoremap zm <esc>7kzt7j
 
 " show internal output of ex command in a new tab
 " from https://vim.fandom.com/wiki/Capture_ex_command_output
