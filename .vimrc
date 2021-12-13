@@ -805,14 +805,24 @@ nnoremap & <c-a>
 " match and highlight keywords differently
 nnoremap <silent> <leader>c1 :windo 1match Todo /\<<c-r><c-w>\>/<cr>
 nnoremap <silent> <leader>c2 :windo 2match Debug /\<<c-r><c-w>\>/<cr>
-nnoremap <silent> <leader>c3 :windo call matchadd("Constant", "<c-r><c-w>")<cr>
-nnoremap <silent> <leader>c4 :windo call matchadd("CursorLineNr", "<c-r><c-w>")<cr>
-nnoremap <silent> <leader>c5 :windo call matchadd("Macro", "<c-r><c-w>")<cr>
-nnoremap <leader>C :windo call clearmatches()<cr>
+nnoremap <silent> <leader>c3 :windo call matchadd("diffAdded", "<c-r><c-w>", 10, 5)<cr>
+nnoremap <silent> <leader>c4 :windo call matchadd("CursorLineNr", "<c-r><c-w>", 10, 6)<cr>
+nnoremap <silent> <leader>c5 :windo call matchadd("Macro", "<c-r><c-w>", 10, 7)<cr>
+
+nnoremap <silent> <leader>C1 :windo call matchdelete(1)<cr>
+nnoremap <silent> <leader>C2 :windo call matchdelete(2)<cr>
+nnoremap <silent> <leader>C3 :windo call matchdelete(5)<cr>
+nnoremap <silent> <leader>C4 :windo call matchdelete(6)<cr>
+nnoremap <silent> <leader>C5 :windo call matchdelete(7)<cr>
+nnoremap <leader>cC :windo call clearmatches()<cr>
+
+" highlight word under cursor across the visible buffers
+nnoremap <silent> <a-8> :windo call matchadd("Search", "<c-r><c-w>", 10, 4)<cr>
+nnoremap <silent> <a-*> :windo call matchdelete(4)<cr>
 
 " bind scroll across open windows in a tab
 nnoremap <leader>sb :windo set scrollbind<cr>
-nnoremap <leader>S :windo set noscrollbind<cr>
+nnoremap <leader>sB :windo set noscrollbind<cr>
 
 " ---- terminal commands ----
 if has ('nvim')
