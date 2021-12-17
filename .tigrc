@@ -89,3 +89,7 @@ bind main O !git checkout %(commit)
 
 # Checkout branch or ref in refs view
 bind refs O !git checkout %(branch)
+
+# Copy list of commit messages since last tagged commit as a changelog
+bind main 8 !@sh -c "git log --oneline $(git tag | tail -1)..%(commit) | cut -d' ' -f2- | sed -e 's/^/- /'  | pbcopy" # Mac
+
