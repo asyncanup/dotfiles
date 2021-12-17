@@ -824,6 +824,9 @@ nnoremap <silent> <a-*> :windo call matchdelete(4)<cr>
 nnoremap <leader>sb :windo set scrollbind<cr>
 nnoremap <leader>sB :windo set noscrollbind<cr>
 
+nnoremap <silent> <leader><c-j> :m .+1<cr>>>
+nnoremap <silent> <leader><c-k> :m .-2<cr>>>
+
 " ---- terminal commands ----
 if has ('nvim')
 
