@@ -306,6 +306,8 @@ nnoremap gP :Gpush<cr>
 nnoremap gM :Gvsplit master:%<cr>
 nnoremap gO :Gvsplit @:%<cr>
 
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'js=javascript']
+
 " ---- load plugins ----
 
 " load vim-plug
@@ -342,7 +344,6 @@ Plug 'nelstrom/vim-visual-star-search'
 Plug 'liuchengxu/vista.vim'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'grailbio/bazel-compilation-database'
-Plug 'gabrielelana/vim-markdown'
 Plug 'PeterRincker/vim-argumentative'
 Plug 'zyedidia/literate.vim', { 'for': 'lit' }
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
@@ -619,6 +620,7 @@ nnoremap <c-v> "+p
 nnoremap <c-y> 0"+y$:echo 'Copied: '.@+<cr>
 nnoremap <a-y> gg"+yG``
 nnoremap <a-s-y> "+yiW:echo 'Copied: '.@+<cr>
+nnoremap <leader>" "+yi"
 inoremap <silent> <c-v> <esc>:set paste<cr>"+p:set nopaste<cr>a
 vnoremap <c-y> "+y
 vnoremap <c-x> "+d
@@ -803,18 +805,18 @@ nnoremap <silent> gh "_yiw?\w\+\_W\+\%#<cr>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\
 nnoremap & <c-a>
 
 " match and highlight keywords differently
-nnoremap <silent> <leader>c1 :windo 1match Todo /\<<c-r><c-w>\>/<cr>
-nnoremap <silent> <leader>c2 :windo 2match Debug /\<<c-r><c-w>\>/<cr>
-nnoremap <silent> <leader>c3 :windo call matchadd("diffAdded", "<c-r><c-w>", 10, 5)<cr>
-nnoremap <silent> <leader>c4 :windo call matchadd("CursorLineNr", "<c-r><c-w>", 10, 6)<cr>
-nnoremap <silent> <leader>c5 :windo call matchadd("Macro", "<c-r><c-w>", 10, 7)<cr>
+nnoremap <silent> <leader>c1 :windo 1match Todo /\<<c-r><c-w>\>/<cr><c-w>w
+nnoremap <silent> <leader>c2 :windo 2match Debug /\<<c-r><c-w>\>/<cr><c-w>w
+nnoremap <silent> <leader>c3 :windo call matchadd("diffAdded", "<c-r><c-w>", 10, 5)<cr><c-w>w
+nnoremap <silent> <leader>c4 :windo call matchadd("CursorLineNr", "<c-r><c-w>", 10, 6)<cr><c-w>w
+nnoremap <silent> <leader>c5 :windo call matchadd("Macro", "<c-r><c-w>", 10, 7)<cr><c-w>w
 
-nnoremap <silent> <leader>C1 :windo call matchdelete(1)<cr>
-nnoremap <silent> <leader>C2 :windo call matchdelete(2)<cr>
-nnoremap <silent> <leader>C3 :windo call matchdelete(5)<cr>
-nnoremap <silent> <leader>C4 :windo call matchdelete(6)<cr>
-nnoremap <silent> <leader>C5 :windo call matchdelete(7)<cr>
-nnoremap <leader>cC :windo call clearmatches()<cr>
+nnoremap <silent> <leader>C1 :windo call matchdelete(1)<cr><c-w>w
+nnoremap <silent> <leader>C2 :windo call matchdelete(2)<cr><c-w>w
+nnoremap <silent> <leader>C3 :windo call matchdelete(5)<cr><c-w>w
+nnoremap <silent> <leader>C4 :windo call matchdelete(6)<cr><c-w>w
+nnoremap <silent> <leader>C5 :windo call matchdelete(7)<cr><c-w>w
+nnoremap <leader>cC :windo call clearmatches()<cr><c-w>w
 
 " highlight word under cursor across the visible buffers
 nnoremap <silent> <a-8> :windo call matchadd("Search", "<c-r><c-w>", 10, 4)<cr>
