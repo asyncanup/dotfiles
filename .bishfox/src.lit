@@ -1,0 +1,57 @@
+@code_type js .js
+@comment_type // %s
+
+@title My firefox extension
+
+@s Manifest
+
+--- manifest.json
+{
+  "manifest_version": 2,
+  "name": "BishFox",
+  "version": "1.0",
+  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "icons": {
+    "48": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["bishfox.js"]
+    }
+  ]
+}
+---
+
+@s Script
+
+--- bishfox.js
+window.addEventListener("keydown", function(event) {
+  if (event.shiftKey || event.altKey) return;
+
+  var maxAmount = 0;
+  if (event.key === 'j') maxAmount = 15;
+  else if (event.key === 'k') maxAmount = -15;
+  else if (event.key === 'd') maxAmount =  30;
+  else if (event.key === 'u') maxAmount = -30;
+
+  bishfox.smoothScrollBy(0, maxAmount, 10);
+});
+
+var bishfox = {
+  smoothScrollBy: function scrollBy(frame, maxAmount, maxFrames) {
+    if (maxAmount === 0 || frame === maxFrames) return;
+
+    frame += 1;
+    var amount = bishfox.easeOut(frame / maxFrames) * maxAmount;
+    document.scrollingElement.scrollBy(0, amount);
+    window.requestAnimationFrame(function() {
+      scrollBy(frame, maxAmount, maxFrames);
+    });
+  },
+  easeOut: function (x) {
+    return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+  }
+};
+---
+
