@@ -7,14 +7,14 @@
   db = !git diff $1..HEAD
   dc = diff --cached
   di = diff --no-index
-  dm = diff master..HEAD
-  dms = diff master..HEAD --stat
-  dmm = !git diff $(git merge-base master HEAD)..HEAD
+  dm = diff main..HEAD
+  dms = diff main..HEAD --stat
+  dmm = !git diff $(git merge-base main HEAD)..HEAD
   sh = show
   cfs = diff --name-only --diff-filter=U
   cfd = clean -f -d
   co = checkout
-  com = checkout master
+  com = checkout main
   cob = checkout -b
   a = add
   ap = add -p
@@ -51,11 +51,11 @@
   bd = branch --delete
   bD = branch -D
   bu = branch -u ; set upstream
-  bmm = branch -a --merged master
-  bnm = branch -a --no-merged master
+  bmm = branch -a --merged main
+  bnm = branch -a --no-merged main
   l = log --pretty=format:\"%Cgreen%ad %Creset%s%Cgreen%d %Cblue- %an %Cgreen%h\" --graph --date=short
   lp = log -p
-  hist = !git log $(git merge-base master HEAD)..HEAD --pretty=format:"%B"
+  hist = !git log $(git merge-base main HEAD)..HEAD --pretty=format:"%B"
   r = reset
   rs = reset --soft
   rh = reset --hard
@@ -69,14 +69,14 @@
   rev = rev-parse
   cat = cat-file -p
   pl = pull --rebase
-  plm = pull --rebase origin master
+  plm = pull --rebase origin main
   type = cat-file -t
   m = merge --no-ff
   mf = merge --ff
   rb = rebase
   rbi = rebase -i
-  rbim = rebase -i master
-  rbm = rebase master
+  rbim = rebase -i main
+  rbm = rebase main
   rba = rebase --abort
   rbc = rebase --continue
   rbs = rebase --skip

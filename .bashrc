@@ -128,8 +128,13 @@ RE_FILENAME="$RE_NAME\.$RE_EXT"
 # add base PATH
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
-# add custom scripts/dependencies to PATH, homebrew first, then locally installed things, then system
-export PATH="/opt/homebrew/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+# add custom scripts/dependencies to PATH, locally installed things first, then system
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+# add mac-specific scripts to PATH, prioritizing mac-specific ones over generic
+if [ "$(uname)" == "Darwin" ]; then
+  export PATH="/opt/homebrew/bin:$HOME/bin/mac:$PATH"
+fi
 
 # disable homebrew analytics collection
 export HOMEBREW_NO_ANALYTICS=1
@@ -831,13 +836,6 @@ s() {
   lynx https://duckduckgo.com/?q="$*"
 }
 alias l="lynx"
-
-# literate programming
-if [ "$(uname)" == "Darwin" ]; then
-  lit() {
-    ~/bin/mac-lit "$@"
-  }
-fi
 
 # lynx config location
 export LYNX_CFG=$HOME/.config/lynx/lynx.cfg
