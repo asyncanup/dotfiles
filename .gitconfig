@@ -7,6 +7,7 @@
   db = !git diff $1..HEAD
   dc = diff --cached
   di = diff --no-index
+  ds = diff --stat
   dm = diff main..HEAD
   dms = diff main..HEAD --stat
   dmm = !git diff $(git merge-base main HEAD)..HEAD
@@ -131,3 +132,9 @@
 
 [init]
   defaultBranch = main
+
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
