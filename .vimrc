@@ -14,6 +14,9 @@
 " break compatibility with old vim
 set nocompatible
 
+" set encoding for vim
+set encoding=utf-8
+
 " reload files on change in file system
 set autoread
 autocmd FocusGained,BufEnter * :silent! checktime
@@ -77,7 +80,10 @@ set path=.,
 set switchbuf=usetab,newtab
 
 " vim screen update time is relevant for signify (git)
-set updatetime=100
+set updatetime=150
+
+" used by CoC, git signify, etc
+set signcolumn=yes
 
 " highlight cursor line
 set cursorline
@@ -85,9 +91,9 @@ set cursorline
 " set leader key
 let mapleader = ","
 
-" neovim python host prorams
-let g:python3_host_prog="$HOME/.pyenv/versions/neovim3/bin/python"
-let g:python_host_prog="$HOME/.pyenv/versions/neovim2/bin/python"
+" for ctrl-p based autocompletion to apply immediately on keypress, allow
+" modifying the completeopt variable, or it will be overridden all the time
+set completeopt=longest,menu
 
 " ---- plugin settings ----
 
@@ -114,37 +120,14 @@ let g:airline#extensions#default#layout = [
     \ ]
 let g:airline#extensions#branch#displayed_head_limit = 20
 
-" js code formatter config
-let g:prettier#autoformat = 0
-let g:prettier#exec_cmd_path = ""
-let g:prettier#config#tab_width = 4
+" js prettier code formatter config
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+let g:prettier#exec_cmd_async = 1
+let g:prettier#exec_cmd_path = "/tmp/ypx/prettier/node_modules/.bin/prettier"
+let g:prettier#config#tab_width = 2
 nnoremap <silent> <leader>p :PrettierAsync<cr>
 " autocmd BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-
-" YouComplete me config
-let g:ycm_always_populate_location_list = 1
-let g:ycm_open_loclist_on_ycm_diags = 0
-
-" populate location list with errors
-nnoremap <leader>e :YcmDiags<cr>:close<cr>:lnext<cr>:lprev<cr><c-w>_zz
-
-" rename a variable
-nnoremap <c-r> :YcmCompleter RefactorRename<space>
-
-" go to definition
-nnoremap <enter> :YcmCompleter GoTo<cr>zt
-
-" go to references
-nnoremap <silent> yr :YcmCompleter GoToReferences<cr>:cnext<cr>:cprev<cr>
-
-" try to fix issue
-nnoremap yx :YcmCompleter FixIt<cr>
-
-" restart type server
-nnoremap <leader>yr :YcmRestartServer<cr>
-
-" format code
-nnoremap <leader>yf :YcmCompleter Format<cr>
 
 " python code formatter config
 " autocmd BufWritePre *.py YAPF
@@ -259,13 +242,6 @@ xmap ic <plug>(signify-motion-inner-visual)
 omap ac <plug>(signify-motion-outer-pending)
 xmap ac <plug>(signify-motion-outer-visual)
 
-" stop rooter from changing directory automatically
-let g:rooter_manual_only = 1
-nnoremap <a-c> :Rooter<cr>
-
-" show Vista file outline
-nnoremap <a-s-t> :Vista!!<cr><c-w>15>
-
 " nnn file manager
 let g:nnn#layout = { 'down': '~35%' }
 let g:nnn#action = {
@@ -283,20 +259,14 @@ let g:fzf_action = {
 " disable vim features on large files
 let g:LargeFile = 10
 
-" ultisnips
+" ultisnips code snippets
 let g:UltiSnipsExpandTrigger = '<c-t>'
-let g:UltiSnipsJumpForwardTrigger = '<c-k>'
 
 " ctrl-space window, tab, workspace management
 let g:CtrlSpaceDefaultMappingKey = '<space> '
 let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
 let g:CtrlSpaceSaveWorkspaceOnExit = 1
 nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
-
-" elm
-let g:ycm_semantic_triggers = {
-  \ 'elm' : ['.'],
-  \}
 
 nnoremap <leader>b :ElmMake<cr>
 
@@ -332,31 +302,24 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-commentary'
 Plug 'flazz/vim-colorschemes'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
-Plug 'mcchrish/nnn.vim'
 Plug 'vim-scripts/LargeFile'
 Plug 'pgr0ss/vim-github-url'
 Plug 'nelstrom/vim-visual-star-search'
-Plug 'liuchengxu/vista.vim'
-Plug 'vim-ctrlspace/vim-ctrlspace'
-Plug 'grailbio/bazel-compilation-database'
 Plug 'PeterRincker/vim-argumentative'
 Plug 'zyedidia/literate.vim', { 'for': 'lit' }
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'prettier/vim-prettier', { 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'yaml', 'html'] }
-Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
-Plug 'w0rp/ale', { 'on': 'ALEToggle' }
-Plug 'vimwiki/vimwiki'
 Plug 'dominikduda/vim_current_word'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'easymotion/vim-easymotion'
 " ---- place to add new plugins ----
 
 " Macbook M1 chip requires the --system-libclang flag
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --ts-completer --system-libclang' }
 
 if has('nvim') || has('patch-8.0.902')
   Plug 'kshenoy/vim-signature'
@@ -404,6 +367,27 @@ tnoremap <a-9> <c-\><c-n>9gt
 
 " fzf command history feature
 let g:fzf_history_dir = '~/.fzf-history'
+
+" vim-lsp for deno
+if executable("deno")
+  augroup LspTypeScript
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+    \ "name": "deno lsp",
+    \ "cmd": {server_info -> ["deno", "lsp"]},
+    \ "root_uri": {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), "tsconfig.json"))},
+    \ "allowlist": ["typescript", "typescript.tsx"],
+    \ "initialization_options": {
+    \     "enable": v:true,
+    \     "lint": v:true,
+    \     "unstable": v:true,
+    \   },
+    \ })
+  augroup END
+endif
+
+" easymotion config
+nnoremap <leader>f <Plug>(easymotion-overwin-f2)
 
 function! s:update_colors()
   " mark colors
@@ -473,12 +457,9 @@ endwhile
 nnoremap <silent> <a-bslash> :windo wincmd L<cr>
 nnoremap <silent> <a-\|> :windo wincmd J<cr>
 
-" when searching locally, reposition found location to center of screen
-nnoremap n n
-nnoremap N N
-
 " enter a line above in insert mode
 inoremap <c-o> <esc>O
+
 
 " bash movement shortcuts in insert mode
 " `^ moves cursor to the position going out of insert mode
@@ -551,9 +532,6 @@ inoremap <a-r> <esc>:source ~/.vimrc<cr>
 " reload only the visually selected text
 nnoremap <a-s-r> yy:<c-r>"<cr>
 vnoremap <a-r> y:<c-r>"<cr>
-
-" to reload a file from file system
-nnoremap <leader>r :e<cr>
 
 " join lines
 nnoremap <leader>j J
@@ -681,7 +659,9 @@ nnoremap <c-w>t :tabedit <c-r>=expand('%p')<cr><cr>
 
 " navigate tabs
 nnoremap <a-down> gt
+nnoremap <leader><right> gt
 nnoremap <a-up> gT
+nnoremap <leader><left> gT
 inoremap <a-down> <esc>gt
 inoremap <a-up> <esc>gT
 
@@ -793,9 +773,6 @@ au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\ <space>
 
 " turn off markdown spell check
 au FileType markdown setlocal nospell
-
-" auto-save in .wiki files (vimwiki)
-au CursorHold *.wiki silent update
 
 " navigate in a comma-separated list
 nnoremap <silent> gl "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<cr><c-o>/\w\+\_W\+<cr><c-l>:noh<cr>
