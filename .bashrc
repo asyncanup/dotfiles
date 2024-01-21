@@ -1,129 +1,140 @@
 # ---- default bashrc ----
 
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+[[ $- != *i* ]] && return
 
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
+colors() {
+	local fgc bgc vals seq0
+
+	printf "Color escapes are %s\n" '\e[${value};...;${value}m'
+	printf "Values 30..37 are \e[33mforeground colors\e[m\n"
+	printf "Values 40..47 are \e[43mbackground colors\e[m\n"
+	printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
+
+	# foreground colors
+	for fgc in {30..37}; do
+		# background colors
+		for bgc in {40..47}; do
+			fgc=${fgc#37} # white
+			bgc=${bgc#40} # black
+
+			vals="${fgc:+$fgc;}${bgc}"
+			vals=${vals%%;}
+
+			seq0="${vals:+\e[${vals}m}"
+			printf "  %-9s" "${seq0:-(default)}"
+			printf " ${seq0}TEXT\e[m"
+			printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
+		done
+		echo; echo
+	done
+}
+
+[ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
+
+# Change the window title of X terminals
+case ${TERM} in
+	xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
+		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
+		;;
+	screen*)
+		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
+		;;
 esac
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+use_color=true
+
+# Set colorful PS1 only on colorful terminals.
+# dircolors --print-database uses its own built-in database
+# instead of using /etc/DIR_COLORS.  Try to use the external file
+# first to take advantage of user additions.  Use internal bash
+# globbing instead of external grep binary.
+safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
+match_lhs=""
+[[ -f ~/.dir_colors   ]] && match_lhs="${match_lhs}$(<~/.dir_colors)"
+[[ -f /etc/DIR_COLORS ]] && match_lhs="${match_lhs}$(</etc/DIR_COLORS)"
+[[ -z ${match_lhs}    ]] \
+	&& type -P dircolors >/dev/null \
+	&& match_lhs=$(dircolors --print-database)
+[[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
+
+if ${use_color} ; then
+	# Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+	if type -P dircolors >/dev/null ; then
+		if [[ -f ~/.dir_colors ]] ; then
+			eval $(dircolors -b ~/.dir_colors)
+		elif [[ -f /etc/DIR_COLORS ]] ; then
+			eval $(dircolors -b /etc/DIR_COLORS)
+		fi
+	fi
+
+	if [[ ${EUID} == 0 ]] ; then
+		PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
+	else
+		PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
+	fi
+
+	alias ls='ls --color=auto'
+	alias grep='grep --colour=auto'
+	alias egrep='egrep --colour=auto'
+	alias fgrep='fgrep --colour=auto'
+else
+	if [[ ${EUID} == 0 ]] ; then
+		# show root@ when we don't have colors
+		PS1='\u@\h \W \$ '
+	else
+		PS1='\u@\h \w \$ '
+	fi
+fi
+
+unset use_color safe_term match_lhs sh
+
+#alias cp="cp -i"                          # confirm before overwriting something
+#alias df='df -h'                          # human-readable sizes
+#alias free='free -m'                      # show sizes in MB
+#alias np='nano -w PKGBUILD'
+#alias more=less
+
+xhost +local:root > /dev/null 2>&1
+
+# Bash won't get SIGWINCH if another process is in the foreground.
+# Enable checkwinsize so that bash will check the terminal size when
+# it regains control.  #65623
+# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
 shopt -s checkwinsize
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+shopt -s expand_aliases
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
+# export QT_SELECT=4
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
+# Enable history appending instead of overwriting.  #139609
+shopt -s histappend
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alFh'
-alias la='ls -Ah'
-alias l='ls -CFh'
-
-# make directory and change to it, at the same time
-mkcd() {
-  mkdir -p $1
-  cd $1
+#
+# # ex - archive extractor
+# # usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
 }
 
-# ---- colors ----
-C_BLACK='\e[0;30m'
-C_DARKGRAY='\e[1;30m'
-C_RED='\e[0;31m'
-C_LIGHTRED='\e[1;31m'
-C_GREEN='\e[0;32m'
-C_LIGHTGREEN='\e[1;32m'
-C_ORANGE='\e[0;33m'
-C_YELLOW='\e[1;33m'
-C_BLUE='\e[0;34m'
-C_LIGHTBLUE='\e[1;34m'
-C_PURPLE='\e[0;35m'
-C_LIGHTPURPLE='\e[1;35m'
-C_CYAN='\e[0;36m'
-C_LIGHTCYAN='\e[1;36m'
-C_LIGHTGRAY='\e[0;37m'
-C_WHITE='\e[1;37m'
-C_RESET='\e[0m'
-
-BG_BLUE='\e[48;5;24m'
-BG_DARKGRAY='\e[48;5;237m'
-BG_GRAY='\e[48;5;238m'
-BG_GREEN='\e[48;5;22m'
-BG_ORANGE='\e[48;5;130m'
-FG_BLUE='\e[38;5;24m'
-FG_DARKGRAY='\e[38;5;237m'
-FG_GRAY='\e[38;5;238m'
-FG_GREEN='\e[38;5;22m'
-FG_LIGHTGRAY='\e[38;5;250m'
-FG_ORANGE='\e[38;5;130m'
-FG_WHITE='\e[38;5;15m'
-
-cecho() {
-  color=\$${1:-RESET}
-  echo -ne "$(eval echo ${color})"
-  cat
-  echo -ne "${RESET}"
-}
-
-# ---- keys ----
-capture-keypress() {
-  read -s -n1
-  K1="$REPLY"
-  read -s -n2 -t 0.001
-  K2="$REPLY"
-  read -s -n1 -t 0.001
-  K3="$REPLY"
-  echo "$K1$K2$K3"
-}
-
-KEY_INSERT=$'\x1b\x5b\x32\x7e'
-KEY_DELETE=$'\x1b\x5b\x33\x7e'
-KEY_HOME=$'\x1b\x4f\x48'
-KEY_END=$'\x1b\x4f\x46'
-KEY_PAGEUP=$'\x1b\x5b\x35\x7e'
-KEY_PAGEDOWN=$'\x1b\x5b\x36\x7e'
-KEY_UP=$'\x1b\x5b\x41'
-KEY_DOWN=$'\x1b\x5b\x42'
-KEY_RIGHT=$'\x1b\x5b\x43'
-KEY_LEFT=$'\x1b\x5b\x44'
-KEY_TAB=$'\x09'
-KEY_ENTER=$'\x0a'
-KEY_ESCAPE=$'\x1b'
-KEY_SPACE=$'\x20'
-
-# ---- common regular expressions ----
-
-RE_EXT='[a-z][a-z][a-z]?[a-z]?'
-RE_NAME='[^\/]+'
-RE_FILENAME="$RE_NAME\.$RE_EXT"
-
-
-# ---- custom ----
+# --- custom by bish ---
 
 # add base PATH
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
