@@ -32,6 +32,9 @@ set smartindent
 set splitbelow
 set splitright
 
+" terminal colors
+set termguicolors
+
 " line numbers and their color
 set number
 set relativenumber
@@ -82,7 +85,7 @@ set switchbuf=usetab,newtab
 " vim screen update time is relevant for signify (git)
 set updatetime=150
 
-" used by CoC, git signify, etc
+" used by type checker, linter, git tools, etc
 set signcolumn=yes
 
 " highlight cursor line
@@ -314,8 +317,10 @@ Plug 'zyedidia/literate.vim', { 'for': 'lit' }
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'prettier/vim-prettier', { 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'yaml', 'html'] }
 Plug 'dominikduda/vim_current_word'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'easymotion/vim-easymotion'
+Plug 'github/copilot.vim'
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " ---- place to add new plugins ----
 
 " Macbook M1 chip requires the --system-libclang flag
@@ -331,6 +336,19 @@ endif
 call plug#end()
 
 " ---- settings that require plugins loaded ----
+
+" CoC code completion
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" CoC code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+" CoC rename symbol
+nmap <silent><leader>r <Plug>(coc-rename)
 
 " file finder
 command! -bang -nargs=? -complete=dir GFiles

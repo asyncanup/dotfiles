@@ -3,3 +3,4 @@
 .bish.*
 .DS_Store
 .cs_workspaces
+.vim/

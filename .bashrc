@@ -684,7 +684,6 @@ alias gbb='ypx @bazel/bazel:bazel --nohome_rc build'
 alias gbr='ypx @bazel/bazel:bazel --nohome_rc run'
 alias gbq='ypx @bazel/bazel:bazel --nohome_rc query'
 
-alias jira='ypx jira'
 alias ji='ypx jira issue'
 alias jj='ypx jira issue | grep In.Progress'
 
