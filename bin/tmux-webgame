@@ -1,0 +1,27 @@
+#!/bin/bash
+
+session=${1:-webgame}
+
+tmux new-session -d -s $sess
+
+win=0
+tmux rename-window -t $sess:$win 'git'
+sleep 0.5
+tmux send-keys -t $sess:$win C-m 'tig' C-m s R
+
+win=1
+tmux new-window -t $sess:$win -n 'src'
+tmux split-window -h -t $sess:$win
+sleep 0.5
+tmux send-keys -t $sess:$win.0 'nvim src/app.ts' C-m
+tmux send-keys -t $sess:$win.1 'cd ../js && nvim src/App.ts' C-m
+
+win=2
+tmux new-window -t $sess:$win -n 'run'
+tmux split-window -v -t $sess:$win
+sleep 0.5
+tmux send-keys -t $sess:$win.1 'cd ../js && deno task dev' C-m
+sleep 0.5
+tmux send-keys -t $sess:$win.0 'deno task dev' C-m
+
+tmux attach-session -t $sess
