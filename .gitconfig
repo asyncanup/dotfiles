@@ -89,6 +89,9 @@
   sm = submodule
   h = help
 
+[pull]
+  rebase = true
+
 [advice]
   detachedHead = false
 
