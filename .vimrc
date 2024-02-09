@@ -350,6 +350,10 @@ nmap <silent> gr <Plug>(coc-references)
 " CoC rename symbol
 nmap <silent><leader>r <Plug>(coc-rename)
 
+" CoC list problems
+nmap <silent> gep <Plug>(coc-diagnostic-prev)
+nmap <silent> gen <Plug>(coc-diagnostic-next)
+
 " file finder
 command! -bang -nargs=? -complete=dir GFiles
     \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)

@@ -6,8 +6,10 @@ tmux new-session -d -s $sess
 
 win=0
 tmux rename-window -t $sess:$win 'git'
+tmux split-window -v -t $sess:$win
 sleep 0.5
-tmux send-keys -t $sess:$win C-m 'tig' C-m s R
+tmux send-keys -t $sess:$win.0 C-m 'tig' C-m s R
+tmux send-keys -t $sess:$win.1 C-m 'cd ../js && tig' C-m s R
 
 win=1
 tmux new-window -t $sess:$win -n 'src'
