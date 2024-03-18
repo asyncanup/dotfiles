@@ -1,0 +1,8 @@
+html,
+iframe {
+  -webkit-filter: invert(88%) !important;
+}
+
+img {
+  -webkit-filter: invert(100%) !important;
+}

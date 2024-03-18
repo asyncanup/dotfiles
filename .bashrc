@@ -140,7 +140,7 @@ ex ()
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
 # add custom scripts/dependencies to PATH, locally installed things first, then system
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/bin/node_modules/.bin:$PATH"
 
 # add mac-specific scripts to PATH, prioritizing mac-specific ones over generic
 if [ "$(uname)" == "Darwin" ]; then
@@ -224,10 +224,6 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 # csharp
 export PATH="$PATH:/Library/Frameworks/Mono.framework/Versions/Current/bin"
-
-# add locally installed node_modules binaries from a project to PATH
-YPX_NODE_MODULES=(/tmp/ypx/*/node_modules/.bin)
-export PATH="$PATH:${YPX_NODE_MODULES[*]/%\//:}./node_modules/.bin"
 
 # dotnet
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -688,21 +684,6 @@ function bbc() {
 function bbp() {
   bazel build $@ 2>&1 | bat -l python --style grid --paging never
 }
-
-alias ibazel="ypx @bazel/ibazel:ibazel"
-alias gb='ypx @bazel/bazel:bazel --nohome_rc'
-alias gbb='ypx @bazel/bazel:bazel --nohome_rc build'
-alias gbr='ypx @bazel/bazel:bazel --nohome_rc run'
-alias gbq='ypx @bazel/bazel:bazel --nohome_rc query'
-
-alias ji='ypx jira issue'
-alias jj='ypx jira issue | grep In.Progress'
-
-alias tldr='ypx tldr'
-alias prettier='ypx prettier'
-alias http-server='ypx http-server'
-alias gtop='ypx gtop'
-alias readable='ypx readability-cli:readable'
 
 alias sb='. ~/.bashrc'
 alias sbl='. ~/.bashrc.local'

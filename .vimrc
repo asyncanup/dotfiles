@@ -318,9 +318,15 @@ Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'prettier/vim-prettier', { 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'yaml', 'html'] }
 Plug 'dominikduda/vim_current_word'
 Plug 'easymotion/vim-easymotion'
-Plug 'github/copilot.vim'
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'zbirenbaum/copilot.lua'
+Plug 'github/copilot.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+Plug 'ActivityWatch/aw-watcher-vim'
+Plug 'junegunn/vim-peekaboo'
 " ---- place to add new plugins ----
 
 " Macbook M1 chip requires the --system-libclang flag
@@ -411,6 +417,44 @@ endif
 " easymotion config
 nnoremap <leader>f <Plug>(easymotion-overwin-f2)
 
+" treesitter for advanced syntax highlighting
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "javascript", "typescript", "html", "css", "vim", "lua" }, -- Install language parsers
+  highlight = {
+    enable = true,              -- Enable syntax highlighting
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+set foldlevel=20
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+
+" Copilot
+lua << EOF
+require("copilot").setup()
+EOF
+
+" Copilot Chat
+
+lua << EOF
+local copilot_chat = require("CopilotChat")
+copilot_chat.setup({
+  debug = false,
+  show_help = "yes",
+  disable_extra_info = "no",
+  hide_system_prompt = "no",
+  clear_chat_on_new_prompt = "no",
+  event = "VeryLazy",
+})
+EOF
+
+vnoremap <leader>cc :CopilotChat<space>
+nnoremap <leader>cc :CopilotChat<space>
+
+" update colors for git signify signs (+, -, ~)
 function! s:update_colors()
   " mark colors
   highlight SignatureMarkText ctermfg=gray guifg=gray ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
@@ -426,6 +470,9 @@ function! s:update_colors()
   " vim-current-word highlight color
   highlight CurrentWord ctermbg=237
   highlight CurrentWordTwins ctermbg=237
+
+  " make fold lines less visible
+  highlight Folded ctermfg=gray ctermbg=NONE guifg=#888 guibg=#666
 
 endfunction
 autocmd User AirlineAfterTheme call s:update_colors()
@@ -446,9 +493,9 @@ nnoremap C "_C
 " open a new empty tab
 nnoremap <leader>tt :tabe<cr>
 
-" indent a markdown bullet point in input mode
-inoremap <a-]> <esc>0i<space><space><esc>A
-inoremap <a-[> <esc>g^i<bs><esc>A
+" " indent a markdown bullet point in input mode
+" inoremap <a-]> <esc>0i<space><space><esc>A
+" inoremap <a-[> <esc>g^i<bs><esc>A
 
 " navigate panels (windows)
 nnoremap <up> <c-w>k
