@@ -452,7 +452,7 @@ copilot_chat.setup({
 EOF
 
 vnoremap <leader>cc :CopilotChat<space>
-nnoremap <leader>cc :CopilotChat<space>
+nnoremap <leader>cc V{{{:CopilotChat<space>
 
 " update colors for git signify signs (+, -, ~)
 function! s:update_colors()
