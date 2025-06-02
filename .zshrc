@@ -21,3 +21,8 @@ export PATH="$PATH:/home/bish/ext/node/node-v20.11.0-linux-x64/bin"
 
 # personal utilities
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+# Deno
+export PATH="/opt/homebrew/bin:$PATH"
+# PostgreSQL
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"

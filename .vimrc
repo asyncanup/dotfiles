@@ -297,7 +297,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
@@ -325,7 +325,6 @@ Plug 'zbirenbaum/copilot.lua'
 Plug 'github/copilot.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
-Plug 'ActivityWatch/aw-watcher-vim'
 Plug 'junegunn/vim-peekaboo'
 " ---- place to add new plugins ----
 
