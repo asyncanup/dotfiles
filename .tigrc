@@ -72,6 +72,12 @@ bind main T !git tag -a "%(prompt Enter tag name: )" %(commit)
 # Push local changes to origin
 bind main P !git push origin
 
+# Push local changes to origin
+bind main U !git pull origin
+
+# Get link to the current commit on Github
+bind main Y @sh -c "echo 'https://'$(git remote -v | grep -Eo 'github.com[:/][^.]+' | head -1 | tr : /)'/commit/%(commit)' | xclip -selection clipboard && echo 'Copied URL to clipboard'"
+
 # Open the commit on Github
 bind generic B @sh -c "xdg-open 'https://'$(git remote -v | grep -Eo 'github.com[:/][^.]+' | head -1 | tr : /)'/commit/%(commit)'"
 
