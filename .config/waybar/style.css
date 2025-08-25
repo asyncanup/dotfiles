@@ -1,0 +1,95 @@
+* {
+    font-size: 13px;
+}
+
+window#waybar {
+    background-color: #1f1f1f;
+    color: #cdd6f4;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces button {
+    padding: 0 10px;
+    background-color: transparent;
+    color: #cdd6f4;
+    border-bottom: 3px solid transparent;
+}
+
+#workspaces button:hover {
+    background: rgba(148, 226, 213, 0.2);
+}
+
+#workspaces button.active {
+    background-color: rgba(137, 180, 250, 0.2);
+    border-bottom: 3px solid #89b4fa;
+}
+
+#workspaces button.urgent {
+    background-color: rgba(243, 139, 168, 0.2);
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#network,
+#pulseaudio,
+#tray {
+    padding: 0 8px;
+    margin: 2px 2px;
+    color: #cdd6f4;
+    border-radius: 30px;
+    border: 1px solid #444;
+    border-color: #444;
+}
+
+#window {
+    font-family: monospace;
+    margin: 0 4px;
+    color: #ccc;
+    padding: 0 10px;
+    border-left: 2px solid #444;
+}
+
+#clock {
+    font-weight: bold;
+}
+
+#battery.charging, #battery.plugged {
+    color: #a6e3a1;
+}
+
+#battery.critical:not(.charging) {
+    background-color: rgba(243, 139, 168, 0.2);
+    color: #f38ba8;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#network.disconnected {
+    background-color: rgba(243, 139, 168, 0.2);
+}
+
+#pulseaudio.muted {
+    background-color: rgba(150, 150, 150, 0.2);
+}
+
+#temperature.critical {
+    background-color: rgba(243, 139, 168, 0.2);
+}
+
+@keyframes blink {
+    to {
+        background-color: rgba(243, 139, 168, 0.4);
+        color: #ffffff;
+    }
+}
