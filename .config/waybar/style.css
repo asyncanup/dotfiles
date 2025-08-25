@@ -40,6 +40,7 @@ window#waybar.hidden {
 #temperature,
 #network,
 #pulseaudio,
+#disk,
 #tray {
     padding: 0 8px;
     margin: 2px 2px;
