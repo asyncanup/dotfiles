@@ -9,13 +9,13 @@ padding=15
 background-color=#1e1e2e
 text-color=#cdd6f4
 border-color=#89b4fa
-border-size=2
+border-size=1
 border-radius=8
 
 # Font and sizing
-font=monospace 11
+font=sans-serif 9
 width=350
-height=100
+height=150
 max-visible=5
 
 # Behavior
@@ -28,6 +28,6 @@ max-icon-size=48
 icon-path=/usr/share/icons/Papirus-Dark
 
 # Actions
-on-button-left=dismiss
-on-button-middle=none
+on-button-left=invoke-default-action
+on-button-middle=dismiss
 on-button-right=dismiss-all
