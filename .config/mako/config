@@ -1,0 +1,33 @@
+# Mako notification daemon configuration
+
+# Position notifications in the top-right corner
+anchor=top-right
+margin=10
+padding=15
+
+# Styling
+background-color=#1e1e2e
+text-color=#cdd6f4
+border-color=#89b4fa
+border-size=2
+border-radius=8
+
+# Font and sizing
+font=monospace 11
+width=350
+height=100
+max-visible=5
+
+# Behavior
+default-timeout=5000
+ignore-timeout=1
+group-by=app-name
+
+# Icons
+max-icon-size=48
+icon-path=/usr/share/icons/Papirus-Dark
+
+# Actions
+on-button-left=dismiss
+on-button-middle=none
+on-button-right=dismiss-all
