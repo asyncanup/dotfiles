@@ -529,13 +529,20 @@ nnoremap <c-s> :w<cr>
 inoremap <c-s> <esc>:w<cr>
 vnoremap <c-s> <esc>:w<cr>
 
-nnoremap <a-s-s> :w!<cr>
-inoremap <a-s-s> <esc>:w!<cr>
-vnoremap <a-s-s> <esc>:w!<cr>
+" save without auto formatting
+nnoremap <c-a-s> :noa w<cr>
+inoremap <c-a-s> <esc>:noa w<cr>
+vnoremap <c-a-s> <esc>:noa w<cr>
 
+" save all files
 nnoremap <a-s> :wa<cr>
 inoremap <a-s> <esc>:wa<cr>
 vnoremap <a-s> <esc>:wa<cr>
+
+" save forcefully
+nnoremap <a-s-s> :w!<cr>
+inoremap <a-s-s> <esc>:w!<cr>
+vnoremap <a-s-s> <esc>:w!<cr>
 
 " easier redo
 nnoremap U <c-r>
