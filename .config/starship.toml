@@ -1,0 +1,5 @@
+# Starship configuration
+
+# Disable username in prompt
+[username]
+disabled = true
