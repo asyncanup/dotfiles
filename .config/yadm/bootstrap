@@ -189,5 +189,11 @@ fi
 
 sudo apt -y autoremove
 
+# ---- local overrides ----
+if [ -f ~/.config/yadm/bootstrap.local ]; then
+    now "running local bootstrap"
+    source ~/.config/yadm/bootstrap.local
+fi
+
 # ---- done ----
 now "done"

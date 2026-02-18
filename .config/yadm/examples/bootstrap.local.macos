@@ -1,0 +1,28 @@
+#!/bin/bash
+# Example macOS-specific bootstrap script
+# Copy this to ~/.config/yadm/bootstrap.local on macOS systems
+
+set -e
+
+now() {
+    echo -e "\n$1"
+}
+
+# Install Homebrew if not present
+if ! command -v brew >/dev/null 2>&1; then
+    now "Installing Homebrew"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Install common packages via Homebrew
+now "Installing packages via Homebrew"
+brew install git tig wget curl lynx screen python3 tldr tree cmake entr nmap \
+    bat ripgrep fd pandoc fzf nvim
+
+# Install powerline-shell
+if ! command -v powerline-shell >/dev/null 2>&1; then
+    now "Installing powerline-shell"
+    pip3 install powerline-shell
+fi
+
+now "macOS bootstrap complete"

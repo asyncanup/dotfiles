@@ -14,3 +14,6 @@ fi
 # ------------
 [[ -f $FZF_DIR/shell/key-bindings.bash ]] && \
   source "$FZF_DIR/shell/key-bindings.bash"
+
+# Local machine-specific overrides
+[[ -f ~/.fzf.bash.local ]] && source ~/.fzf.bash.local

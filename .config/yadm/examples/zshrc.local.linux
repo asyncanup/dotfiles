@@ -1,0 +1,17 @@
+# Example Linux-specific zsh configuration
+# Copy this to ~/.zshrc.local on Linux systems
+
+# Source manjaro-zsh-configuration (if on Manjaro/Arch)
+if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
+  source /usr/share/zsh/manjaro-zsh-config
+fi
+
+# Use manjaro zsh prompt (if on Manjaro/Arch)
+if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
+  source /usr/share/zsh/manjaro-zsh-prompt
+fi
+
+# nodejs manual install from binary package
+export PATH="$PATH:$HOME/ext/node/node-v20.11.0-linux-x64/bin"
+
+# Add any other Linux-specific paths, aliases, or configuration here
