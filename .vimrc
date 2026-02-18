@@ -52,7 +52,7 @@ set nojoinspaces
 set textwidth=80
 
 " disable mouse scroll, otherwise vim in screen eats 1 <esc> press
-set mouse=nvi
+set mouse=
 
 " expand tabs to spaces
 set expandtab
@@ -103,10 +103,10 @@ set completeopt=longest,menu
 " airline statusline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#ctrlspace_show_tab_nr = 1
-let g:airline#extensions#tabline#tab_nr_type = 2 " show tab numbers
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#buffers_label = 'b'
 let g:airline#extensions#tabline#tabs_label = 't'
+let airline#extensions#tabline#current_first = 1
 let g:airline_powerline_fonts = 1
 let g:airline_left_alt_sep = ''
 let g:airline#extensions#default#section_truncate_width = {
@@ -125,6 +125,7 @@ let g:airline#extensions#branch#displayed_head_limit = 20
 
 " js prettier code formatter config
 let g:prettier#autoformat = 1
+let g:prettier#exec_cmd_async = 1
 let g:prettier#autoformat_require_pragma = 0
 let g:prettier#exec_cmd_async = 1
 let g:prettier#exec_cmd_path = "/tmp/ypx/prettier/node_modules/.bin/prettier"
@@ -134,6 +135,27 @@ nnoremap <silent> <leader>p :PrettierAsync<cr>
 
 " python code formatter config
 " autocmd BufWritePre *.py YAPF
+
+" fullscreen zen writing mode
+function! SetWritingMode()
+    Goyo 100
+    set tw=0
+    set linebreak
+    nnoremap j gj
+    nnoremap k gk
+    nnoremap 0 g0
+    nnoremap $ g$
+    nnoremap I g0i
+    nnoremap A g$i
+    nnoremap C cg$
+    nnoremap D dg$
+    nnoremap d0 dg0
+    nnoremap d$ dg$
+    nnoremap cc g0cg$
+    nnoremap dd g0dg$a<bs><esc>j0
+endfunction
+command! -bang WritingMode call SetWritingMode()
+nnoremap <silent> <a-g> :WritingMode<cr>
 
 " show commit history for current file
 nnoremap <silent> gm :BCommits<cr>
@@ -244,11 +266,7 @@ let g:LargeFile = 10
 " ultisnips code snippets
 let g:UltiSnipsExpandTrigger = '<c-t>'
 
-" ctrl-space window, tab, workspace management
-let g:CtrlSpaceDefaultMappingKey = '<space> '
-let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
-let g:CtrlSpaceSaveWorkspaceOnExit = 1
-nnoremap <a-s-w> :CtrlSpaceSaveWorkspace<cr>
+nnoremap <leader>b :ElmMake<cr>
 
 " git commands via fugitive
 nnoremap gs :Gstatus<cr><c-w>L
@@ -274,12 +292,13 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/goyo.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'flazz/vim-colorschemes'
@@ -289,18 +308,20 @@ Plug 'vim-scripts/LargeFile'
 Plug 'pgr0ss/vim-github-url'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'PeterRincker/vim-argumentative'
+Plug 'zyedidia/literate.vim', { 'for': 'lit' }
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'prettier/vim-prettier', { 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'yaml', 'html'] }
 Plug 'dominikduda/vim_current_word'
 Plug 'easymotion/vim-easymotion'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'github/copilot.vim'
+Plug 'nvim-lua/plenary.nvim'
 " Plug 'ActivityWatch/aw-watcher-vim'
 " Plug 'junegunn/vim-peekaboo'
-Plug 'xolox/vim-misc'
-Plug 'vim-scripts/vim-colorscheme-switcher'
-Plug 'hedyhli/outline.nvim'
-Plug 'scrooloose/nerdtree'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
 " ---- place to add new plugins ----
 
 " Macbook M1 chip requires the --system-libclang flag
@@ -317,8 +338,33 @@ call plug#end()
 
 " ---- settings that require plugins loaded ----
 
-" Copilot completion for git commits
-let g:copilot_filetypes = { '*' : v:true, 'gitcommit': v:true }
+" CoC code completion
+let g:coc_global_extensions = ['coc-tsserver', 'coc-deno']
+
+" Configure CoC to use Deno for TypeScript files
+if executable("deno")
+  let g:coc_default_semantic_highlight_groups = 1
+  autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
+  autocmd FileType typescriptreact,json setlocal formatexpr=CocAction('formatSelected')
+endif
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" CoC code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+" CoC rename symbol
+nmap <silent><leader>r <Plug>(coc-rename)
+
+" CoC list problems
+nmap <silent> gep <Plug>(coc-diagnostic-prev)
+nmap <silent> gen <Plug>(coc-diagnostic-next)
 
 " file finder
 command! -bang -nargs=? -complete=dir GFiles
@@ -362,7 +408,7 @@ if executable("deno")
     autocmd!
     autocmd User lsp_setup call lsp#register_server({
     \ "name": "deno lsp",
-    \ "cmd": {server_info -> ["deno", "lsp", "--import-map=import_map.json"]},
+    \ "cmd": {server_info -> ["deno", "lsp"]},
     \ "root_uri": {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), "tsconfig.json"))},
     \ "allowlist": ["typescript", "typescript.tsx"],
     \ "initialization_options": {
@@ -380,33 +426,30 @@ nnoremap <leader>f <Plug>(easymotion-overwin-f2)
 " treesitter for advanced syntax highlighting
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "javascript", "typescript", "css", "vim", "lua" }, -- Install language parsers
+  ensure_installed = { "javascript", "typescript", "html", "css", "vim", "lua" }, -- Install language parsers
   highlight = {
     enable = true,              -- Enable syntax highlighting
-    disable = { "html" },       -- Disable syntax highlighting
-    additional_vim_regex_highlighting = true,
+    additional_vim_regex_highlighting = false,
   },
 }
+EOF
+
+" tree view
+lua << EOF
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
+
+-- empty setup using defaults
+require("nvim-tree").setup()
 EOF
 
 set foldlevel=20
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
-
-" outline sidebar for file's symbols
-lua << EOF
-require'outline'.setup {
-  outline_window = {
-    auto_close = true
-  }
-}
-EOF
-nnoremap <leader>o :Outline<cr>
-
-" nerd tree file explorer
-let NERDTreeQuitOnOpen = 1
-let NERDTreeShowHidden = 1
-nnoremap <leader>nt :NERDTreeFind<cr>
 
 " update colors for git signify signs (+, -, ~)
 function! s:update_colors()
@@ -529,20 +572,13 @@ nnoremap <c-s> :w<cr>
 inoremap <c-s> <esc>:w<cr>
 vnoremap <c-s> <esc>:w<cr>
 
-" save without auto formatting
-nnoremap <c-a-s> :noa w<cr>
-inoremap <c-a-s> <esc>:noa w<cr>
-vnoremap <c-a-s> <esc>:noa w<cr>
-
-" save all files
-nnoremap <a-s> :wa<cr>
-inoremap <a-s> <esc>:wa<cr>
-vnoremap <a-s> <esc>:wa<cr>
-
-" save forcefully
 nnoremap <a-s-s> :w!<cr>
 inoremap <a-s-s> <esc>:w!<cr>
 vnoremap <a-s-s> <esc>:w!<cr>
+
+nnoremap <a-s> :wa<cr>
+inoremap <a-s> <esc>:wa<cr>
+vnoremap <a-s> <esc>:wa<cr>
 
 " easier redo
 nnoremap U <c-r>
@@ -688,12 +724,12 @@ autocmd FileType help wincmd L
 nnoremap <c-w>t :tabedit <c-r>=expand('%p')<cr><cr>
 
 " navigate tabs
-nnoremap <a-right> gt
-nnoremap <a-left> gT
-inoremap <a-right> <esc>gt
-inoremap <a-left> <esc>gT
-tnoremap <a-right> <c-\><c-n><esc>gt
-tnoremap <a-left> <c-\><c-n><esc>gT
+nnoremap <a-down> gt
+nnoremap <leader><right> gt
+nnoremap <a-up> gT
+nnoremap <leader><left> gT
+inoremap <a-down> <esc>gt
+inoremap <a-up> <esc>gT
 
 " move tabs left or right
 nnoremap <silent> <a-s-down> :tabmove +1<cr>
@@ -757,7 +793,7 @@ nnoremap <silent> + :set eadirection=hor equalalways noequalalways<cr><c-w>_
 " format paragraph of text to fit into 80 lines (or whatever textwidth)
 nnoremap + gqap
 
-" save and close file (like git commit messages
+" save and close file (like git commit messages)
 inoremap <c-x> <esc>:x<cr>
 
 " delete visual selection to black hole buffer, instead of replacing copy buffer
@@ -797,6 +833,9 @@ au FileType markdown setlocal nofoldenable
 " navigation with f<tab>
 au FileType markdown nnoremap <silent> f<tab> :BLines<cr>^#<space>
 au FileType vim nnoremap <silent> f<tab> :BLines<cr>^"\ ---<space>
+au FileType literate nnoremap <silent> f<tab> :BLines<cr>'@s<space>
+au FileType literate nnoremap <silent> g<tab> :BLines<cr>^#<space>
+au FileType literate nnoremap <silent> d<tab> :BLines<cr>^---\ <space>
 
 " turn off markdown spell check
 au FileType markdown setlocal nospell
