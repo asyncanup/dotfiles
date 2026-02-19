@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google/clasp": "^2.4.2",
+    "@google/clasp": "^3.2.0",
     "carbonyl": "^0.0.2-next.bacf3db",
     "localtunnel": "^2.0.2",
     "prettier": "^3.2.5",
