@@ -607,4 +607,9 @@ alias xvf='tar xvf'
 
 # ---- end ----
 
-export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+if [ "$(uname)" == "Darwin" ]; then
+  export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+fi
+
+# Deno
+[ -f "$HOME/.deno/env" ] && . "$HOME/.deno/env"

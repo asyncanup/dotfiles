@@ -61,7 +61,7 @@ alt - w : yabai -m window --close
 # ===== APP LAUNCHERS =====
 alt - t : open -a kitty
 alt - n : open -a kitty --args -e nvim
-alt - f : open -a Marta
+alt - m : open -a Marta
 
 # ===== SCRATCHPAD (Mod + S) =====
 # yabai doesn't have native scratchpad, but you can toggle a floating window

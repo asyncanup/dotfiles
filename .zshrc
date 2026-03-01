@@ -7,14 +7,14 @@ eval "$(starship init zsh)"
 # personal utilities
 export PATH="$HOME/bin:$HOME/bin/node_modules/.bin:$HOME/.local/bin:$PATH"
 
-# homebrew-installed utilities
-export PATH="/opt/homebrew/bin:$PATH"
-
-# PostgreSQL/psql
-export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+# macOS-specific paths
+if [[ "$(uname)" == "Darwin" ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+  export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+fi
 
 # Deno-installed utilities
-export PATH="/home/bish/.deno/bin:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
 
 export EDITOR="nvim"
 
@@ -22,7 +22,11 @@ export EDITOR="nvim"
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 
 # Copy last command's output to clipboard
-alias cplast='fc -e - | wl-copy -n'
+if [[ "$(uname)" == "Darwin" ]]; then
+  alias cplast='fc -e - | pbcopy'
+else
+  alias cplast='fc -e - | wl-copy -n'
+fi
 
 # bin for go installed packages
 export PATH="$PATH:$HOME/go/bin"
