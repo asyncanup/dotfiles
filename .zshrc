@@ -31,5 +31,7 @@ fi
 # bin for go installed packages
 export PATH="$PATH:$HOME/go/bin"
 
+eval "$(direnv hook zsh)"
+
 # Local machine-specific overrides (OS-specific paths, distro-specific config, etc.)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
