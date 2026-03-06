@@ -1,8 +1,10 @@
-# arrow up
+# arrow up (normal and application cursor mode)
 "\e[A": history-search-backward
+"\eOA": history-search-backward
 
-# arrow down
+# arrow down (normal and application cursor mode)
 "\e[B": history-search-forward
+"\eOB": history-search-forward
 
 # <c-h> (which is also ctrl-backspace to delete word)
 "\C-h": backward-kill-word

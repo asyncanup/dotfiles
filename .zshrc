@@ -18,6 +18,12 @@ export PATH="$HOME/.deno/bin:$PATH"
 
 export EDITOR="nvim"
 
+# Up/down arrow: search history matching what's already typed
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+bindkey "^[OA" history-beginning-search-backward
+bindkey "^[OB" history-beginning-search-forward
+
 # Command history format
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 
