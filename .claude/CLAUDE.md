@@ -9,3 +9,4 @@ Note key insights from tasks solved in an appropriate place in the codebase
 Use npx playwright for running headless browser or testing apps with a UI
 Install firefox with npx playwright install firefox if needed
 Use gh cli for working with github
+Use gws for accessing google docs, sheets, drive, slides
