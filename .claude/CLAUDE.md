@@ -7,4 +7,5 @@ Make deno fmt, deno lint, deno check, and deno test work when applicable
 Use integration tests in the style of unit testing the external facing api (avoid mocks)
 Note key insights from tasks solved in an appropriate place in the codebase
 Use npx playwright for running headless browser or testing apps with a UI
+Install firefox with npx playwright install firefox if needed
 Use gh cli for working with github
