@@ -25,7 +25,9 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "plugin-dev@claude-plugins-official": true,
     "csharp-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": false,
+    "slack@claude-plugins-official": false
   },
   "alwaysThinkingEnabled": true,
   "skipDangerousModePermissionPrompt": true,
@@ -35,6 +37,62 @@
         "source": "github",
         "repo": "anthropics/claude-code"
       }
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Bash",
+      "mcp__ts-pm__query_transcripts"
+    ],
+    "allowedPrompts": [
+      { "tool": "Bash", "prompt": "grep" },
+      { "tool": "Bash", "prompt": "ls" },
+      { "tool": "Bash", "prompt": "list" },
+      { "tool": "Bash", "prompt": "find" },
+      { "tool": "Bash", "prompt": "search" },
+      { "tool": "Bash", "prompt": "cat" },
+      { "tool": "Bash", "prompt": "head" },
+      { "tool": "Bash", "prompt": "tail" },
+      { "tool": "Bash", "prompt": "read" },
+      { "tool": "Bash", "prompt": "view" },
+      { "tool": "Bash", "prompt": "show" },
+      { "tool": "Bash", "prompt": "display" },
+      { "tool": "Bash", "prompt": "pwd" },
+      { "tool": "Bash", "prompt": "which" },
+      { "tool": "Bash", "prompt": "file" },
+      { "tool": "Bash", "prompt": "wc" },
+      { "tool": "Bash", "prompt": "diff" },
+      { "tool": "Bash", "prompt": "compare" },
+      { "tool": "Bash", "prompt": "tree" },
+      { "tool": "Bash", "prompt": "stat" },
+      { "tool": "Bash", "prompt": "du" },
+      { "tool": "Bash", "prompt": "df" },
+      { "tool": "Bash", "prompt": "echo" },
+      { "tool": "Bash", "prompt": "print" },
+      { "tool": "Bash", "prompt": "date" },
+      { "tool": "Bash", "prompt": "whoami" },
+      { "tool": "Bash", "prompt": "env" },
+      { "tool": "Bash", "prompt": "git status" },
+      { "tool": "Bash", "prompt": "git log" },
+      { "tool": "Bash", "prompt": "git diff" },
+      { "tool": "Bash", "prompt": "git show" },
+      { "tool": "Bash", "prompt": "git branch" },
+      { "tool": "Bash", "prompt": "check" },
+      { "tool": "Bash", "prompt": "verify" },
+      { "tool": "Bash", "prompt": "inspect" },
+      { "tool": "Bash", "prompt": "first" },
+      { "tool": "Bash", "prompt": "limited" },
+      { "tool": "Bash", "prompt": "top" },
+      { "tool": "Bash", "prompt": "preview" },
+      { "tool": "Bash", "prompt": "sample" },
+      { "tool": "Bash", "prompt": "count" },
+      { "tool": "Bash", "prompt": "pipe" }
+    ]
+  },
+  "mcpServers": {
+    "ts-pm": {
+      "type": "stdio",
+      "command": "/Users/abishnoi/src/maglev/.venv/bin/ts-pm-mcp"
     }
   }
 }
