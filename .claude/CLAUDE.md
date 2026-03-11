@@ -10,3 +10,6 @@ Use npx playwright for running headless browser or testing apps with a UI
 Install firefox with npx playwright install firefox if needed
 Use gh cli for working with github
 Use gws for accessing google docs, sheets, drive, slides
+Use jira cli for access to JIRA tickets
+add tests for all new capabilities, then commit
+make tests end-to-end but without complex harnesses, instead just import the end-user-facing functions and call the input functions with user input, then assert on the output as seen by the user with another output focused function or spy
