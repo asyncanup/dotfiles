@@ -131,6 +131,9 @@ persistent-workspaces = []
     alt-shift-y = 'move-node-to-workspace Y'
     alt-shift-z = 'move-node-to-workspace Z'
 
+    # Focus next monitor
+    alt-period = 'focus-monitor --wrap-around next'
+
     # Quick switch between last two workspaces
     alt-tab = 'workspace-back-and-forth'
     # Move current workspace to next monitor
